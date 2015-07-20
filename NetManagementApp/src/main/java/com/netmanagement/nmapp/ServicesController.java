@@ -116,17 +116,5 @@ public class ServicesController {
 		
 		
 	 }
-	 
-	 
-	 @RequestMapping(value = "/customer", method = RequestMethod.GET,consumes="application/json",produces="application/json")
-	
-	   public @ResponseBody Customer add(@RequestParam String name, @RequestParam String id, @RequestParam int age) {
-		 
-		    Customer customer = new Customer();
-		    customer.setName(name);
-		    customer.setId(id);
-		    customer.setAge(age);
-		    return customer;
-	   }
 	
 }
