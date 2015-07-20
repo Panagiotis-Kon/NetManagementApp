@@ -96,8 +96,10 @@ public class AccessPointCalculations {
 							Date date1 = sdf.parse(startDate);
 							Date date2 = sdf.parse(endDate);
 							Date dateu = sdf.parse(tempap.getTimestamp());
-							if (date1.equals(dateu) && date1.before(dateu)){
-								if (date2.equals(dateu) && date2.after(dateu)){
+							//System.out.println(date1+" | "+date2+" | "+dateu);
+							if (date1.equals(dateu) || date1.before(dateu)){
+								if (date2.equals(dateu) || date2.after(dateu)){
+									System.out.println(date1+" | "+date2+" | "+dateu);
 									alist.add(tempap);
 								}
 							}
