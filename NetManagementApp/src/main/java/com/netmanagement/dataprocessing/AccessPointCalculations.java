@@ -139,7 +139,7 @@ public class AccessPointCalculations {
 			}
 		}
 		if(alist.isEmpty()){
-			System.out.println("AccessPointsCalculations: alist is empty!!!");
+			System.out.println("getUsers: alist is empty!!!");
 		}
 		return alist;
 	}
