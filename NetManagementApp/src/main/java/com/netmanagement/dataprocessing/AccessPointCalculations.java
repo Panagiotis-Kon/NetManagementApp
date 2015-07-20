@@ -117,5 +117,31 @@ public class AccessPointCalculations {
 		}
 		return alist;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ArrayList<String> getUsers(){
+		
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
+		ArrayList<String> alist = new ArrayList<String>();
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					AccessPoints tempap = array.get(i);
+					if (!alist.contains(tempap.getUser())){
+						alist.add(tempap.getUser());
+					}
+				}
+			}
+		}
+		if(alist.isEmpty()){
+			System.out.println("AccessPointsCalculations: alist is empty!!!");
+		}
+		return alist;
+	}
 
 }
