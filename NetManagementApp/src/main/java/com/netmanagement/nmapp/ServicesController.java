@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.customer.info.Customer;
+
 import com.google.gson.Gson;
 import com.netmanagement.csvdatasets.ParseCSV;
 import com.netmanagement.dataprocessing.AccessPointCalculations;
