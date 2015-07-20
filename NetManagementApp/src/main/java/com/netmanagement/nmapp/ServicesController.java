@@ -15,7 +15,6 @@ import com.customer.info.Customer;
 import com.google.gson.Gson;
 import com.netmanagement.csvdatasets.ParseCSV;
 import com.netmanagement.dataprocessing.AccessPointCalculations;
-import com.netmanagement.dataprocessing.AccessPointPosition;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
 
@@ -87,7 +86,7 @@ public class ServicesController {
 	   public @ResponseBody String getEstimation() {
 		 HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
 			if (!hap.isEmpty()){
-				ArrayList<APResults> retList = AccessPointPosition.getInstance().EstimatedPointPosition();
+				ArrayList<APResults> retList = AccessPointCalculations.getInstance().EstimatedPointPosition();
 				String json = new Gson().toJson(retList);
 				
 				return json;
