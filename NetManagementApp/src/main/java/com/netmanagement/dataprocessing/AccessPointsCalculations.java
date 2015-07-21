@@ -59,9 +59,8 @@ public class AccessPointsCalculations {
 				//lat=lat*pi;
 				//lon=lon*pi;
 				for (int i=0;i<array.size();i++){
-					AccessPoints tempap = array.get(i);
-					tempap.setAPlatitude(lat);
-					tempap.setAPlongtitude(lon);
+					array.get(i).setAPlatitude(lat);
+					array.get(i).setAPlongtitude(lon);
 				}
 				APResults temp = new APResults();
 				temp.setAPlatitude(lat);
