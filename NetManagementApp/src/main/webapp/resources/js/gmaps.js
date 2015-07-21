@@ -21,6 +21,9 @@ function loadMap(data) {
                 animation: google.maps.Animation.DROP,
             });
  	   })
+ 	   
+ 	   map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+ 			   FullScreenControl(map, fullscreen, exitfullscreen));
  		/*var marker1 = new google.maps.Marker({
 		      position: myLatlng,
 		      map: map,
@@ -47,3 +50,15 @@ function loadMap(data) {
                                
  
 }
+
+
+
+
+function callFull(){
+	FullScreenControl(map, enterFull, exitFull);
+}
+
+function resizeMap() {
+	    $("#map-canvas").css({height: 800, width: 800});
+	}
+

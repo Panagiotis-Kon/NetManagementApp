@@ -38,10 +38,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 		</script>
 		
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4dOADqTQ3psNiKaZ3jEncIaJzBpBWUQ">
+    </script>		
 <script src="resources/js/pace.js"></script>
 <link href="resources/css/blue/pace-theme-corner-indicator.css" rel="stylesheet" />		
 <script type="text/javascript" src="resources/js/visualright.js"></script>
 <script type="text/javascript" src="resources/js/ajaxCalls.js"></script>
+<script type="text/javascript" src="resources/js/gmaps.js"></script>
+<script type="text/javascript" src="resources/js/fullscreen.js"></script>
 		
 <script type="text/javascript">
 function toDataProcessing()
@@ -60,56 +65,8 @@ function toDataVisualization()
 
 
 
-<script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4dOADqTQ3psNiKaZ3jEncIaJzBpBWUQ">
-    </script>
-    <script type="text/javascript">
+
     
-    
-    var map = null;
-      function init() {
-    	//location of marker
-    	var myLatlng = new google.maps.LatLng(0, -180);
-      	var mapOptions = {
-    		zoom: 3,
-    		center: myLatlng,
-    		mapTypeId: google.maps.MapTypeId.TERRAIN
- 		 };
-
- 		 var map = new google.maps.Map(document.getElementById('map-canvas'),
-      		mapOptions);
- 		 
- 		var marker1 = new google.maps.Marker({
-		      position: myLatlng,
-		      map: map,
-		      title: 'Hello World!'
-		  });
-
- 		 var flightPlanCoordinates = [
-   		 	new google.maps.LatLng(37.772323, -122.214897),
-    		new google.maps.LatLng(21.291982, -157.821856),
-    		new google.maps.LatLng(-18.142599, 178.431),
-    		new google.maps.LatLng(-27.46758, 153.027892)
-  		];
- 		 var flightPath = new google.maps.Polyline({
-    		path: flightPlanCoordinates,
-    		geodesic: true,
-    		strokeColor: '#FF0000',
-    		strokeOpacity: 1.0,
-    		strokeWeight: 2
-  		});
-
- 		
-  		flightPath.setMap(map);
-		console.log('ending scipt');
-                               
-      }
-      //function loadMap(){
-    	 // google.maps.event.addDomListener(window, 'load', init);
-     // }
-      
-      
-    </script>
 
 
 <script>
@@ -172,10 +129,10 @@ function toDataVisualization()
 			
 			<div class="mini-menu">
 				<ul>
-					<li><a href="javascript:options();" id="userLink">Choose User/Timeline</a></li>
-					
-					<li><a href="javascript:init();">Load Map</a></li>
+					<li><a href="javascript:getUsers();" id="userLink">Choose User/Timeline</a></li>					
+					<li><a href="javascript:init();">Polyline</a></li>
 					<li><a href="#">Level/Time Graph</a></li>
+					<li><a href="javascript:init();">Cells</a></li>
         
 				</ul>
 				
@@ -186,9 +143,12 @@ function toDataVisualization()
 			<div class="container">
 			<div class="row">
   				<div class="span9">
-    				<div id="map-canvas" style="float:left; width: 50%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
-   					 
+  			
+  				 <div id="map-fullscreen" style="text-align:left;"><p>View Map on <a href="javascript:callFull();">full screen</a></p></div> 
+    			 <div id="map-canvas" style="float:left; width: 50%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
+   					
   				</div>
+  			
   				<div class="span9">
     				
     				<div id="graph" style="float:right; width: 50%; height:600px;margin-bottom:2em; margin-top:1em;">
@@ -201,9 +161,9 @@ function toDataVisualization()
 						<div id="timeline">
 							
 							<label for="from">From</label>
-							<input type="text" id="from" name="from" title="format: yyyy/mm/dd">
+							<input type="text" id="from" name="from" title="format: yyyy-mm-dd">
 							<label for="to">to</label>
-							<input type="text" id="to" name="to" title="format: yyyy/mm/dd">
+							<input type="text" id="to" name="to" title="format: yyyy-mm-dd">
 						</div>
 						<div id="closer"></div>
 					</div>

@@ -2,25 +2,30 @@
         var startDate='';
         var endDate='';
         
-function options() {
+function options(data) {
    	
 	/*In this function we return the available users */
-
+		  var arr = [];
 		  clickable(1);
 		  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
 		  $('#headerTag').append(header);
 	
           var table = $('<table id="tableID"></table>');
           
+          $.each(data,function(i,item){ 
+        	arr.push(item);  
+          })
+          arr.sort(function(a, b){return a-b});
+          for(var i=0; i<arr.length; i++){ 
+        	  row = $('<tr></tr>');
+              
+              var rowData = $('<td></td>').text(arr[i]);
+              rowData.id=i;
+              row.append(rowData);
+              table.append(row);
+        	  
+          }
           
-        for (var i = 0; i < 10; i++) {
-                row = $('<tr></tr>');
-               
-                var rowData = $('<td></td>').text('user1');
-                rowData.id=i;
-                row.append(rowData);
-                table.append(row);
-        }
  		
         if ($('#tableID').length) {
              $("#usersTable tr:first").after(row);

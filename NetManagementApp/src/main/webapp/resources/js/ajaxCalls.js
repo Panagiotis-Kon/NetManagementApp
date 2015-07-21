@@ -247,6 +247,25 @@ function csvRequest(option)
 }
 
 
+function getUsers() {
+	$.ajax({ 
+		type: "GET",
+	    dataType: "json",
+	    contentType: "application/json",
+	    url: "/NetManagementApp/getUsers",
+	   success: function(data){
+		   options(data);
+	   },
+	   error:function(XMLHttpRequest, textStatus, errorThrown){
+		   console.log('error',textStatus + " " + errorThrown);
+			   alert('Get Users error loading response');
+		   }
+		});
+	
+	
+}
+
+
 function getApInfo() {
 	
 	$.ajax({ 
@@ -256,10 +275,10 @@ function getApInfo() {
 		   contentType: "application/json",
 		   url: "/NetManagementApp/getApInfo",
 		   success: function(data){
-			   console.log('success',data);
+			   //console.log('success',data);
 			   $("#popupText").text("Access point gathering comleted. Load Map ?");
 			   $("#divpopup").dialog({
-					title: "Access Points Visualization",
+					title: "ACCESS POINTS",
 					width: 430,
 					height: 200,
 					modal:true,

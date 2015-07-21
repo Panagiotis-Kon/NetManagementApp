@@ -81,6 +81,20 @@ public class ServicesController {
 		
 	 }
 	 
+	 
+	 @RequestMapping(value = "/getUsers", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String RetrieveUsers() {
+		 
+		 AccessPointCalculations apc = AccessPointCalculations.getInstance();	
+		 ArrayList<String> users = apc.getUsers();
+		 String json = new Gson().toJson(users);
+			
+		return json;
+		 
+		 
+	 }
+	 
 	 @RequestMapping(value = "/AccessPointEstimation", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String getEstimation() {
