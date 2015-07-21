@@ -60,10 +60,23 @@ function Markers(data) {
 
 function Polyline(){
 	view = 1;
+	var sentdata = JSON.parse(sessionStorage.getItem('sent'));
+	var flightPlanCoordinates = [];
+	$.each(sentdata,function(i,item){
+		
+		flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
+		
+		
+	});
 	
-	
-	
-	
+	var flightPath = new google.maps.Polyline({
+		path: flightPlanCoordinates,
+		geodesic: true,
+		strokeColor: '#FF0000',
+		strokeOpacity: 1.0,
+		strokeWeight: 2
+		});
+	flightPath.setMap(map);
 	
 }
 
