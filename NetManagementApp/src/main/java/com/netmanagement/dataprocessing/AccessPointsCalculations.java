@@ -111,7 +111,7 @@ public class AccessPointsCalculations {
 			}
 		}
 		if(alist.isEmpty()){
-			System.out.println("AccessPointsCalculations: alist is empty!!!");
+			System.out.println("AccessPointsCalculations : alist is empty!!!");
 		}
 		return alist;
 	}
