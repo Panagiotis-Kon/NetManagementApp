@@ -110,7 +110,7 @@ function options(data) {
      	 {
      		//make get ajax call with params
      		 console.log('user: ' + document.getElementById('User').value + ' startDate: ' + document.getElementById('from').value + ' endDate: ' + document.getElementById('to').value);
-     		getApInfo();
+     		 getApInfo();
      	 }
      	
      	 

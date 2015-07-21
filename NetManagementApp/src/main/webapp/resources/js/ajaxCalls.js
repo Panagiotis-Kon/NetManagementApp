@@ -276,7 +276,7 @@ function getApInfo() {
 		   url: "/NetManagementApp/getApInfo",
 		   success: function(data){
 			   //console.log('success',data);
-			   $("#popupText").text("Access point gathering comleted. Load Map ?");
+			   $("#popupText").text("Access point gathering comleted. Load Markers on Map ?");
 			   $("#divpopup").dialog({
 					title: "ACCESS POINTS",
 					width: 430,
@@ -286,7 +286,7 @@ function getApInfo() {
 						YES: 
 							function(){
 							$(this).dialog('close');
-							loadMap(data);
+							Markers(data);
 							},
 						NO:
 							function(){

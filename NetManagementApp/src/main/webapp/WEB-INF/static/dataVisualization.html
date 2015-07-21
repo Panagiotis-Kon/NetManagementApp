@@ -46,7 +46,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="resources/js/visualright.js"></script>
 <script type="text/javascript" src="resources/js/ajaxCalls.js"></script>
 <script type="text/javascript" src="resources/js/gmaps.js"></script>
-<script type="text/javascript" src="resources/js/fullscreen.js"></script>
+
 		
 <script type="text/javascript">
 function toDataProcessing()
@@ -130,9 +130,9 @@ function toDataVisualization()
 			<div class="mini-menu">
 				<ul>
 					<li><a href="javascript:getUsers();" id="userLink">Choose User/Timeline</a></li>					
-					<li><a href="javascript:init();">Polyline</a></li>
-					<li><a href="#">Level/Time Graph</a></li>
-					<li><a href="javascript:init();">Cells</a></li>
+					<li><a href="javascript:Polyline();">Polyline</a></li>
+					<li><a href="javascript:BatteryGraph();">Level/Time Graph</a></li>
+					<li><a href="javascript:Cells();">Cells</a></li>
         
 				</ul>
 				
@@ -144,7 +144,7 @@ function toDataVisualization()
 			<div class="row">
   				<div class="span9">
   			
-  				 <div id="map-fullscreen" style="text-align:left;"><p>View Map on <a href="javascript:callFull();">full screen</a></p></div> 
+  				 <div id="map-fullscreen" style="text-align:left;"><p>View Map on <a href="javascript:fullscreenMode()">full screen</a></p></div> 
     			 <div id="map-canvas" style="float:left; width: 50%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
    					
   				</div>

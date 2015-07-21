@@ -38,6 +38,11 @@ public class ServicesController {
 	      return "static/login.html";
 	   }
 	 
+	 @RequestMapping(value = "/fullscreenMap", method = RequestMethod.GET)
+	   public String fullscreenMap() {
+	     
+	      return "static/fullscreenMap.html";
+	   }
 	 @RequestMapping(value = "/dataProcessing", method = RequestMethod.GET)
 	   public String dataProcessing() {
 	     

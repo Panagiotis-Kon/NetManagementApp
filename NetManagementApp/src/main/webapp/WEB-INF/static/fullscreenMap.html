@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Google maps fullscreen</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+    </style>
+    <link href="resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="resources/js/jquery-1.11.1.min.js"></script>
+
+<!--  link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+ 
+<!--  script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+
+<link href="resources/css/jquery-ui.css" rel='stylesheet' type='text/css' />
+<script src="resources/js/jquery-ui.js"></script>
+<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4dOADqTQ3psNiKaZ3jEncIaJzBpBWUQ">
+    </script>	
+<script type="text/javascript">
+
+var map;
+function initialize() {
+	
+	var sentdata = JSON.parse(sessionStorage.getItem('sent'));
+	var myLatlng = null;
+	 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+	$.each(sentdata,function(i,item){
+		
+		if(i==0){
+				myLatlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
+		      	var mapOptions = {
+		    		zoom: 8,
+		    		center: myLatlng,
+		    		mapTypeId: google.maps.MapTypeId.TERRAIN
+		 		 };
+
+		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+			}
+			else {
+				var latLng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
+	 			var marker = new google.maps.Marker({
+	                position: latLng,
+	                map: map,
+	                animation: google.maps.Animation.DROP,
+	            });
+			}
+    });
+})
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+<body>
+<div id="map-canvas"></div>
+</body>
+</html>
