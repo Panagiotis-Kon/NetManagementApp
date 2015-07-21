@@ -286,6 +286,7 @@ function getApInfo() {
 						YES: 
 							function(){
 							$(this).dialog('close');
+							 $("#map-fullscreen").show();
 							Markers(data);
 							},
 						NO:

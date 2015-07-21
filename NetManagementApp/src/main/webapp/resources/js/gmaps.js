@@ -60,6 +60,11 @@ function Markers(data) {
 
 function Polyline(){
 	view = 1;
+	
+	
+	
+	
+	
 }
 
 function BatteryGraph() {
