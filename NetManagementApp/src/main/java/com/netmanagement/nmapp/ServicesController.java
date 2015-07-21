@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-
 import com.google.gson.Gson;
-import com.netmanagement.csvdatasets.ParseCSV;
+import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.dataprocessing.AccessPointsCalculations;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
@@ -65,10 +63,10 @@ public class ServicesController {
 	 public @ResponseBody String csvRequest(@RequestParam int option) {
 		 int suc = -1;
 		 if(option == 1){
-			 ParseCSV pcsv = ParseCSV.getInstance();
+			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
 			 
 			 try {
-				suc = pcsv.LpLCSV(option);
+				suc = pcsv.LoadAccessPoints();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -103,7 +101,7 @@ public class ServicesController {
 	 @RequestMapping(value = "/AccessPointEstimation", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String getEstimation() {
-		 HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
+		 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 			if (!hap.isEmpty()){
 				ArrayList<APResults> retList = AccessPointsCalculations.getInstance().EstimatedPointPosition();
 				String json = new Gson().toJson(retList);
