@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.netmanagement.entities.AccessPoints;
 import com.netmanagement.entities.BaseStations;
 
 public class ParseBaseStations {

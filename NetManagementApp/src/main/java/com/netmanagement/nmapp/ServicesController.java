@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.netmanagement.csvdatasets.ParseCSV;
-import com.netmanagement.dataprocessing.AccessPointCalculations;
+import com.netmanagement.dataprocessing.AccessPointsCalculations;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
 
@@ -91,7 +91,7 @@ public class ServicesController {
 		
 	   public @ResponseBody String RetrieveUsers() {
 		 
-		 AccessPointCalculations apc = AccessPointCalculations.getInstance();	
+		 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
 		 ArrayList<String> users = apc.getUsers();
 		 String json = new Gson().toJson(users);
 			
@@ -105,7 +105,7 @@ public class ServicesController {
 	   public @ResponseBody String getEstimation() {
 		 HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
 			if (!hap.isEmpty()){
-				ArrayList<APResults> retList = AccessPointCalculations.getInstance().EstimatedPointPosition();
+				ArrayList<APResults> retList = AccessPointsCalculations.getInstance().EstimatedPointPosition();
 				String json = new Gson().toJson(retList);
 				
 				return json;
@@ -119,7 +119,7 @@ public class ServicesController {
 		
 	   public @ResponseBody String getApInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
 		 	
-		 AccessPointCalculations apc = AccessPointCalculations.getInstance();	
+		 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
 		 ArrayList<AccessPoints> apInfo = apc.searchUser(userID, startDate, endDate);
 		 System.out.println("returning from searchUser");
 		 if(!apInfo.isEmpty()){

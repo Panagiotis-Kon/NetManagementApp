@@ -1,11 +1,11 @@
 package com.netmanagement.entities;
 
-import java.util.Date;
+
 
 public class Battery {
 
 	private String id;
-	private String email;
+	private String user;
 	private int level;
 	private int plugged;
 	private int temperature;
@@ -14,7 +14,7 @@ public class Battery {
 	
 	public void setAll(String[] Data) {
 		id=Data[0];
-		email=Data[1];
+		user=Data[1];
 		level=Integer.parseInt(Data[2]);
 		plugged=Integer.parseInt(Data[3]);
 		temperature=Integer.parseInt(Data[4]);
@@ -28,11 +28,11 @@ public class Battery {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getEmail() {
-		return email;
+	public String getUser() {
+		return user;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUser(String user) {
+		this.user = user;
 	}
 	public int getLevel() {
 		return level;

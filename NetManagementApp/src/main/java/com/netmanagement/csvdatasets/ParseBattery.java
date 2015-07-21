@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.netmanagement.entities.BaseStations;
 import com.netmanagement.entities.Battery;
 
 public class ParseBattery {
@@ -48,7 +46,7 @@ public class ParseBattery {
 		   	  String parts[] = line.split("\t");
 		   	  Battery point = new Battery();
 			  point.setAll(parts);
-			  System.out.println(point.getId()+" "+point.getEmail()+" "+point.getLevel()+" "+point.getPlugged()+" "+point.getTemperature()+" "+point.getVoltage()+" "+point.getTimestamp());
+			  System.out.println(point.getId()+" "+point.getUser()+" "+point.getLevel()+" "+point.getPlugged()+" "+point.getTemperature()+" "+point.getVoltage()+" "+point.getTimestamp());
 			  if (hap.containsKey(parts[1])){
 			  	 hap.get(parts[1]).add(point);
 			  }

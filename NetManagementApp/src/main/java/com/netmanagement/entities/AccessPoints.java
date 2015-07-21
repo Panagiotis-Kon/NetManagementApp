@@ -1,6 +1,6 @@
 package com.netmanagement.entities;
 
-import java.util.Date;
+
 
 public class AccessPoints {
 	

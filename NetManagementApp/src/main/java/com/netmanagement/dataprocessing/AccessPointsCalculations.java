@@ -9,21 +9,22 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.csvdatasets.ParseCSV;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
 
-public class AccessPointCalculations {
+public class AccessPointsCalculations {
 	//private final double pi=Math.PI/180;
-    private static AccessPointCalculations AccessPointCalculationsinstance = null;
+    private static AccessPointsCalculations AccessPointsCalculationsinstance = null;
 	
-	private AccessPointCalculations(){}
+	private AccessPointsCalculations(){}
 	
-	public static AccessPointCalculations getInstance(){
-		if(AccessPointCalculationsinstance == null){
-			AccessPointCalculationsinstance = new AccessPointCalculations();
+	public static AccessPointsCalculations getInstance(){
+		if(AccessPointsCalculationsinstance == null){
+			AccessPointsCalculationsinstance = new AccessPointsCalculations();
 		}
-		return AccessPointCalculationsinstance;
+		return AccessPointsCalculationsinstance;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -79,7 +80,7 @@ public class AccessPointCalculations {
 	public ArrayList<AccessPoints> searchUser(String userID, String startDate, String endDate){
 		
 		System.out.println("userID: " + userID + " startDate: " + startDate + " endDate: " + endDate);
-		HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 		ArrayList<AccessPoints> alist = new ArrayList<AccessPoints>();
 		if (!hap.isEmpty()){
 			Set<?> set = hap.entrySet();

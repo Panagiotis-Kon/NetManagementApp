@@ -1,6 +1,6 @@
 package com.netmanagement.entities;
 
-import java.util.Date;
+
 
 public class GPS {
 
@@ -9,6 +9,14 @@ public class GPS {
 	private double Ulatitude;
 	private double Ulongtitude;
 	private String timestamp;
+	
+	public void setAll(String[] Data) {
+		id=Data[0];
+		user=Data[1];
+		Ulatitude=Double.parseDouble(Data[2]);
+		Ulongtitude=Double.parseDouble(Data[3]);
+		timestamp=Data[4];
+	}
 	
 	public String getId() {
 		return id;
