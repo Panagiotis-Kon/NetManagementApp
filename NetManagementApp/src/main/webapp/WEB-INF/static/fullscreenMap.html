@@ -29,9 +29,9 @@
 <script type="text/javascript">
 
 var map;
-function initialize() {
+function fullMarkers(sentdata) {
 	
-	var sentdata = JSON.parse(sessionStorage.getItem('sent'));
+	
 	var myLatlng = null;
 	 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
 	$.each(sentdata,function(i,item){
@@ -55,7 +55,46 @@ function initialize() {
 	            });
 			}
     });
-})
+ }
+ 
+ function fullPolyline(sentdata) {
+	 
+	 var flightPlanCoordinates = [];
+		$.each(sentdata,function(i,item){
+			
+			flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
+			
+			
+		});
+		
+		var flightPath = new google.maps.Polyline({
+			path: flightPlanCoordinates,
+			geodesic: true,
+			strokeColor: '#FF0000',
+			strokeOpacity: 1.0,
+			strokeWeight: 2
+			});
+		flightPath.setMap(map);
+		
+	 
+ }
+ 
+function initialize() {
+	
+	var currentV = window.opener.view;
+	var sentdata = JSON.parse(sessionStorage.getItem('sent'));
+	if(view == 0){
+		fullMarkers(sentdata);
+	}
+	else if(view == 1){
+		fullPolyline(sentdata);
+		
+	}
+	else if(view == 2) {
+		
+	}
+	
+	
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
