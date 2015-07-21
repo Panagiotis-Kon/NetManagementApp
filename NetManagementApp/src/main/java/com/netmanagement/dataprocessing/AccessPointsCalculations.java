@@ -8,9 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import com.netmanagement.csvdatasets.ParseAccessPoints;
-import com.netmanagement.csvdatasets.ParseCSV;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
 
@@ -29,7 +27,7 @@ public class AccessPointsCalculations {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<APResults> EstimatedPointPosition(){
-		HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 		ArrayList<APResults> alist = new ArrayList<APResults>();
 		if (!hap.isEmpty()){
 			Set<?> set = hap.entrySet();
@@ -121,7 +119,7 @@ public class AccessPointsCalculations {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<String> getUsers(){
 		
-		HashMap<String, ArrayList<AccessPoints>> hap = ParseCSV.getInstance().getHap();
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 		ArrayList<String> alist = new ArrayList<String>();
 		if (!hap.isEmpty()){
 			Set<?> set = hap.entrySet();
