@@ -43,13 +43,6 @@ public class AccessPointsCalculations {
 				System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				if (array.size() == 1){
-					APResults temp = new APResults();
-					temp.setAPlatitude(lat);
-					temp.setAPlongtitude(lon);
-					temp.setBSSID(array.get(0).getBssid());
-					if (!alist.contains(temp)){
-						alist.add(temp);
-					}
 					continue;
 				}
 				for (int i=0;i<array.size();i++){
