@@ -27,7 +27,7 @@ public class BatteryCalculations {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<Battery> searchUser(String userID, String startDate, String endDate){
 		
-		System.out.println("userID: " + userID + " startDate: " + startDate + " endDate: " + endDate);
+		System.out.println(" Battery!! userID: " + userID + " startDate: " + startDate + " endDate: " + endDate);
 		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance().getHap();
 		ArrayList<Battery> alist = new ArrayList<Battery>();
 		if (!hap.isEmpty()){

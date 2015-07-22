@@ -235,7 +235,7 @@ public class AccessPointsCalculations {
 			Iterator<?> it = set.iterator();
 			while(it.hasNext()){
 				Map.Entry me = (Map.Entry)it.next();
-				System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				for (int i=0;i<array.size();i++){
 					if (first==1){
@@ -264,6 +264,7 @@ public class AccessPointsCalculations {
 			}
 		}
 		DATE=MIN+"#"+MAX;
+		System.out.println("Date of user: " + DATE);
 		return DATE;
 	}
 

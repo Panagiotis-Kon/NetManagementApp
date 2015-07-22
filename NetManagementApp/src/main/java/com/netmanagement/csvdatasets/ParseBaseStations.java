@@ -29,7 +29,7 @@ public class ParseBaseStations {
 	}
 	
 	@SuppressWarnings("resource")
-	public int LoadAccessPoints() throws Exception {
+	public int LoadBaseStations() throws Exception {
 		BufferedReader br = null;
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource("csvDatasets/base_station.csv").getFile());

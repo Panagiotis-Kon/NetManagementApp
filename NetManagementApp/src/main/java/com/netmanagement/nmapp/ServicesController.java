@@ -10,11 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.google.gson.Gson;
 import com.netmanagement.csvdatasets.ParseAccessPoints;
+import com.netmanagement.csvdatasets.ParseBaseStations;
+import com.netmanagement.csvdatasets.ParseBattery;
 import com.netmanagement.dataprocessing.AccessPointsCalculations;
+import com.netmanagement.dataprocessing.BaseStationsCalculations;
+import com.netmanagement.dataprocessing.BatteryCalculations;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
+import com.netmanagement.entities.BaseStations;
+import com.netmanagement.entities.Battery;
 
 /**
  * Handles requests for the application home page.
@@ -41,6 +48,13 @@ public class ServicesController {
 	     
 	      return "static/fullscreenMap.html";
 	   }
+	 
+	 @RequestMapping(value = "/BatteryGraph", method = RequestMethod.GET)
+	   public String BatteryGraph() {
+	     
+	      return "static/BatteryGraph.html";
+	   }
+	 
 	 @RequestMapping(value = "/dataProcessing", method = RequestMethod.GET)
 	   public String dataProcessing() {
 	     
@@ -62,6 +76,7 @@ public class ServicesController {
 	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
 	 public @ResponseBody String csvRequest(@RequestParam int option) {
 		 int suc = -1;
+		 String retstr = "";
 		 if(option == 1){
 			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
 			 
@@ -71,17 +86,63 @@ public class ServicesController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			 if(suc == 0) {
+				 retstr = "wifi-import"; 
+			 }
 			
 		 }
-		 System.out.println(suc);
-		 if(suc == 0) {
-			
-			 return "wifi-import";
+		 else if(option == 2){
+			 
+			 ParseBattery pb = ParseBattery.getInstance();
+			 try {
+				suc = pb.LoadBattery();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 if(suc == 0){
+				 System.out.println("battery: " + suc);
+				 retstr = "battery-import";
+			 }
+			 
+			 
+		 } else if(option == 3){
+			 
+			 ParseBattery pb = ParseBattery.getInstance();
+			 try {
+				suc = pb.LoadBattery();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 if(suc == 0){
+				 System.out.println("battery: " + suc);
+				 retstr = "battery-import";
+			 }
+			 
+			 
 		 }
+		 else if(option == 4){
+			 
+			 ParseBaseStations pbs = ParseBaseStations.getInstance();
+			 try {
+				suc = pbs.LoadBaseStations();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 if(suc == 0){
+				 System.out.println("battery: " + suc);
+				 retstr = "bs-import";
+			 }
+			 
+			 
+		 }
+		 
 		 else {
-			 return "Problem";
+			 retstr =  "problem";
 		 }
-		
+		 return retstr;
 	 }
 	 
 	 
@@ -113,6 +174,17 @@ public class ServicesController {
 			}
 	   }
 	 
+	 @RequestMapping(value = "/getDates", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String getDates(@RequestParam String userID) {
+		 
+		 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
+		 String udates = apc.minmaxTimestamp(userID);
+		 String json = new Gson().toJson(udates);
+		 return json;
+	 }
+	 
+	 
 	 @RequestMapping(value = "/getApInfo", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String getApInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
@@ -132,6 +204,47 @@ public class ServicesController {
 		 }
 		
 		
+	 }
+	 
+	 
+	 @RequestMapping(value = "/BatteryInfo", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String getBatteryInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
+		 
+		 BatteryCalculations bc = BatteryCalculations.getInstance();
+		 ArrayList<Battery> batlist = bc.searchUser(userID, startDate, endDate);
+		 if(!batlist.isEmpty()){
+			 String json = new Gson().toJson(batlist);
+			 System.out.println("json string: " + json);
+		     return json;	 
+		 }
+		 else {
+			 System.out.println("bat is empty");
+			 return "Uncreated List";
+		 }
+		 
+		 
+	 }
+	 
+	 
+	 
+	 
+	 @RequestMapping(value = "/CellsInfo", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String getCellsInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
+		 
+		 BaseStationsCalculations bsc = BaseStationsCalculations.getInstance();
+		 ArrayList<BaseStations> bslist = bsc.searchUser(userID, startDate, endDate);
+		 if(!bslist.isEmpty()){
+			 String json = new Gson().toJson(bslist);
+			 System.out.println("json string: " + json);
+		     return json;	 
+		 }
+		 else {
+			 System.out.println("bslist is empty");
+			 return "Uncreated List";
+		 }
+		 
 	 }
 	
 }

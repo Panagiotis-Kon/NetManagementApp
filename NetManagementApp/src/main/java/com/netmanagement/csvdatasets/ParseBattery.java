@@ -30,7 +30,7 @@ public class ParseBattery {
 	}
 	
 	@SuppressWarnings("resource")
-	public int LoadAccessPoints() throws Exception {
+	public int LoadBattery() throws Exception {
 		BufferedReader br = null;
 		ClassLoader classLoader = getClass().getClassLoader();
 		File file = new File(classLoader.getResource("csvDatasets/battery.csv").getFile());

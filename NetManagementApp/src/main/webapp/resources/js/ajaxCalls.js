@@ -1,4 +1,11 @@
-var completedEP = 0;
+var completedEP = 0; // 0: estimation process is not complete, 1: is complete
+var output="";
+var bat = 0;
+var ap = 0;
+var all = 0;
+var gps = 0;
+var bs = 0;
+
 function requestsHandler(arg)
 {
 	if(arg == "estimationProcess")
@@ -168,6 +175,8 @@ function csvRequest(option)
 			   dataType: "text",
 			   data:{option:option},
 			   url: "/NetManagementApp/csvRequest",
+			  
+			        
 			   
 			   success: function(data){ 
 				  
@@ -185,6 +194,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
+										all = 1;
 										}
 								}
 								}); 
@@ -218,6 +228,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
+										ap = 1;
 										}
 								}
 								}); 
@@ -233,6 +244,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
+										callback();
 										}
 								}
 								}); 
@@ -241,7 +253,7 @@ function csvRequest(option)
 				   break;
 				   case 2: 
 					   if(resp == 'battery-import'){
-						   $("#popupText").text("Battery dataSet imported correctly");
+						   $("#popupText").text("Battery dataSet imported correctly.\n Please continue your process");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
 								width: 430,
@@ -251,6 +263,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
+										bat = 1;
 										}
 								}
 								}); 
@@ -284,6 +297,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
+										gps = 1;
 										}
 								}
 								}); 
@@ -317,6 +331,7 @@ function csvRequest(option)
 								OK: 
 									function(){
 									$(this).dialog('close');
+									bs = 1;
 									}
 							}
 							}); 
@@ -371,6 +386,32 @@ function getUsers() {
 }
 
 
+function getAvUserDates(userID) {
+	
+	console.log(userID);
+	$.ajax({ 
+		type: "GET",
+	    dataType: "json",
+	    data:{userID:userID},
+	    contentType: "application/json",
+	    url: "/NetManagementApp/getDates",
+	   success: function(data){
+		   sessionStorage.setItem('timeframe',JSON.stringify(data));
+		   
+		   //console.log('output',output);
+		   
+	   },
+	   error:function(XMLHttpRequest, textStatus, errorThrown){
+		   console.log('error',textStatus + " " + errorThrown);
+			   alert('Get Users error loading response');
+		   }
+		});
+	
+	return "success";
+	
+}
+
+
 function getApInfo() {
 	
 	if(completedEP == 1) { // estimation process is completed
@@ -394,7 +435,7 @@ function getApInfo() {
 								function(){
 								$(this).dialog('close');
 								 $("#map-fullscreen").show();
-								Markers(data);
+								 Markers(data);
 								},
 							NO:
 								function(){
@@ -441,5 +482,150 @@ function getApInfo() {
 
 
 
+function getBatteryInfo() {
+	
+if(completedEP == 1) { // estimation process is completed
+		
+		$.ajax({ 
+			   type: "GET",
+			   dataType: "json",
+			   data:{userID:userID,startDate:startDate,endDate:endDate},
+			   contentType: "application/json",
+			   url: "/NetManagementApp/BatteryInfo",
+			   success: function(data){
+				   //console.log('success',data);
+				   $("#popupText").text("Battery Info gathering comleted. Load Graph ?");
+				   $("#divpopup").dialog({
+						title: "ACCESS POINTS",
+						width: 430,
+						height: 200,
+						modal:true,
+						buttons: {
+							YES: 
+								function(){
+								
+								// call for new popup window with graph
+									sessionStorage.setItem('battery',JSON.stringify(data));
+									window.open('BatteryGraph',"width=400, height=400");
+									$(this).dialog('close');
+								},
+							NO:
+								function(){
+								$(this).dialog('close');
+								
+								}
+						}
+						}); 
+			   
+			   },
+			   error: function(XMLHttpRequest, textStatus, errorThrown){
+				   console.log('error',textStatus + " " + errorThrown);
+	 			   alert('Get App Info error loading response');
+	 		   }
+	 		});
+
+	}
+	else {
+			$("#popupText").text("Estimation Point is not calculated. \n Do you want to calculate it automatically \n or redirect to dataProcessing page ?");
+		   $("#divpopup").dialog({
+				title: "ACCESS POINTS",
+				width: 430,
+				height: 200,
+				modal:true,
+				buttons: {
+					Automatically: 
+						function(){
+						$(this).dialog('close');
+						estimationProcess();
+						},
+					Redirect:
+						function(){
+						$(this).dialog('close');
+						toDataProcessing();
+						}
+				}
+				}); 
+			
+		
+	}
+	
+	
+	
+}
+
+
+
+
+function getCellsInfo() {
+	
+	if(completedEP == 1) {
+		
+		$.ajax({ 
+			   type: "GET",
+			   dataType: "json",
+			   data:{userID:userID,startDate:startDate,endDate:endDate},
+			   contentType: "application/json",
+			   url: "/NetManagementApp/CellsInfo",
+			   success: function(data){
+				   //console.log('success',data);
+				   $("#popupText").text("Base Stations Info gathering comleted. Load Graph ?");
+				   $("#divpopup").dialog({
+						title: "ACCESS POINTS",
+						width: 430,
+						height: 200,
+						modal:true,
+						buttons: {
+							YES: 
+								function(){
+								$(this).dialog('close');
+								// call for new popup window with graph
+									sessionStorage.setItem('bs',JSON.stringify(data));
+									DrawCells();
+									//window.open('BatteryGraph',"width=400, height=400");
+									
+								},
+							NO:
+								function(){
+								$(this).dialog('close');
+								
+								}
+						}
+						}); 
+			   
+			   },
+			   error: function(XMLHttpRequest, textStatus, errorThrown){
+				   console.log('error',textStatus + " " + errorThrown);
+	 			   alert('Get App Info error loading response');
+	 		   }
+	 		});
+
+	}
+	else {
+			$("#popupText").text("Estimation Point is not calculated. \n Do you want to calculate it automatically \n or redirect to dataProcessing page ?");
+		   $("#divpopup").dialog({
+				title: "ACCESS POINTS",
+				width: 430,
+				height: 200,
+				modal:true,
+				buttons: {
+					Automatically: 
+						function(){
+						$(this).dialog('close');
+						estimationProcess();
+						},
+					Redirect:
+						function(){
+						$(this).dialog('close');
+						toDataProcessing();
+						}
+				}
+				}); 
+			
+		
+	}
+	
+	
+	
+}
 
 

@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Battery Chart</title>
+		
+		<script type="text/javascript" src="resources/js/Chart.js"></script>
+	</head>
+	<body>
+		<div style="width: 50%">
+			<canvas id="canvas" height="450" width="600"></canvas>
+		</div>
+
+
+	<script>
+	var randomScalingFactor = function(){ 
+		return Math.round(Math.random()*100)};
+		
+	window.onload = function(){
+		
+		var ctx = document.getElementById("canvas").getContext("2d");
+var sentdata = JSON.parse(sessionStorage.getItem('battery'));
+		
+		var level = [];
+		var time = [];
+		$.each(sentdata,function(i,item){
+			
+			level.push(item.level)
+			time.push(item.timestamp);
+			console.log('level',item.level);
+		});
+		
+
+	var barChartData = {
+		labels : time,
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.5)",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : level;
+			}
+			
+		]
+
+	}
+		window.myBar = new Chart(ctx).Bar(barChartData, {
+			responsive : true
+		});
+	}
+
+	</script>
+	</body>
+</html>
