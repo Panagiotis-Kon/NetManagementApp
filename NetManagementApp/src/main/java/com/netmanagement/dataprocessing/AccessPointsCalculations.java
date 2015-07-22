@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
@@ -147,6 +148,80 @@ public class AccessPointsCalculations {
 			System.out.println("getUsers: alist is empty!!!");
 		}
 		return alist;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String minTimestamp(String user){
+		//Find minimum Date of the user
+		String DATE=null;
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+		int first=1;
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					if (first==1){
+						DATE=array.get(i).getTimestamp();
+						first=0;
+					}
+					else {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							Date date1 = sdf.parse(DATE);
+							Date date2 = sdf.parse(array.get(i).getTimestamp());
+							System.out.println(date1+" | "+date2);
+							if (date2.before(date1)){
+								DATE=array.get(i).getTimestamp();
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		return DATE;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String maxTimestamp(String user){
+		//Find minimum Date of the user
+		String DATE=null;
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+		int first=1;
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					if (first==1){
+						DATE=array.get(i).getTimestamp();
+						first=0;
+					}
+					else {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							Date date1 = sdf.parse(DATE);
+							Date date2 = sdf.parse(array.get(i).getTimestamp());
+							System.out.println(date1+" | "+date2);
+							if (date1.before(date2)){
+								DATE=array.get(i).getTimestamp();
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		return DATE;
 	}
 
 }
