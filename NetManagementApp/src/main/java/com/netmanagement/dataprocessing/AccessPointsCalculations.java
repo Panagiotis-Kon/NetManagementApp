@@ -27,6 +27,7 @@ public class AccessPointsCalculations {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<APResults> EstimatedPointPosition(){
+		//Find average of rssid(=level) and calculate latitude and longitude. Finally return a list of unique AccessPoints
 		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 		ArrayList<APResults> alist = new ArrayList<APResults>();
 		if (!hap.isEmpty()){
@@ -38,6 +39,7 @@ public class AccessPointsCalculations {
 				double totalweight = 0;
 				double lat = 0;
 				double lon = 0;
+				int level = 0;
 				System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				if (array.size() == 1){
@@ -51,20 +53,25 @@ public class AccessPointsCalculations {
 					totalweight=totalweight+w;
 					lat=lat+lat1*w;
 					lon=lon+lon1*w;
+					level=level+tempap.getRssi();
 				}
 				lat=lat/totalweight;
 				lon=lon/totalweight;
 				//lat=lat*pi;
 				//lon=lon*pi;
+				level=level/array.size();
 				for (int i=0;i<array.size();i++){
 					array.get(i).setAPlatitude(lat);
 					array.get(i).setAPlongtitude(lon);
+					array.get(i).setRssi(level);
 				}
 				APResults temp = new APResults();
 				temp.setAPlatitude(lat);
 				temp.setAPlongtitude(lon);
 				temp.setBSSID(array.get(0).getBssid());
-				alist.add(temp);
+				if (!alist.contains(temp)){
+					alist.add(temp);
+				}
 				//System.out.println(alist.toString());
 			}
 		}
