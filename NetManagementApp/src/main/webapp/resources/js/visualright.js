@@ -9,22 +9,24 @@ function options(data) {
 		  clickable(1);
 		  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
 		  $('#headerTag').append(header);
-	
+		  
           var table = $('<table id="tableID"></table>');
-          
-          $.each(data,function(i,item){ 
+         
+		
+         /* $.each(data,function(i,item){ 
         	arr.push(item);  
-          })
-          arr.sort(function(a, b){return a-b});
-          for(var i=0; i<arr.length; i++){ 
+          })*/
+          //arr.sort(function(a, b){return a-b});
+          //for(var i=0; i<arr.length; i++){
+		     
+		     $.each(data,function(i,item) {
+		    	 
         	  row = $('<tr></tr>');
-              
-              var rowData = $('<td></td>').text(arr[i]);
-              rowData.id=i;
+              var rowData = $('<td></td>').text(item);
               row.append(rowData);
               table.append(row);
         	  
-          }
+          });
           
  		
         if ($('#tableID').length) {
@@ -35,6 +37,7 @@ function options(data) {
             $('#usersTable').append(table);
             console.log("Table created (else)");
         }
+        
         
         
         
@@ -71,10 +74,10 @@ function options(data) {
         
     	
     	$( "#from" ).datepicker({
-    	      defaultDate: "+1w",
     	      changeMonth: true,
     	      numberOfMonths: 1,
     	      dateFormat: "yy-mm-dd",
+    	      monthNamesShort: [ "Mar", "Apr", "Maj", "Jun" ],
     	      onClose: function( start ) {
     	    	  //var start =selectedDate.split("/").reverse().join("-");
     	        $( "#to" ).datepicker( "option", "minDate", start );
@@ -83,10 +86,10 @@ function options(data) {
     	      }
     	    });
     	    $( "#to" ).datepicker({
-    	      defaultDate: "+1w",
     	      changeMonth: true,
     	      numberOfMonths: 1,
     	      dateFormat: "yy-mm-dd",
+    	      monthNamesShort: [ "Mar", "Apr", "Maj", "Jun" ],
     	      onClose: function( end ) {
     	    	  //var end =selectedDate.split("/").reverse().join("-"); 
     	        $( "#from" ).datepicker( "option", "maxDate", end );

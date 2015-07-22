@@ -74,7 +74,7 @@ public class ServicesController {
 			
 		 }
 		 System.out.println(suc);
-		 if(suc == 1) {
+		 if(suc == 0) {
 			
 			 return "wifi-import";
 		 }

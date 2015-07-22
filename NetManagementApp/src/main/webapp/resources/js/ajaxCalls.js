@@ -1,4 +1,4 @@
-
+var completedEP = 0;
 function requestsHandler(arg)
 {
 	if(arg == "estimationProcess")
@@ -9,6 +9,9 @@ function requestsHandler(arg)
 	else if(arg == "removeTableEP")
 	{
 		removeTableEP();
+	}
+	else if(arg == "createTableEP"){
+		createTableEP();
 	}
 	else if(arg == "all")
 	{
@@ -43,25 +46,24 @@ function estimationProcess() {
 		  contentType: "application/json",
 		   url: "/NetManagementApp/AccessPointEstimation",
 		   success: function(data){
+			   completedEP = 1;
+			   sessionStorage.setItem('ep',JSON.stringify(data));
 			   
-			   $("#popupText").text("BSSID estimation process completed successfully. Do you want to show result ?");
+			   $("#popupText").text("BSSID estimation process completed successfully");
 			   $("#divpopup").dialog({
 					title: "ESTIMATION PROCESS",
 					width: 430,
 					height: 200,
 					modal:true,
 					buttons: {
-						YES: 
+						OK: 
 							function(){
 							$(this).dialog('close');
-							createTableEP(data);
+							$("#showEP").show();
+					        $("#removalEP").show();
 							},
-						NO:
-							function(){
-							$(this).dialog('close');
-							
-							}
-					}
+						
+						}
 					}); 
 		   
 		   },
@@ -72,8 +74,9 @@ function estimationProcess() {
 }
 
 
-function createTableEP(data) {
-
+function createTableEP() {
+	
+				var epdata = JSON.parse(sessionStorage.getItem('ep'));
 	 			  var header = $('<h2 id="headerTagId"></h2>').text('Final Estimation Point');
 	 			  $('#headerTag').append(header);
 	 			  
@@ -88,7 +91,7 @@ function createTableEP(data) {
 	 		     head.append(headData3);
 	 		     table.append(head);
 	 		
-	 			   $.each(data,function(i,item){
+	 			   $.each(epdata,function(i,item){
 	 				  // $orders.append('<li>bssid: ' + item.BSSID + 'lan: ' + item.APlatitude + 'lon: '+ item.APlongtitude + '</li>');
 	 				  row = $('<tr></tr>');
 	 	               
@@ -122,11 +125,14 @@ function removeTableEP() {
 	if(!document.getElementById("tableID") || !document.getElementById("headerTagId")){
 		alert("Table does not exists to be removed");
 	}else {
+		
 		var tab = document.querySelector('#tableID');
 	 	var hTag = document.querySelector('#headerTagId');
 	 	
 	 	tab.parentNode.removeChild(tab); 
 		hTag.parentNode.removeChild(hTag);
+		document.getElementById("showEP").hide();
+		document.getElementById("removalEP").hide();
 		clickableMenu(0); 
 	}
     
@@ -167,6 +173,39 @@ function csvRequest(option)
 				  
 				   resp = data;
 				   switch(option) {
+				   case 0: 
+					   if(resp == 'All-import'){
+						   $("#popupText").text("All dataSets imported correctly");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										}
+								}
+								}); 
+					   }
+					   else {
+						   $("#popupText").text("All dataSets NOT imported correctly");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										}
+								}
+								}); 
+						   
+					   } 
+				   break;
 				   case 1: 
 					   if(resp == 'wifi-import'){
 						   $("#popupText").text("Wifi dataSet imported correctly");
@@ -233,6 +272,72 @@ function csvRequest(option)
 						   
 					   } 
 				   break;
+				   case 3:
+					   if(resp == 'gps-import'){
+						   $("#popupText").text("GPS dataSet imported correctly");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										}
+								}
+								}); 
+					   }
+					   else {
+						   $("#popupText").text("GPS dataSet NOT imported correctly");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										}
+								}
+								}); 
+						   
+					   } 
+				   break;
+				   case 4:
+				   if(resp == 'bs-import'){
+					   $("#popupText").text("Base Stations dataSet imported correctly");
+					   $("#divpopup").dialog({
+							title: "DATASET IMPORT",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									}
+							}
+							}); 
+				   }
+				   else {
+					   $("#popupText").text("Base Stations NOT imported correctly");
+					   $("#divpopup").dialog({
+							title: "DATASET IMPORT",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									}
+							}
+							}); 
+					   
+				   } 
+			       break;
 				   }
 				   
 				 
@@ -268,42 +373,69 @@ function getUsers() {
 
 function getApInfo() {
 	
-	$.ajax({ 
-		   type: "GET",
-		   dataType: "json",
-		   data:{userID:userID,startDate:startDate,endDate:endDate},
-		   contentType: "application/json",
-		   url: "/NetManagementApp/getApInfo",
-		   success: function(data){
-			   //console.log('success',data);
-			   $("#popupText").text("Access point gathering comleted. Load Markers on Map ?");
-			   $("#divpopup").dialog({
-					title: "ACCESS POINTS",
-					width: 430,
-					height: 200,
-					modal:true,
-					buttons: {
-						YES: 
-							function(){
-							$(this).dialog('close');
-							 $("#map-fullscreen").show();
-							Markers(data);
-							},
-						NO:
-							function(){
-							$(this).dialog('close');
-							
-							}
-					}
-					}); 
-		   
-		   },
-		   error: function(XMLHttpRequest, textStatus, errorThrown){
-			   console.log('error',textStatus + " " + errorThrown);
- 			   alert('Get App Info error loading response');
- 		   }
- 		});
+	if(completedEP == 1) { // estimation process is completed
+		
+		$.ajax({ 
+			   type: "GET",
+			   dataType: "json",
+			   data:{userID:userID,startDate:startDate,endDate:endDate},
+			   contentType: "application/json",
+			   url: "/NetManagementApp/getApInfo",
+			   success: function(data){
+				   //console.log('success',data);
+				   $("#popupText").text("Access point gathering comleted. Load Markers on Map ?");
+				   $("#divpopup").dialog({
+						title: "ACCESS POINTS",
+						width: 430,
+						height: 200,
+						modal:true,
+						buttons: {
+							YES: 
+								function(){
+								$(this).dialog('close');
+								 $("#map-fullscreen").show();
+								Markers(data);
+								},
+							NO:
+								function(){
+								$(this).dialog('close');
+								
+								}
+						}
+						}); 
+			   
+			   },
+			   error: function(XMLHttpRequest, textStatus, errorThrown){
+				   console.log('error',textStatus + " " + errorThrown);
+	 			   alert('Get App Info error loading response');
+	 		   }
+	 		});
 
+	}
+	else {
+			$("#popupText").text("Estimation Point is not calculated. \n Do you want to calculate it automatically \n or redirect to dataProcessing page ?");
+		   $("#divpopup").dialog({
+				title: "ACCESS POINTS",
+				width: 430,
+				height: 200,
+				modal:true,
+				buttons: {
+					Automatically: 
+						function(){
+						$(this).dialog('close');
+						estimationProcess();
+						},
+					Redirect:
+						function(){
+						$(this).dialog('close');
+						toDataProcessing();
+						}
+				}
+				}); 
+			
+		
+	}
+		
 }
 
 

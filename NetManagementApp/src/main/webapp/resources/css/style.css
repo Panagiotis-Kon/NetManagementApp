@@ -339,11 +339,10 @@ td:hover {
 	
 }
 
-.fullscreen {
-    width: 100%;
-    height: 100%;
+#headerTagId {
+	
+	cursor:pointer;
 }
-
 
 
 /***************** ProgressBar *****************/
