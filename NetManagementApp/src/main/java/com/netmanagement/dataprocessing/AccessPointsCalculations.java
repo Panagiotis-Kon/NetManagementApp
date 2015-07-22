@@ -150,7 +150,7 @@ public class AccessPointsCalculations {
 		return alist;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/*@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String minTimestamp(String user){
 		//Find minimum Date of the user
 		String DATE=null;
@@ -221,6 +221,49 @@ public class AccessPointsCalculations {
 				}
 			}
 		}
+		return DATE;
+	}*/
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String minmaxTimestamp(String user){
+		//Find minimum and maximum Date of the user return MIN#MAX
+		String DATE=null,MIN=null,MAX=null;
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+		int first=1;
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					if (first==1){
+						MIN=array.get(i).getTimestamp();
+						MAX=array.get(i).getTimestamp();
+						first=0;
+					}
+					else {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							Date datemin = sdf.parse(MIN);
+							Date datemax = sdf.parse(MAX);
+							Date datenow = sdf.parse(array.get(i).getTimestamp());
+							System.out.println(datemin+" | "+datemax+" | "+datenow);
+							if (datemin.after(datenow)){
+								MIN=array.get(i).getTimestamp();
+							}
+							if (datemax.before(datenow)){
+								MAX=array.get(i).getTimestamp();
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		DATE=MIN+"#"+MAX;
 		return DATE;
 	}
 
