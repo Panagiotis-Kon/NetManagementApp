@@ -148,7 +148,7 @@ function enableSpecificDates(date) {
 function datePicker() {
 	//alert('datePicker');
 	
-	var strTime = JSON.parse(sessionStorage.getItem('timeframe'));
+	/*var strTime = JSON.parse(sessionStorage.getItem('timeframe'));
 	var splitter = strTime.split('#');
 	var splitter1 = splitter[0].split(' ');
 	var splitter2 = splitter[1].split(' ');
@@ -159,14 +159,14 @@ function datePicker() {
 	console.log('maxDate(string)',splitter2[0]);
 	
 	console.log('minDate(Date)',new Date(splitter1[0]));
-	console.log('maxDate(Date)',new Date(splitter2[0]));
+	console.log('maxDate(Date)',new Date(splitter2[0]));*/
 	
 	
 	$( "#from" ).datepicker({
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
-	      beforeShowDay: enableSpecificDates,
+	      //beforeShowDay: enableSpecificDates,
 	      onClose: function( selectedDate ) {
 	    	 
 	        $( "#to" ).datepicker( "option", "minDate", selectedDate );
@@ -178,7 +178,7 @@ function datePicker() {
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
-	      beforeShowDay:enableSpecificDates,
+	      //beforeShowDay:enableSpecificDates,
 	      onClose: function(selectedDate ) {
 	    	  //var end =selectedDate.split("/").reverse().join("-"); 
 	        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
