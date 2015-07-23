@@ -123,7 +123,7 @@ function createTableEP() {
 				       $('#bssidTable').append(table);
 				   } 
 	 			  console.log('table passed');  
-	 			 clickableMenu(1);
+	 			 clickableMenuProcess(0);
 }
 
 
@@ -142,7 +142,7 @@ function removeTableEP() {
 		hTag.parentNode.removeChild(hTag);
 		document.getElementById("showEP").hide();
 		document.getElementById("removalEP").hide();
-		clickableMenu(0); 
+		clickableMenuProcess(1); 
 	}
     
 
@@ -150,8 +150,8 @@ function removeTableEP() {
 }
 
 
-function clickableMenu(option){
-	if(option == 1){
+function clickableMenuProcess(option){
+	if(option == 0){
 		var link = document.getElementById('starterEP');
 		link.href="javascript:void(0);"
 		link.style.color="grey";
@@ -220,6 +220,7 @@ function csvRequest(option)
 				   break;
 				   case 1: 
 					   if(resp == 'wifi-import'){
+						   ap = 1;
 						   $("#popupText").text("Wifi dataSet imported correctly");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -230,7 +231,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
-										ap = 1;
+										
 										}
 								}
 								}); 
@@ -246,7 +247,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
-										callback();
+										//callback();
 										}
 								}
 								}); 
@@ -255,6 +256,7 @@ function csvRequest(option)
 				   break;
 				   case 2: 
 					   if(resp == 'battery-import'){
+						   bat = 1;
 						   $("#popupText").text("Battery dataSet imported correctly.\n Please continue your process");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -265,7 +267,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
-										bat = 1;
+										
 										}
 								}
 								}); 
@@ -289,6 +291,7 @@ function csvRequest(option)
 				   break;
 				   case 3:
 					   if(resp == 'gps-import'){
+						   gps = 1;
 						   $("#popupText").text("GPS dataSet imported correctly");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -299,7 +302,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
-										gps = 1;
+										
 										}
 								}
 								}); 
@@ -323,6 +326,7 @@ function csvRequest(option)
 				   break;
 				   case 4:
 				   if(resp == 'bs-import'){
+					   bs = 1;
 					   $("#popupText").text("Base Stations dataSet imported correctly");
 					   $("#divpopup").dialog({
 							title: "DATASET IMPORT",
@@ -333,7 +337,7 @@ function csvRequest(option)
 								OK: 
 									function(){
 									$(this).dialog('close');
-									bs = 1;
+									
 									}
 							}
 							}); 
@@ -540,7 +544,7 @@ function getCellsInfo() {
 			   contentType: "application/json",
 			   url: "/NetManagementApp/CellsInfo",
 			   success: function(data){
-				   //console.log('success',data);
+				   console.log('success in getting cell info');
 				   $("#popupText").text("Base Stations Info gathering comleted. Load Graph ?");
 				   $("#divpopup").dialog({
 						title: "ACCESS POINTS",
@@ -571,6 +575,8 @@ function getCellsInfo() {
 	 			   alert('Get App Info error loading response');
 	 		   }
 	 		});
+		//sessionStorage.setItem('bs',JSON.stringify(data));
+		//DrawCells();
 
 }
 

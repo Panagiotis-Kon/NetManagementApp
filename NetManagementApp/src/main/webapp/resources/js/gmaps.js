@@ -7,7 +7,7 @@ function Markers(data) {
     	//location of marker
 		//var myLatlng=null;
 		var latlng = null;
-		var marker = null;
+		//var marker = null;
  		sessionStorage.setItem('sent',JSON.stringify(data));
  		
  		$.each(data,function(i,item){
@@ -92,6 +92,7 @@ function Cells() {
 	
 	if(bs == 1){
 		view = 2;
+		console.log("Trying to gather cell info")
 		getCellsInfo();
 		
 	}
@@ -104,21 +105,30 @@ function Cells() {
 }
 
 function DrawCells() {
-	
+	console.log("DrawCells function");
 	var bsdata = JSON.parse(sessionStorage.getItem('bs'));
 	var latlng = null;
-	var marker = null;
+	//var marker = null;
+	var pinColor = "52bdb0";
+	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+	        new google.maps.Size(21, 40),
+	        new google.maps.Point(0,0),
+	        new google.maps.Point(10, 34));
+	$.each(bsdata,function(i,item){
+			latlng = new google.maps.LatLng(item.BSlatitude, item.BSlongtitude);
 	
-	$.each(data,function(i,item){
-			latlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
-			
-			var marker = new google.maps.Marker({
+			   var marker = new google.maps.Marker({
                 position: latlng,
                 map: map,
-               title: item.ssid,
+                icon: pinImage,
+                title: item.Operator,
                 animation: google.maps.Animation.DROP,
             });
-			marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+			   
+			   
+			   /*   */
+			   
+			//marker.setIcon('http:// labs.google.com/ridefinder/images/mm_20_green.png');
 	 		var content = "Operator: " + item.Operator + "\n" + " MCC: " + item.mcc + "\n"  + " MNC: " + item.mnc + "\n" 
 	 		+  " cid: " + item.cid + "\n" + " LAC: " + item.lac;     
 
@@ -133,6 +143,7 @@ function DrawCells() {
 			
 			
 		});
+	console.log('Ending DrawCells');
 	
 }
 

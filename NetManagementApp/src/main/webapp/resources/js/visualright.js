@@ -5,7 +5,7 @@
         var maxDate=null;
         var matcherA = /[^a-zA-Z]/g;
 	    var matcherN = /[^0-9]/g;
-        
+        var submittedChoice = 0;
         
 function sortAlphaNum(a,b) {
 	
@@ -29,7 +29,7 @@ function options(data) {
 		  var arr = [];
 		 
 		  
-		  clickable(1);
+		  clickableMenuVisual(0, 1);
 		  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
 		  $('#headerTag').append(header);
 		  
@@ -194,7 +194,7 @@ function datePicker() {
 	    var closeBtn = $('<button id="btnId" class="btn btn-default"></button>').text('Close');
 	    $('#closer').append(closeBtn);
 	    
-		var tooltipDate = "[ " + splitter1[0] + " - " + splitter2[0] + " ]";
+		var tooltipDate = "[ " + splitter1[0] + " - " + splitter2[0] + " ]" ;
 	    document.getElementById('User').title=tooltipDate;	
 	
 	var submit = document.getElementById("btnIdSub");
@@ -205,9 +205,33 @@ function datePicker() {
  	 }
  	 else
  	 {
- 		//make get ajax call with params
+ 		//after choice enable other menu items
  		 console.log('user: ' + document.getElementById('User').value + ' startDate: ' + document.getElementById('from').value + ' endDate: ' + document.getElementById('to').value);
- 		 getApInfo();
+ 		 userID = document.getElementById('User').value;
+ 		 startDate = document.getElementById('from').value;
+ 		 endDate = document.getElementById('to').value;
+ 		 
+ 		$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
+		   $("#divpopup").dialog({
+				title: "Choice Submission",
+				width: 430,
+				height: 200,
+				modal:true,
+				buttons: {
+					OK: 
+						function(){
+						$(this).dialog('close');
+						
+						}
+					
+					}
+				});
+		   
+		  clickableMenuVisual(1, 2);
+		  clickableMenuVisual(1, 3);
+		  clickableMenuVisual(1, 4);
+		  clickableMenuVisual(1, 5);
+ 		 //getApInfo();
  	 }
  	
  	 
@@ -215,7 +239,7 @@ function datePicker() {
    
    
     var closer = document.querySelector('#btnId');
-   closer.addEventListener('click',function(e){
+    closer.addEventListener('click',function(e){
 	   var tab = document.querySelector('#tableID');
        var hTag = document.querySelector('#headerTagId');
        var showDate =  document.querySelector('#addUserBtn');
@@ -233,27 +257,99 @@ function datePicker() {
 	   elem.value = '';
 	   $("#timeline").hide();
 	   $("#userSel").hide();
-	   clickable(0);
+	   clickableMenuVisual(1, 1);
+	   clickableMenuVisual(0, 2);
+	   clickableMenuVisual(0, 3);  
+	   clickableMenuVisual(0, 4);
+	   clickableMenuVisual(0, 5);
 
    });
 	
 }
 
 
-function clickable(option){
-	if(option == 1){
-		var link = document.getElementById('userLink');
-		link.href="javascript:void(0);"
-		link.style.color="grey";
+function clickableMenuVisual(option, menuitem){
+	//option 0 for disable, 1 for enable
+	
+	if(menuitem == 1) {
+		
+		if(option == 0){
+			var link = document.getElementById('userLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('userLink');
+			link.href="javascript:getUsers();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}
+				
+		}
+		
 	}
-	else {
-		var link = document.getElementById('userLink');
-		link.href="javascript:getUsers();"
-			link.style.color="#000";
-			link.onmouseover= function(){this.style.color="red";}
-			link.onmouseout = function(){this.style.color="#000";}
-			
+	else if(menuitem == 2) {
+		if(option == 0){
+			var link = document.getElementById('markersLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('markersLink');
+			link.href="javascript:getApInfo();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}
+				
+		}
+	
 	}
+	else if(menuitem == 3) {
+		if(option == 0){
+			var link = document.getElementById('polyLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('polyLink');
+			link.href="javascript:Polyline();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}
+				
+		}
+	}
+	else if(menuitem == 4) {
+		if(option == 0){
+			var link = document.getElementById('graphLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('graphLink');
+			link.href="javascript:BatteryGraph();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}
+				
+		}
+	}
+	else if(menuitem == 5) {
+		if(option == 0){
+			var link = document.getElementById('cellsLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('cellsLink');
+			link.href="javascript:Cells();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}
+				
+		}
+	}
+	
 }
 
 

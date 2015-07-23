@@ -49,7 +49,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="resources/js/redirections.js"></script>
 
 
+<script type="text/javascript">
+window.onload = function(){
+	clickableMenuVisual(0, 2);
+	clickableMenuVisual(0, 3);
+	clickableMenuVisual(0, 4);
+	clickableMenuVisual(0, 5);
 
+}
+</script>
 
 <script type="text/javascript">paceOptions = {
 
@@ -70,7 +78,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     
 
 
-<script>
+<script type="text/javascript">
   $(function() {
     $( document ).tooltip();
   });
@@ -99,8 +107,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												<li><a href="javascript:requestsHandler('GPS');">GPS</a></li>
 												<li><a href="javascript:requestsHandler('BaseStations');">Base Stations</a></li>
 										</ul>
+										</li>
 										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataProcessing();">Data Processing</a>
-											
+										<ul class="dropdown2">
+							
+												<li><a href="javascript:requestsHandler('estimationProcess');">EP Process</a></li>
+										</ul>	
 										</li>     
 										<li class="dropdown1"><a class="active" href="javascript:toDataVisualization();">Data Visualization</a>
 										</li>  
@@ -130,10 +142,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			
 			<div class="mini-menu">
 				<ul>
-					<li><a href="javascript:getUsers();" id="userLink">Choose User/Timeline</a></li>					
+					<li><a href="javascript:getUsers();" id="userLink">Choose User/Timeline</a></li>
+					<li><a href="javascript:void(0);" id="markersLink">Load Markers</a></li>					
+					<li><a href="javascript:void(0);" id="polyLink">Polyline</a></li>
+					<li><a href="javascript:void(0);" id="graphLink">Level/Time Graph</a></li>
+					<li><a href="javascript:void(0);" id="cellsLink">Cells</a></li>
+					
+					
+					
+					<!--<li><a href="javascript:LoadMarkers();">Load Markers</a></li>					
 					<li><a href="javascript:Polyline();">Polyline</a></li>
 					<li><a href="javascript:BatteryGraph();">Level/Time Graph</a></li>
-					<li><a href="javascript:Cells();">Cells</a></li>
+					<li><a href="javascript:Cells();">Cells</a></li> -->
+					
         
 				</ul>
 				

@@ -116,7 +116,7 @@ public class ServicesController {
 				e.printStackTrace();
 			}
 			 if(suc == 0){
-				 System.out.println("battery: " + suc);
+				 //System.out.println("battery: " + suc);
 				 retstr = "battery-import";
 			 }
 			 
@@ -132,7 +132,7 @@ public class ServicesController {
 				e.printStackTrace();
 			}
 			 if(suc == 0){
-				 System.out.println("battery: " + suc);
+				// System.out.println("battery: " + suc);
 				 retstr = "bs-import";
 			 }
 			 
