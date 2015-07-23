@@ -3,7 +3,15 @@
 	<head>
 		<title>Battery Chart</title>
 		
-		<script type="text/javascript" src="resources/js/Chart.js"></script>
+<script type="text/javascript" src="resources/js/Chart.js"></script>
+<script src="resources/js/jquery-1.11.1.min.js"></script>
+
+<link href="resources/css/jquery-ui.css" rel='stylesheet' type='text/css' />
+<script src="resources/js/jquery-ui.js"></script>
+<!-- Custom Theme files -->
+<link href="resources/css/style.css" rel='stylesheet' type='text/css' />
+		
+		
 	</head>
 	<body>
 		<div style="width: 50%">
@@ -12,25 +20,38 @@
 
 
 	<script>
-	var randomScalingFactor = function(){ 
-		return Math.round(Math.random()*100)};
-		
+	
+	var level = [];
+	var time = [];
 	window.onload = function(){
 		
 		var ctx = document.getElementById("canvas").getContext("2d");
-var sentdata = JSON.parse(sessionStorage.getItem('battery'));
+		var sentdata = JSON.parse(sessionStorage.getItem('battery'));
 		
-		var level = [];
-		var time = [];
+		var prevTime = null;
 		$.each(sentdata,function(i,item){
+			var str = item.timestamp;
+			var split = str.split(' ');
 			
-			level.push(item.level)
-			time.push(item.timestamp);
-			console.log('level',item.level);
+			level.push(item.level);
+			time.push(split[0]);
+			/*
+			if(i==0){
+				time.push(split[0]);
+				 prevTime = split[0];
+			}
+			else {
+					if(split[0].localeCompare(prevTime) != 0){
+						time.push(split[0]);
+						prevTime = split[0];
+					}
+			}*/
+			
+			//console.log('level',item.level);
 		});
 		
 
-	var barChartData = {
+		var barChartData = {
 		labels : time,
 		datasets : [
 			{
@@ -38,7 +59,7 @@ var sentdata = JSON.parse(sessionStorage.getItem('battery'));
 				strokeColor : "rgba(220,220,220,0.8)",
 				highlightFill: "rgba(220,220,220,0.75)",
 				highlightStroke: "rgba(220,220,220,1)",
-				data : level;
+				data : level
 			}
 			
 		]

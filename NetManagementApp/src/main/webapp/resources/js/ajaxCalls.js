@@ -1,5 +1,6 @@
 var completedEP = 0; // 0: estimation process is not complete, 1: is complete
 var output="";
+/*varaibles to determine if the datasets ara imported */
 var bat = 0;
 var ap = 0;
 var all = 0;
@@ -484,7 +485,6 @@ function getApInfo() {
 
 function getBatteryInfo() {
 	
-if(completedEP == 1) { // estimation process is completed
 		
 		$.ajax({ 
 			   type: "GET",
@@ -503,11 +503,11 @@ if(completedEP == 1) { // estimation process is completed
 						buttons: {
 							YES: 
 								function(){
-								
+									$(this).dialog('close');
 								// call for new popup window with graph
 									sessionStorage.setItem('battery',JSON.stringify(data));
 									window.open('BatteryGraph',"width=400, height=400");
-									$(this).dialog('close');
+									
 								},
 							NO:
 								function(){
@@ -524,32 +524,6 @@ if(completedEP == 1) { // estimation process is completed
 	 		   }
 	 		});
 
-	}
-	else {
-			$("#popupText").text("Estimation Point is not calculated. \n Do you want to calculate it automatically \n or redirect to dataProcessing page ?");
-		   $("#divpopup").dialog({
-				title: "ACCESS POINTS",
-				width: 430,
-				height: 200,
-				modal:true,
-				buttons: {
-					Automatically: 
-						function(){
-						$(this).dialog('close');
-						estimationProcess();
-						},
-					Redirect:
-						function(){
-						$(this).dialog('close');
-						toDataProcessing();
-						}
-				}
-				}); 
-			
-		
-	}
-	
-	
 	
 }
 
@@ -558,7 +532,6 @@ if(completedEP == 1) { // estimation process is completed
 
 function getCellsInfo() {
 	
-	if(completedEP == 1) {
 		
 		$.ajax({ 
 			   type: "GET",
@@ -599,33 +572,6 @@ function getCellsInfo() {
 	 		   }
 	 		});
 
-	}
-	else {
-			$("#popupText").text("Estimation Point is not calculated. \n Do you want to calculate it automatically \n or redirect to dataProcessing page ?");
-		   $("#divpopup").dialog({
-				title: "ACCESS POINTS",
-				width: 430,
-				height: 200,
-				modal:true,
-				buttons: {
-					Automatically: 
-						function(){
-						$(this).dialog('close');
-						estimationProcess();
-						},
-					Redirect:
-						function(){
-						$(this).dialog('close');
-						toDataProcessing();
-						}
-				}
-				}); 
-			
-		
-	}
-	
-	
-	
 }
 
 
