@@ -1,11 +1,12 @@
 var completedEP = 0; // 0: estimation process is not complete, 1: is complete
-var output="";
 /*varaibles to determine if the datasets ara imported */
 var bat = 0;
 var ap = 0;
 var all = 0;
 var gps = 0;
 var bs = 0;
+
+var output = '';
 
 function requestsHandler(arg)
 {
@@ -398,8 +399,7 @@ function getAvUserDates(userID) {
 	    url: "/NetManagementApp/getDates",
 	   success: function(data){
 		   sessionStorage.setItem('timeframe',JSON.stringify(data));
-		   
-		   //console.log('output',output);
+
 		   
 	   },
 	   error:function(XMLHttpRequest, textStatus, errorThrown){

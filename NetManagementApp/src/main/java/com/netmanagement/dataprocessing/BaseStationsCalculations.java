@@ -49,7 +49,7 @@ public class BaseStationsCalculations {
 							if (date1.equals(dateu) || date1.before(dateu)){
 								if (date2.equals(dateu) || date2.after(dateu)){
 									System.out.println(date1+" | "+date2+" | "+dateu);
-									if (tempap.getBSlatitude().equals("No Latitude") || tempap.getBSlongtitude().equals("No longitude")){
+									if (!tempap.getBSlatitude().equals("No Latitude") || !tempap.getBSlongtitude().equals("No longitude")){
 										alist.add(tempap);
 									}
 								}

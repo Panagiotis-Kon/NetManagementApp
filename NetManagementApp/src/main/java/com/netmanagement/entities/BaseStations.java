@@ -11,8 +11,8 @@ public class BaseStations {
 	private int mnc;
 	private int cid;
 	private int lac;
-	private Double BSlatitude;
-	private Double BSlongtitude;
+	private String BSlatitude;
+	private String BSlongtitude;
 	private String timestamp;
 	
 	public void setAll(String[] Data) {
@@ -23,8 +23,8 @@ public class BaseStations {
 		mnc=Integer.parseInt(Data[4]);
 		cid=Integer.parseInt(Data[5]);
 		lac=Integer.parseInt(Data[6]);
-		BSlatitude=Double.parseDouble(Data[7]);
-		BSlongtitude=Double.parseDouble(Data[8]);
+		BSlatitude=Data[7];
+		BSlongtitude=Data[8];
 		timestamp=Data[9];
 	}
 	
@@ -70,16 +70,16 @@ public class BaseStations {
 	public void setLac(int lac) {
 		this.lac = lac;
 	}
-	public Double getBSlatitude() {
+	public String getBSlatitude() {
 		return BSlatitude;
 	}
-	public void setBSlatitude(Double bSlatitude) {
+	public void setBSlatitude(String bSlatitude) {
 		BSlatitude = bSlatitude;
 	}
-	public Double getBSlongtitude() {
+	public String getBSlongtitude() {
 		return BSlongtitude;
 	}
-	public void setBSlongtitude(Double bSlongtitude) {
+	public void setBSlongtitude(String bSlongtitude) {
 		BSlongtitude = bSlongtitude;
 	}
 	public String getTimestamp() {

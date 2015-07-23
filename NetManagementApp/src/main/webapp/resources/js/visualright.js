@@ -1,13 +1,34 @@
         var userID='';
         var startDate='';
         var endDate='';
-        var minDate;
-        var maxDate;
+        var minDate=null;
+        var maxDate=null;
+        var matcherA = /[^a-zA-Z]/g;
+	    var matcherN = /[^0-9]/g;
+        
+        
+function sortAlphaNum(a,b) {
+	
+      	  var tempA = a.replace(matcherA, "");
+      	  var tempB = b.replace(matcherA, "");
+      	  if(tempA === tempB) 
+      	  {
+      		  var aN = parseInt(a.replace(matcherN, ""), 10);
+      	  	  var bN = parseInt(b.replace(matcherN, ""), 10);
+      	  	  return aN === bN ? 0 : aN > bN ? 1 : -1;
+      	  }
+      	  else 
+      	  {
+      	  		return tempA > tempB ? 1 : -1;
+      	  }
+}        
         
 function options(data) {
    	
 	/*In this function we return the available users */
 		  var arr = [];
+		 
+		  
 		  clickable(1);
 		  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
 		  $('#headerTag').append(header);
@@ -15,13 +36,13 @@ function options(data) {
           var table = $('<table id="tableID"></table>');
          
 		
-         /* $.each(data,function(i,item){ 
+          $.each(data,function(i,item){ 
         	arr.push(item);  
-          })*/
-          //arr.sort(function(a, b){return a-b});
-          //for(var i=0; i<arr.length; i++){
+          })
+      
+          arr.sort(sortAlphaNum);
 		     
-		     $.each(data,function(i,item) {
+		     $.each(arr,function(i,item) {
 		    	 
         	  row = $('<tr></tr>');
               var rowData = $('<td></td>').text(item);
@@ -77,11 +98,9 @@ function options(data) {
     	
     
     	    
-    	var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Submit User');
+    	var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
         $('#userSel').append(addUserBtn);
-        
-    	
-        
+
         var submitUser = document.getElementById("addUserBtn");
         submitUser.addEventListener('click',function(e){
         	 if(document.getElementById('User').value == '') {
@@ -90,7 +109,7 @@ function options(data) {
         	 else {
         		 userID = document.getElementById('User').value;
         		 var out = getAvUserDates(userID);
-        		 console.log('out',out);
+        		 //console.log('out',out);
         		 if(out == "success"){
         			 datePicker();
         		 }
@@ -108,65 +127,47 @@ function enableSpecificDates(date) {
 	var m = date.getMonth();
 	var d = date.getDate();
 	var y = date.getFullYear();
- 
-	//var currentdate = d + '-'+ (m+1) + '-' + y;
-	var currentdate = new Date(y,m+1,d);
-	console.log('currentdate',currentdate);
-	if(currentdate >= minDate || currentdate <= maxDate)
-	return [true];
+	var currentdate = new Date(y,m,d);
+
+	if(currentdate >= minDate && currentdate <= maxDate)
+	{	
+		//console.log('currentdate is ok',currentdate);
+		//console.log('minDate',minDate);
+		//console.log('maxDate',maxDate);
+		return [true];
+	}
 	else
 		return [false];
 }
-/*function selectTimeframe() {
-	
-	$( "#from" ).datepicker({
-      defaultDate: "+1w",
-      dateFormat: "dd-mm-yy",
-      changeMonth: true,
-      numberOfMonths: 3,
-      beforeShowDay:enableSpecificDates,
-      onClose: function( selectedDate ) { 
-    	startDate = selectedDate;
-        $( "#to" ).datepicker( "option", "minDate", selectedDate );
-      }
-    });
-    $( "#to" ).datepicker({
-      defaultDate: "+1w",
-      dateFormat: "dd-mm-yy",
-      changeMonth: true,
-      numberOfMonths: 3,
-      beforeShowDay: enableSpecificDates,
-      onClose: function( selectedDate ) {
-    	endDate = selectedDate;
-        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
-      }
-    });
-}*/
+
 
 
 
 function datePicker() {
 	//alert('datePicker');
-	
-	/*var strTime = JSON.parse(sessionStorage.getItem('timeframe'));
+	var strTime = '';
+	var splitter = '';
+	var splitter1 = '';
+	var splitter2 = '';
+	strTime = sessionStorage.getItem('timeframe');
 	var splitter = strTime.split('#');
 	var splitter1 = splitter[0].split(' ');
 	var splitter2 = splitter[1].split(' ');
 	minDate = new Date(splitter1[0]);
 	maxDate = new Date(splitter2[0]);
 	
-	console.log('minDate(string)',splitter1[0]);
-	console.log('maxDate(string)',splitter2[0]);
+	//console.log('minDate(string)',splitter1[0]);
+	//console.log('maxDate(string)',splitter2[0]);
 	
-	console.log('minDate(Date)',new Date(splitter1[0]));
-	console.log('maxDate(Date)',new Date(splitter2[0]));*/
+	//console.log('minDate(Date)',new Date(splitter1[0]));
+	//console.log('maxDate(Date)',new Date(splitter2[0]));
 	
 	
 	$( "#from" ).datepicker({
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
-	      //beforeShowDay: enableSpecificDates,
+	      beforeShowDay: enableSpecificDates,
 	      onClose: function( selectedDate ) {
 	    	 
 	        $( "#to" ).datepicker( "option", "minDate", selectedDate );
@@ -178,7 +179,7 @@ function datePicker() {
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
-	      //beforeShowDay:enableSpecificDates,
+	      beforeShowDay:enableSpecificDates,
 	      onClose: function(selectedDate ) {
 	    	  //var end =selectedDate.split("/").reverse().join("-"); 
 	        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
@@ -188,13 +189,13 @@ function datePicker() {
 	    });
 	
 	    $("#timeline").show();
-	    var submitTimeBtn = $('<button id="btnIdSub" type="submit" class="btn btn-default"></button>').text('Submit TimeFrame');
-	    $('#closer').append(submitTimeBtn);
+	    var submitChoiceBtn = $('<button id="btnIdSub" type="submit" class="btn btn-default"></button>').text('Submit Choice');
+	    $('#closer').append(submitChoiceBtn);
 	    var closeBtn = $('<button id="btnId" class="btn btn-default"></button>').text('Close');
 	    $('#closer').append(closeBtn);
 	    
-		
-		
+		var tooltipDate = "[ " + splitter1[0] + " - " + splitter2[0] + " ]";
+	    document.getElementById('User').title=tooltipDate;	
 	
 	var submit = document.getElementById("btnIdSub");
     submit.addEventListener('click',function(e){
@@ -216,12 +217,12 @@ function datePicker() {
     var closer = document.querySelector('#btnId');
    closer.addEventListener('click',function(e){
 	   var tab = document.querySelector('#tableID');
-       
-      
-    	var hTag = document.querySelector('#headerTagId');
+       var hTag = document.querySelector('#headerTagId');
+       var showDate =  document.querySelector('#addUserBtn');
 	   tab.parentNode.removeChild(tab); 
 	   hTag.parentNode.removeChild(hTag);
 	   closer.parentNode.removeChild(closer);
+	   showDate.parentNode.removeChild(showDate);
 	   submit.parentNode.removeChild(submit);
 	   
 	   var elem = document.getElementById("User");
@@ -247,7 +248,7 @@ function clickable(option){
 	}
 	else {
 		var link = document.getElementById('userLink');
-		link.href="javascript:options();"
+		link.href="javascript:getUsers();"
 			link.style.color="#000";
 			link.onmouseover= function(){this.style.color="red";}
 			link.onmouseout = function(){this.style.color="#000";}
