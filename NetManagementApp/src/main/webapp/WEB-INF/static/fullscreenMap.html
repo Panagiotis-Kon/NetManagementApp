@@ -16,82 +16,111 @@
     <link href="resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="resources/js/jquery-1.11.1.min.js"></script>
-
-<!--  link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
- 
-<!--  script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
-
 <link href="resources/css/jquery-ui.css" rel='stylesheet' type='text/css' />
 <script src="resources/js/jquery-ui.js"></script>
 <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDs4dOADqTQ3psNiKaZ3jEncIaJzBpBWUQ">
-    </script>	
+    </script>
+    
+<script type="text/javascript" src="resources/js/gmaps.js"></script>    	
 <script type="text/javascript">
 
-var map;
-function fullMarkers(sentdata) {
+var map = null;
+function fullMarkers(apdata) {
 	
 	
-	var myLatlng = null;
-	 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-	$.each(sentdata,function(i,item){
-		
-		if(i==0){
-				myLatlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
-		      	var mapOptions = {
-		    		zoom: 8,
-		    		center: myLatlng,
-		    		mapTypeId: google.maps.MapTypeId.TERRAIN
-		 		 };
+	var latlng = null;
 
-		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-			}
-			else {
-				var latLng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
-	 			var marker = new google.maps.Marker({
-	                position: latLng,
-	                map: map,
-	                animation: google.maps.Animation.DROP,
-	            });
-			}
+	$.each(apdata,function(i,item){
+		
+		if(i==0) {
+			
+			var mapOptions = {
+ 		    		zoom: 8,
+ 		    		center: latlng,
+ 		    		mapTypeId: google.maps.MapTypeId.TERRAIN
+ 		 		 };
+ 		      	
+ 		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+		}
+		var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+           title: item.ssid,
+            animation: google.maps.Animation.DROP,
+        });
+ 		
+ 		var content = "SSID: " + item.ssid + "\n" + " Mean RSSI: " + item.rssi + "\n" + '</h3>' + " frequency: " + item.frequency;     
+
+		var infowindow = new google.maps.InfoWindow();
+
+			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+			        return function() {
+			           infowindow.setContent(content);
+			           infowindow.open(map,marker);
+			        };
+			    })(marker,content,infowindow)); 
+		
     });
+}
+ 
+ function fullPolyline(apdata) {
+	 
+	 
+	 if(map == null) {
+		 
+		 fullMarkers(apdata);
+		 
+	 }
+	 else {
+		 var flightPlanCoordinates = [];
+		 $.each(apdata,function(i,item){
+			 
+			 flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
+				
+				
+			});
+
+	 }
+
+	var flightPath = new google.maps.Polyline({
+		path: flightPlanCoordinates,
+		geodesic: true,
+		strokeColor: '#FF0000',
+		strokeOpacity: 1.0,
+		strokeWeight: 2
+		});
+	flightPath.setMap(map);
+		
+	 
  }
  
- function fullPolyline(sentdata) {
-	 
-	 var flightPlanCoordinates = [];
-		$.each(sentdata,function(i,item){
-			
-			flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
-			
-			
-		});
-		
-		var flightPath = new google.maps.Polyline({
-			path: flightPlanCoordinates,
-			geodesic: true,
-			strokeColor: '#FF0000',
-			strokeOpacity: 1.0,
-			strokeWeight: 2
-			});
-		flightPath.setMap(map);
-		
-	 
- }
+ 
+function fullCells(bsdata) {
+	
+	
+	
+	
+}
  
 function initialize() {
 	
 	var currentV = window.opener.view;
-	var sentdata = JSON.parse(sessionStorage.getItem('sent'));
-	if(view == 0){
-		fullMarkers(sentdata);
+	
+	if(currentV == 0){
+		var apdata = JSON.parse(sessionStorage.getItem('sent'));
+		Markers(apdata);
+		//fullMarkers(apdata);
 	}
-	else if(view == 1){
-		fullPolyline(sentdata);
+	else if(currentV == 1){
+		//var apdata = JSON.parse(sessionStorage.getItem('sent'));
+		Polyline()
+		//fullPolyline(apdata);
 		
 	}
-	else if(view == 2) {
-		
+	else if(currentV == 2) {
+		//var bsdata = JSON.parse(sessionStorage.getItem('bs'));
+		DrawCells();
 	}
 	
 	
