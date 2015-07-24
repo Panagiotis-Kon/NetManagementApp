@@ -1,6 +1,9 @@
         var userID='';
         var startDate='';
         var endDate='';
+        var Dmax='';
+        var Tmin = '';
+        var Tmax='';
         var minDate=null;
         var maxDate=null;
         var matcherA = /[^a-zA-Z]/g;
@@ -189,6 +192,9 @@ function datePicker() {
 	    });
 	
 	    $("#timeline").show();
+	    if(analysisPage == 1) {
+	    	 $("#parameters").show();
+	    }
 	    var submitChoiceBtn = $('<button id="btnIdSub" type="submit" class="btn btn-default"></button>').text('Submit Choice');
 	    $('#closer').append(submitChoiceBtn);
 	    var closeBtn = $('<button id="btnId" class="btn btn-default"></button>').text('Close');
@@ -210,27 +216,54 @@ function datePicker() {
  		 userID = document.getElementById('User').value;
  		 startDate = document.getElementById('from').value;
  		 endDate = document.getElementById('to').value;
- 		 
- 		$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
-		   $("#divpopup").dialog({
-				title: "Choice Submission",
-				width: 430,
-				height: 200,
-				modal:true,
-				buttons: {
-					OK: 
-						function(){
-						$(this).dialog('close');
-						
-						}
-					
-					}
-				});
-		   
-		  clickableMenuVisual(1, 2);
-		  clickableMenuVisual(1, 3);
-		  clickableMenuVisual(1, 4);
-		  clickableMenuVisual(1, 5);
+ 		 if(analysisPage == 1) {
+ 			if(document.getElementById('Dmax').value == '' || document.getElementById('Tmin').value=='' || document.getElementById('Tmax').value=='')
+ 			{
+ 				alert("Please fill the parameters");
+ 			}
+ 			Dmax = document.getElementById('Dmax').value;
+ 			Tmin = document.getElementById('Tmin').value;
+ 			Tmax = document.getElementById('Tmax').value;
+ 			$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate + "\n" +
+ 					"Dmax: " + Dmax + "\n" + "Tmin: " + Tmin + "\n" + "Tmax: " + Tmax);
+  		   $("#divpopup").dialog({
+  				title: "Choice Submission",
+  				width: 430,
+  				height: 200,
+  				modal:true,
+  				buttons: {
+  					OK: 
+  						function(){
+  						$(this).dialog('close');
+  						
+  						}
+  					
+  					}
+  				});
+ 		 }
+ 		 else {
+ 			$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
+ 		   $("#divpopup").dialog({
+ 				title: "Choice Submission",
+ 				width: 430,
+ 				height: 200,
+ 				modal:true,
+ 				buttons: {
+ 					OK: 
+ 						function(){
+ 						$(this).dialog('close');
+ 						
+ 						}
+ 					
+ 					}
+ 				});
+ 		   
+ 		  clickableMenuVisual(1, 2);
+ 		  clickableMenuVisual(1, 3);
+ 		  clickableMenuVisual(1, 4);
+ 		  clickableMenuVisual(1, 5);
+ 		 }
+ 		
  		 //getApInfo();
  	 }
  	
@@ -255,6 +288,10 @@ function datePicker() {
 	   elem.value = '';
 	   elem = document.getElementById("to");
 	   elem.value = '';
+	   if(analysisPage == 1) {
+		   $("#parameters").hide();
+	   }
+	   
 	   $("#timeline").hide();
 	   $("#userSel").hide();
 	   clickableMenuVisual(1, 1);

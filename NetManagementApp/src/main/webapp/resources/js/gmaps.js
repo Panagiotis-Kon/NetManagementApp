@@ -178,6 +178,19 @@ function DrawCells() {
 	
 }
 
+
+function StayPoints() {
+	
+	var spdata = JSON.parse(sessionStorage.getItem('stay-points'));
+	
+	
+}
+
+
+
+
+
+
 function fullscreenMode(){
 	
 		window.open('fullscreenMap', '_blank');

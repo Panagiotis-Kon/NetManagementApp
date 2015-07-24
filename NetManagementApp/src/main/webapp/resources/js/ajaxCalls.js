@@ -5,6 +5,7 @@ var ap = 0;
 var all = 0;
 var gps = 0;
 var bs = 0;
+var analysisPage = 0;
 
 var output = '';
 
@@ -165,6 +166,10 @@ function clickableMenuProcess(option){
 			
 	}
 }
+
+
+
+
 
 function csvRequest(option)
 {
@@ -373,7 +378,11 @@ function csvRequest(option)
 }
 
 
-function getUsers() {
+function getUsers(arg) {
+	if(arg == 1){
+		analysisPage = 1;
+	}
+	
 	$.ajax({ 
 		type: "GET",
 	    dataType: "json",
@@ -579,5 +588,57 @@ function getCellsInfo() {
 		//DrawCells();
 
 }
+
+
+function StayPoints() {
+	
+	if(gps == 1) {
+		
+		$.ajax({ 
+			   type: "GET",
+			   dataType: "json",
+			   data:{userID:userID,startDate:startDate,endDate:endDate,Dmax:Dmax,Tmin:Tmin,Tmax:Tmax},
+			   contentType: "application/json",
+			   url: "/NetManagementApp/Stay-Points",
+			   success: function(data){
+				   //console.log('success',data);
+				   $("#popupText").text("Stay Points created. Load on Map");
+				   $("#divpopup").dialog({
+						title: "STAY POINTS",
+						width: 430,
+						height: 200,
+						modal:true,
+						buttons: {
+							YES: 
+								function(){
+									$(this).dialog('close');
+									sessionStorage.setItem('stay-points',JSON.stringify(data));
+									
+									
+								},
+							NO:
+								function(){
+								$(this).dialog('close');
+								
+								}
+						}
+						}); 
+			   
+			   },
+			   error: function(XMLHttpRequest, textStatus, errorThrown){
+				   console.log('error',textStatus + " " + errorThrown);
+	 			   alert('Get App Info error loading response');
+	 		   }
+	 		});
+
+		
+	}
+	else {
+		
+		requestsHandler('GPS');
+	}
+	
+}
+
 
 

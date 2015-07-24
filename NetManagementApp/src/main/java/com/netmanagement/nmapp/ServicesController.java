@@ -61,17 +61,18 @@ public class ServicesController {
 	      return "static/dataProcessing.html";
 	   }
 	 
+	 @RequestMapping(value = "/dataAnalysis", method = RequestMethod.GET)
+	   public String dataAnalysis() {
+	     
+	      return "static/dataAnalysis.html";
+	   }
+	 
 	 @RequestMapping(value = "/dataVisualization", method = RequestMethod.GET)
 	   public String dataVisualization() {
 	     
 	      return "static/dataVisualization.html";
 	   }
 	 
-	 @RequestMapping(value = "/dataAnalysis", method = RequestMethod.GET)
-	   public String dataAnalysis() {
-	     
-	      return "static/dataAnalysis.html";
-	   }
 	 
 	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
 	 public @ResponseBody String csvRequest(@RequestParam int option) {
@@ -246,5 +247,15 @@ public class ServicesController {
 		 }
 		 
 	 }
+	 
+	 @RequestMapping(value = "/Stay-Points", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String StayPoints(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
+			   @RequestParam String Tmin,  @RequestParam String Tmax ) {
+		 
+		 
+		 return "";
+	 }
+	 
 	
 }
