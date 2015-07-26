@@ -9,6 +9,7 @@
         var matcherA = /[^a-zA-Z]/g;
 	    var matcherN = /[^0-9]/g;
         var submittedChoice = 0;
+        var dateRange = [];
         
 function sortAlphaNum(a,b) {
 	
@@ -96,11 +97,7 @@ function options(data) {
 				});
           //console.log("You clicked row " + e.target.innerHTML.toLowerCase());
         });
-        
-        
-    	
-    
-    	    
+   
     	var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
         $('#userSel').append(addUserBtn);
 
@@ -112,10 +109,7 @@ function options(data) {
         	 else {
         		 userID = document.getElementById('User').value;
         		 getAvUserDates(userID);
-        		 //console.log('out',out);
-        		 /*if(output == "success"){
-        			 datePicker();
-        		 }*/
+        		 
         	 }
         	
         })
@@ -124,33 +118,51 @@ function options(data) {
            
 }
 
-
+function createRange() {
+	var tempArr = [];
+	while (minDate <= maxDate)
+	{
+		tempArr.push(new Date(minDate));
+		minDate.setDate(minDate.getDate()+1);
+    }
+	if(dateRange.length > tempArr.length) {
+		dateRange.length = 0;
+	}
+	for(var i=0; i<tempArr.length; i++){
+		
+		var m = tempArr[i].getMonth();
+		var d = tempArr[i].getDate();
+		var y = tempArr[i].getFullYear();
+		var finalDate = y + '-'+ (m+1) + '-' + d;
+		dateRange.push(finalDate);
+	}
+	for(var i=0; i<dateRange.length; i++){
+		console.log('daterange: ', dateRange[i]);
+	}
+}
 
 function enableSpecificDates(date) {
+
 	var m = date.getMonth();
 	var d = date.getDate();
 	var y = date.getFullYear();
-	var currentdate = new Date(y,m,d);
-
-	if(currentdate > minDate && currentdate < maxDate) 
-	{	
+	var currentDate = y + '-'+ (m+1) + '-' + d;
+	for(var i=0; i<dateRange.length; i++){
 		
-			console.log('currentdate is ok',currentdate);
-			return [true];
-
+		if ($.inArray(currentDate, dateRange) > -1) {
+			console.log('currentdate OK',currentDate);
+			 return [true];
+			 
+		 }
+		else
+		{
+			//console.log('currentdate NOT OK',currentDate);
+			return [false];
+		}
 		
-		
-	}
-	else
-	{
-		console.log('currentdate NOT OK',currentdate);
-		return [false];
 	}
 	
-		
 }
-
-
 
 
 function datePicker(data) {
@@ -169,9 +181,8 @@ function datePicker(data) {
 	
 	console.log('minDate(string)',splitter1[0]);
 	console.log('maxDate(string)',splitter2[0]);
+	createRange();
 	
-	//console.log('minDate(Date)',new Date(splitter1[0]));
-	//console.log('maxDate(Date)',new Date(splitter2[0]));
 	
 	$("#timeline").show();
 	
@@ -179,6 +190,7 @@ function datePicker(data) {
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
+	      changeYear: true,
 	      beforeShowDay: enableSpecificDates,
 	      onClose: function( selectedDate ) {
 	    	 
@@ -191,6 +203,7 @@ function datePicker(data) {
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
+	      changeYear: true,
 	      beforeShowDay:enableSpecificDates,
 	      onClose: function(selectedDate ) {
 	    	  
@@ -199,7 +212,7 @@ function datePicker(data) {
 	        console.log(' endDate: ' + selectedDate);
 	      }
 	    });
-	
+	    
 	    
 	    if(analysisPage == 1) {
 	    	 $("#parameters").show();
@@ -209,8 +222,8 @@ function datePicker(data) {
 	    var closeBtn = $('<button id="btnId" class="btn btn-default"></button>').text('Close');
 	    $('#closer').append(closeBtn);
 	    
-		var tooltipDate = "[ " + splitter1[0] + " - " + splitter2[0] + " ]" ;
-	    document.getElementById('User').title=tooltipDate;	
+		//var tooltipDate = "[ " + splitter1[0] + " - " + splitter2[0] + " ]" ;
+	   // document.getElementById('User').title=tooltipDate;	
 	
 	var submit = document.getElementById("btnIdSub");
     submit.addEventListener('click',function(e){
