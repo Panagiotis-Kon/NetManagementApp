@@ -243,7 +243,7 @@ public class ServicesController {
 		 }
 		 else {
 			 System.out.println("bslist is empty");
-			 return "Uncreated List";
+			 return new Gson().toJson("No info");
 		 }
 		 
 	 }

@@ -111,11 +111,11 @@ function options(data) {
              }
         	 else {
         		 userID = document.getElementById('User').value;
-        		 var out = getAvUserDates(userID);
+        		 getAvUserDates(userID);
         		 //console.log('out',out);
-        		 if(out == "success"){
+        		 /*if(output == "success"){
         			 datePicker();
-        		 }
+        		 }*/
         	 }
         	
         })
@@ -132,39 +132,48 @@ function enableSpecificDates(date) {
 	var y = date.getFullYear();
 	var currentdate = new Date(y,m,d);
 
-	if(currentdate >= minDate && currentdate <= maxDate)
+	if(currentdate > minDate && currentdate < maxDate) 
 	{	
-		//console.log('currentdate is ok',currentdate);
-		//console.log('minDate',minDate);
-		//console.log('maxDate',maxDate);
-		return [true];
+		
+			console.log('currentdate is ok',currentdate);
+			return [true];
+
+		
+		
 	}
 	else
+	{
+		console.log('currentdate NOT OK',currentdate);
 		return [false];
+	}
+	
+		
 }
 
 
 
 
-function datePicker() {
+function datePicker(data) {
 	//alert('datePicker');
 	var strTime = '';
 	var splitter = '';
 	var splitter1 = '';
 	var splitter2 = '';
-	strTime = sessionStorage.getItem('timeframe');
+	
+	strTime = data;
 	var splitter = strTime.split('#');
 	var splitter1 = splitter[0].split(' ');
 	var splitter2 = splitter[1].split(' ');
 	minDate = new Date(splitter1[0]);
 	maxDate = new Date(splitter2[0]);
 	
-	//console.log('minDate(string)',splitter1[0]);
-	//console.log('maxDate(string)',splitter2[0]);
+	console.log('minDate(string)',splitter1[0]);
+	console.log('maxDate(string)',splitter2[0]);
 	
 	//console.log('minDate(Date)',new Date(splitter1[0]));
 	//console.log('maxDate(Date)',new Date(splitter2[0]));
 	
+	$("#timeline").show();
 	
 	$( "#from" ).datepicker({
 	      changeMonth: true,
@@ -184,14 +193,14 @@ function datePicker() {
 	      dateFormat: "yy-mm-dd",
 	      beforeShowDay:enableSpecificDates,
 	      onClose: function(selectedDate ) {
-	    	  //var end =selectedDate.split("/").reverse().join("-"); 
+	    	  
 	        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
 	        endDate = selectedDate;
 	        console.log(' endDate: ' + selectedDate);
 	      }
 	    });
 	
-	    $("#timeline").show();
+	    
 	    if(analysisPage == 1) {
 	    	 $("#parameters").show();
 	    }
@@ -257,7 +266,7 @@ function datePicker() {
  					
  					}
  				});
- 		   
+ 		  clickableMenuVisual(0, 1);
  		  clickableMenuVisual(1, 2);
  		  clickableMenuVisual(1, 3);
  		  clickableMenuVisual(1, 4);

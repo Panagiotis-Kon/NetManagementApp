@@ -191,6 +191,7 @@ function csvRequest(option)
 				   switch(option) {
 				   case 0: 
 					   if(resp == 'All-import'){
+						   all = 1;
 						   $("#popupText").text("All dataSets imported correctly");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -201,7 +202,7 @@ function csvRequest(option)
 									OK: 
 										function(){
 										$(this).dialog('close');
-										all = 1;
+										
 										}
 								}
 								}); 
@@ -411,17 +412,16 @@ function getAvUserDates(userID) {
 	    contentType: "application/json",
 	    url: "/NetManagementApp/getDates",
 	   success: function(data){
-		   sessionStorage.setItem('timeframe',JSON.stringify(data));
-
-		   
+		   datePicker(data);
 	   },
+	   
 	   error:function(XMLHttpRequest, textStatus, errorThrown){
 		   console.log('error',textStatus + " " + errorThrown);
 			   alert('Get Users error loading response');
 		   }
 		});
 	
-	return "success";
+	//return "success";
 	
 }
 
@@ -553,35 +553,55 @@ function getCellsInfo() {
 			   contentType: "application/json",
 			   url: "/NetManagementApp/CellsInfo",
 			   success: function(data){
-				   console.log('success in getting cell info');
-				   $("#popupText").text("Base Stations Info gathering comleted. Load Graph ?");
-				   $("#divpopup").dialog({
-						title: "ACCESS POINTS",
-						width: 430,
-						height: 200,
-						modal:true,
-						buttons: {
-							YES: 
-								function(){
-								$(this).dialog('close');
-								// call for new popup window with graph
-									sessionStorage.setItem('bs',JSON.stringify(data));
-									DrawCells();
-									//window.open('BatteryGraph',"width=400, height=400");
+				   if(data == "No info"){
+					   $("#popupText").text("No data for this period. Try other period");
+					   $("#divpopup").dialog({
+							title: "CELLS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
 									
-								},
-							NO:
-								function(){
-								$(this).dialog('close');
-								
-								}
-						}
+									}
+							}
 						}); 
-			   
+					   
+				   }
+				   else {
+					 //console.log('success in getting cell info');
+					   $("#popupText").text("Base Stations Info gathering comleted. Load Graph ?");
+					   $("#divpopup").dialog({
+							title: "ACCESS POINTS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								YES: 
+									function(){
+									$(this).dialog('close');
+									// call for new popup window with graph
+										sessionStorage.setItem('bs',JSON.stringify(data));
+										DrawCells();
+										//window.open('BatteryGraph',"width=400, height=400");
+										
+									},
+								NO:
+									function(){
+									$(this).dialog('close');
+									
+									}
+							}
+							}); 
+				   
+				   }
+				   
 			   },
 			   error: function(XMLHttpRequest, textStatus, errorThrown){
 				   console.log('error',textStatus + " " + errorThrown);
-	 			   alert('Get App Info error loading response');
+	 			   alert('Cells error loading response');
 	 		   }
 	 		});
 		//sessionStorage.setItem('bs',JSON.stringify(data));

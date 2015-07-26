@@ -40,7 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>		
 <script src="resources/js/pace.js"></script>
 <link href="resources/css/blue/pace-theme-corner-indicator.css" rel="stylesheet" />		
-<script type="text/javascript" src="resources/js/visualright.js"></script>
+<script type="text/javascript" src="resources/js/ui-functions.js"></script>
 <script type="text/javascript" src="resources/js/ajaxCalls.js"></script>
 <script type="text/javascript" src="resources/js/gmaps.js"></script>
 <script type="text/javascript" src="resources/js/redirections.js"></script>
@@ -139,10 +139,9 @@ window.onload = function(){
 			
 			<div class="mini-menu">
 				<ul>
-					<li><a href="javascript:getUsers();" id="userLink">Choose Parameters</a></li>
-					<li><a href="javascript:void(0);" id="markersLink">Load Markers</a></li>					
-					
-				
+					<li><a href="javascript:getUsers(1);" id="userLink">Choose User/Parameters</a></li>
+					<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>	
+					<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>				
 				</ul>
 				
 			</div>

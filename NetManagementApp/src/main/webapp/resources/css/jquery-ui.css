@@ -858,6 +858,15 @@ body .ui-tooltip {
 	color: #66A0CC;
 	font-weight: bold;
 }
+
+.ui-widget-header1 {
+	border: 1px solid #fff;
+	background:#66A0CC;
+	/*1b5fbc*/
+	color: #ffffff;
+	font-weight: bold;
+}
+
 .ui-widget-header a {
 	color: #66A0CC;
 }
