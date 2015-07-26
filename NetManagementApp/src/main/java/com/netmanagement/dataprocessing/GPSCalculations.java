@@ -11,6 +11,7 @@ import java.util.Set;
 
 import com.netmanagement.csvdatasets.ParseGPS;
 import com.netmanagement.entities.GPS;
+import com.netmanagement.entities.StayPoints;
 
 public class GPSCalculations {
 	
@@ -69,7 +70,81 @@ public class GPSCalculations {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<GPS> findStayPoints(ArrayList<GPS> GPSPoints, String Tmin,
+	public ArrayList<StayPoints> findStayPoints(ArrayList<GPS> GPSPoints, String Tmin,
+			String Tmax, Double Dmax) { // List of specific gps points
+		// For given variables find stay points, Tmin and Tmax are in format dd:HH:mm:ss
+		System.out.println("uTmin: " + Tmin + " Tmax: " + Tmax + " Dmax: "
+				+ Dmax);
+		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();
+        int i=0, j=0, numofStayPoints=0;
+        String t=null;
+        double d=0;
+        while (i<GPSPoints.size()){
+        	j=i+1;
+        	while (j<GPSPoints.size()){
+        		t=TimeDifference(GPSPoints.get(j).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
+        		SimpleDateFormat sdf = new SimpleDateFormat("dd:HH:mm:ss");
+        		Date datet=null;
+        		Date dateTmax=null;
+        		Date dateTmin=null;
+        		try {
+					datet=sdf.parse(t);
+					dateTmax=sdf.parse(Tmax);
+					dateTmin=sdf.parse(Tmin);
+				    if (datet.after(dateTmax)){
+				      t=TimeDifference(GPSPoints.get(i).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
+				      datet=sdf.parse(t);
+        			  if (datet.after(dateTmin)){
+        				Lsp.add(estimateStayPoint(GPSPoints,i,j-1));
+        			  }
+        			  i=j;
+        			  break;
+        		    }
+				    else if (SpaceDistance(GPSPoints.get(i),GPSPoints.get(j))>Dmax){
+				    	if (datet.after(dateTmin)){
+				    		Lsp.add(estimateStayPoint(GPSPoints, i, j-1));
+				    		i=j;
+				    		break;
+				    	}
+				    	i++;
+				    	break;
+				    }
+				    else if (j==GPSPoints.size()-1){
+				    	t=TimeDifference(GPSPoints.get(i).getTimestamp(),GPSPoints.get(j).getTimestamp());
+				    	datet=sdf.parse(t);
+				    	if (datet.after(dateTmin)){
+				    		Lsp.add(estimateStayPoint(GPSPoints, i, j));
+				    	}
+				    	i=j;
+				    	break;
+				    }
+				    j++;
+        		
+        		} catch (ParseException e) {
+					e.printStackTrace();
+				}
+        	}
+        }
+		if (Lsp.isEmpty()) {
+			System.out.println("Stay Points Calculations: Lsp is empty!!!");
+		}
+		return Lsp;
+	}
+	
+	StayPoints estimateStayPoint(ArrayList<GPS> list, int start, int end){
+		StayPoints sp = new StayPoints();
+		double lat=list.get(start).getUlatitude(),lon=list.get(start).getUlatitude();
+		String Tstart = list.get(start).getTimestamp(), Tend = list.get(end).getTimestamp();
+		for (int i=start+1;i<=end;i++){
+			lat=estimateCentroid(lat, list.get(i).getUlatitude());
+			lon=estimateCentroid(lon, list.get(i).getUlongtitude());
+		}
+		sp.setAll(lat, lon, Tstart, Tend);
+		return sp;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ArrayList<GPS> findStayPoints2(ArrayList<GPS> GPSPoints, String Tmin,
 			String Tmax, Double Dmax) { // List of specific gps points
 		// For given variables find stay points, Tmin and Tmax are in format dd:HH:mm:ss
 		System.out.println("uTmin: " + Tmin + " Tmax: " + Tmax + " Dmax: "
