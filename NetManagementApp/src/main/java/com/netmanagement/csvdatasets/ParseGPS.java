@@ -30,10 +30,10 @@ public class ParseGPS {
 	}
 	
 	@SuppressWarnings("resource")
-	public int LoadAccessPoints() throws Exception {
+	public int LoadGPS() throws Exception {
 		BufferedReader br = null;
 		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource("csvDatasets/battery.csv").getFile());
+		File file = new File(classLoader.getResource("csvDatasets/gps.csv").getFile());
 		br = new BufferedReader(new FileReader(file));
 		String line = "";
 		hap = new HashMap<String, ArrayList<GPS>>();

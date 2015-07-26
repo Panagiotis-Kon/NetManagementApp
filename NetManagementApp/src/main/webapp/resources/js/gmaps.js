@@ -122,7 +122,7 @@ function Cells() {
 function DrawCells() {
 	//console.log("DrawCells function");
 	var latlng = null;
-	latlng = new google.maps.LatLng('37.58','23.46');
+	//latlng = new google.maps.LatLng('37.58','23.46');
 	var bsdata = JSON.parse(sessionStorage.getItem('bs'));
 	if(map == null) { // if a map does not exists create it
 		
@@ -179,9 +179,63 @@ function DrawCells() {
 }
 
 
-function StayPoints() {
-	
-	var spdata = JSON.parse(sessionStorage.getItem('stay-points'));
+function DrawStayPoints(data) {
+	//var spdata = null;
+	var latlng = null;
+	if(data == null){
+		 data = JSON.parse(sessionStorage.getItem('stay-points'));
+	}
+	else {
+		
+		if(map == null){ /* Create the map if it does not exists */
+			
+			for(var item in data) {
+				latlng = new google.maps.LatLng(item.lat.toString(), item.lon.toString());
+				break;
+			}
+			var mapOptions = {
+			    		zoom: 8,
+			    		center: latlng,
+			    		mapTypeId: google.maps.MapTypeId.TERRAIN
+			 		 };
+			      	
+			  map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+		}
+		var pinColor = "0000FF";
+		var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+		        new google.maps.Size(21, 40),
+		        new google.maps.Point(0,0),
+		        new google.maps.Point(10, 34));
+		$.each(data,function(i,item){
+				latlng = new google.maps.LatLng(item.lat.toString(), item.lon.toString());
+		
+				   var marker = new google.maps.Marker({
+	                position: latlng,
+	                map: map,
+	                icon: pinImage,
+	                title: item.Operator,
+	                animation: google.maps.Animation.DROP,
+	            });
+				   
+				   
+				 
+		 		var content = "Tstart: " + item.Tstart +" --- " + " Tend: " + item.Tend;  
+
+	 			var infowindow = new google.maps.InfoWindow();
+
+	 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+	 			        return function() {
+	 			           infowindow.setContent(content);
+	 			           infowindow.open(map,marker);
+	 			        };
+	 			    })(marker,content,infowindow)); 
+				
+				
+			});
+		
+
+		
+	}
 	
 	
 }

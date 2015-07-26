@@ -382,21 +382,41 @@ function csvRequest(option)
 function getUsers(arg) {
 	if(arg == 1){
 		analysisPage = 1;
+		clickableMenuAnalysis(0, 1);
+	}
+	if(ap == 1) {
+		$.ajax({ 
+			type: "GET",
+		    dataType: "json",
+		    contentType: "application/json",
+		    url: "/NetManagementApp/getUsers",
+		   success: function(data){
+			   options(data);
+		   },
+		   error:function(XMLHttpRequest, textStatus, errorThrown){
+			   console.log('error',textStatus + " " + errorThrown);
+				   alert('Get Users error loading response');
+			   }
+			});
+	}
+	else {
+		
+		$("#popupText").text("Sorry. First you must import Access Points Dataset");
+		   $("#divpopup").dialog({
+				title: "IMPORT PORBLEM",
+				width: 430,
+				height: 200,
+				modal:true,
+				buttons: {
+					OK: 
+						function(){
+						$(this).dialog('close');
+					}
+				}
+			}); 
+	   
 	}
 	
-	$.ajax({ 
-		type: "GET",
-	    dataType: "json",
-	    contentType: "application/json",
-	    url: "/NetManagementApp/getUsers",
-	   success: function(data){
-		   options(data);
-	   },
-	   error:function(XMLHttpRequest, textStatus, errorThrown){
-		   console.log('error',textStatus + " " + errorThrown);
-			   alert('Get Users error loading response');
-		   }
-		});
 	
 	
 }
@@ -622,7 +642,7 @@ function StayPoints() {
 			   url: "/NetManagementApp/Stay-Points",
 			   success: function(data){
 				   //console.log('success',data);
-				   $("#popupText").text("Stay Points created. Load on Map");
+				   $("#popupText").text("Stay Points created. Load on Map?");
 				   $("#divpopup").dialog({
 						title: "STAY POINTS",
 						width: 430,
@@ -632,14 +652,14 @@ function StayPoints() {
 							YES: 
 								function(){
 									$(this).dialog('close');
-									sessionStorage.setItem('stay-points',JSON.stringify(data));
-									
+									//sessionStorage.setItem('stay-points',JSON.stringify(data));
+									DrawStayPoints(data);
 									
 								},
 							NO:
 								function(){
 								$(this).dialog('close');
-								
+								sessionStorage.setItem('stay-points',JSON.stringify(data));
 								}
 						}
 						}); 
@@ -650,7 +670,7 @@ function StayPoints() {
 	 			   alert('Get App Info error loading response');
 	 		   }
 	 		});
-
+		//clickableMenuAnalysis(1, 2);
 		
 	}
 	else {

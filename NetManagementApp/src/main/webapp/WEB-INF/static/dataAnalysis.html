@@ -45,16 +45,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="resources/js/gmaps.js"></script>
 <script type="text/javascript" src="resources/js/redirections.js"></script>
 
-<!--  
-<script type="text/javascript">
-window.onload = function(){
-	clickableMenuVisual(0, 2);
-	clickableMenuVisual(0, 3);
-	clickableMenuVisual(0, 4);
-	clickableMenuVisual(0, 5);
 
-}
-</script>-->
 
 <script type="text/javascript">paceOptions = {
 
@@ -72,8 +63,11 @@ window.onload = function(){
 
 		};</script>
 
-    
-
+<!-- <script type="text/javascript">
+window.onload = function(){
+$( "#accordion" ).accordion();
+})
+</script> -->    
 
 <script type="text/javascript">
   $(function() {
@@ -159,7 +153,7 @@ window.onload = function(){
   			
   				<div class="span9">
     				
-    				<div id="graph" style="float:right; width: 50%; height:600px;margin-bottom:2em; margin-top:1em;">
+    				<div id="graph" style="float:right; width: 50%; height:800px;margin-bottom:2em; margin-top:1em;">
 						<div id="headerTag"></div>
 						<div id="usersTable"></div>
 						<div id="userSel">
@@ -173,6 +167,30 @@ window.onload = function(){
 							<label for="to">to</label>
 							<input type="text" id="to" name="to" title="format: yyyy-mm-dd">
 						</div>
+						<div id=parameters>
+						<!--  <div id="accordion"> -->
+							
+							<div>
+								<label for="Dmax">Dmax</label>
+								<input type="text" id="Dmax" name="Dmax">
+								
+							</div>
+							
+							
+							<div>
+						
+								<label for="Tmin">Tmin</label>
+								<input type="text" id="Tmin" name="Tmin">
+							</div>
+							
+							<div>
+							
+								<label for="Tmax">Tmax</label>
+								<input type="text" id="Tmax" name="Tmax">
+							</div>
+						</div>
+						<!--</div>  -->
+						<!--  
 						<div id="parameters">
 							
 							<label for="Dmax">Dmax</label>
@@ -182,6 +200,7 @@ window.onload = function(){
 							<label for="Tmax">Tmax</label>
 							<input type="text" id="Tmax" name="Tmax">
 						</div>
+						-->
 						<div id="closer"></div>
 					</div>
   				</div>

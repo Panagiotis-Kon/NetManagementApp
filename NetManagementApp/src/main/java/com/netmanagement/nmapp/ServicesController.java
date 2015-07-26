@@ -15,13 +15,17 @@ import com.google.gson.Gson;
 import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.csvdatasets.ParseBaseStations;
 import com.netmanagement.csvdatasets.ParseBattery;
+import com.netmanagement.csvdatasets.ParseGPS;
 import com.netmanagement.dataprocessing.AccessPointsCalculations;
 import com.netmanagement.dataprocessing.BaseStationsCalculations;
 import com.netmanagement.dataprocessing.BatteryCalculations;
+import com.netmanagement.dataprocessing.GPSCalculations;
 import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
 import com.netmanagement.entities.BaseStations;
 import com.netmanagement.entities.Battery;
+import com.netmanagement.entities.GPS;
+import com.netmanagement.entities.StayPoints;
 
 /**
  * Handles requests for the application home page.
@@ -109,16 +113,16 @@ public class ServicesController {
 			 
 		 } else if(option == 3){
 			 
-			 ParseBattery pb = ParseBattery.getInstance();
+			 ParseGPS GPS = ParseGPS.getInstance();
 			 try {
-				suc = pb.LoadBattery();
+				suc = GPS.LoadGPS();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			 if(suc == 0){
 				 //System.out.println("battery: " + suc);
-				 retstr = "battery-import";
+				 retstr = "gps-import";
 			 }
 			 
 			 
@@ -155,7 +159,7 @@ public class ServicesController {
 		 ArrayList<String> users = apc.getUsers();
 		 String json = new Gson().toJson(users);
 			
-		return json;
+		 return json;
 		 
 		 
 	 }
@@ -252,9 +256,30 @@ public class ServicesController {
 		
 	   public @ResponseBody String StayPoints(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
 			   @RequestParam String Tmin,  @RequestParam String Tmax ) {
+		 GPSCalculations gps = GPSCalculations.getInstance();
+		 ArrayList<GPS> GPSPoints = gps.searchUser(userID, startDate, endDate);
+		 if(!GPSPoints.isEmpty()) {
+			 String json = null;
+			 Double Dmaxd = Double.parseDouble(Dmax);
+			 ArrayList<StayPoints> stayPoints = gps.findStayPoints(GPSPoints, Tmin, Tmax, Dmaxd);
+			 if(!stayPoints.isEmpty()){
+				 json = new Gson().toJson(stayPoints);
+				 System.out.println("json string: " + json);
+			     return json;
+			 }
+			 else {
+				 System.out.println("stayPoints is empty");
+				 return new Gson().toJson("No info stayPoints");
+			 }
+		 }
+		 else {
+			 System.out.println("GPSPoints is empty");
+			 return new Gson().toJson("No info GPSPoints");
+		 }
 		 
+		
 		 
-		 return "";
+		
 	 }
 	 
 	

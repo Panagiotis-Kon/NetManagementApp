@@ -257,11 +257,14 @@ function datePicker(data) {
   					OK: 
   						function(){
   						$(this).dialog('close');
-  						
+  						StayPoints();
   						}
   					
   					}
   				});
+  		 clickableMenuAnalysis(1, 2);
+  		 clickableMenuAnalysis(1, 3);
+  		 
  		 }
  		 else {
  			$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
@@ -321,8 +324,60 @@ function datePicker(data) {
 	   clickableMenuVisual(0, 3);  
 	   clickableMenuVisual(0, 4);
 	   clickableMenuVisual(0, 5);
-
+	   clickableMenuAnalysis(1, 1);
+	   clickableMenuAnalysis(0, 2);
+	   clickableMenuAnalysis(0, 3);
    });
+	
+}
+
+
+
+function clickableMenuAnalysis(option, menuitem) {
+	
+	if(menuitem == 1){
+		
+		if(option == 0){
+			var link = document.getElementById('userLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('userLink');
+			link.href="javascript:getUsers();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}	
+		}
+	}
+	else if(menuitem == 2) {
+		if(option == 0){
+			var link = document.getElementById('StayPointsLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('StayPointsLink');
+			link.href="javascript:StayPoints();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}	
+		}
+	}
+	else if(menuitem == 3) {
+		if(option == 0){
+			var link = document.getElementById('PoiLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('PoiLink');
+			link.href="javascript:POI();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}	
+		}
+	}
 	
 }
 
