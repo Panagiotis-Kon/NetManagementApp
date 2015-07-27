@@ -11,8 +11,17 @@ public class ParseGPS {
 
 	private HashMap<String, ArrayList<GPS>> hap = null;
 	private static ParseGPS ParseGPSinstance = null;
+	private int loaded = 0;
 	
-    private ParseGPS(){}
+    public int getLoaded() {
+		return loaded;
+	}
+
+	public void setLoaded(int loaded) {
+		this.loaded = loaded;
+	}
+
+	private ParseGPS(){}
 	
 	public static ParseGPS getInstance(){
 		if(ParseGPSinstance == null){
@@ -57,6 +66,7 @@ public class ParseGPS {
 			  }
 		}
 		System.out.println("Parse Completed...");
+		loaded=1;
 		return 0;
 	}
 }

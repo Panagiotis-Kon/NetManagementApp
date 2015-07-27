@@ -10,6 +10,15 @@ import com.netmanagement.entities.BaseStations;
 public class ParseBaseStations {
 	private HashMap<String, ArrayList<BaseStations>> hap = null;
 	private static ParseBaseStations ParseBaseStationsinstance = null;
+    private int loaded = 0;
+	
+    public int getLoaded() {
+		return loaded;
+	}
+
+	public void setLoaded(int loaded) {
+		this.loaded = loaded;
+	}
 	
     private ParseBaseStations(){}
 	
@@ -56,6 +65,7 @@ public class ParseBaseStations {
 			  }
 		}
 		System.out.println("Parse Completed...");
+		loaded=1;
 		return 0;
 	}
 

@@ -11,6 +11,15 @@ public class ParseBattery {
 	
 	private HashMap<String, ArrayList<Battery>> hap = null;
 	private static ParseBattery ParseBatteryinstance = null;
+    private int loaded = 0;
+	
+    public int getLoaded() {
+		return loaded;
+	}
+
+	public void setLoaded(int loaded) {
+		this.loaded = loaded;
+	}
 	
     private ParseBattery(){}
 	
@@ -57,6 +66,7 @@ public class ParseBattery {
 			  }
 		}
 		System.out.println("Parse Completed...");
+		loaded=1;
 		return 0;
 	}
 	

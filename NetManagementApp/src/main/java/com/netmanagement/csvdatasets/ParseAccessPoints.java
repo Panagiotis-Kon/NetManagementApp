@@ -12,6 +12,15 @@ public class ParseAccessPoints {
 	
 	private HashMap<String, ArrayList<AccessPoints>> hap = null;
 	private static ParseAccessPoints ParseAccessPointsinstance = null;
+    private int loaded = 0;
+	
+    public int getLoaded() {
+		return loaded;
+	}
+
+	public void setLoaded(int loaded) {
+		this.loaded = loaded;
+	}
 	
     private ParseAccessPoints(){}
 	
@@ -58,6 +67,7 @@ public class ParseAccessPoints {
 			  }
 		}
 		System.out.println("Parse Completed...");
+		loaded=1;
 		return 0;
 	}
 
