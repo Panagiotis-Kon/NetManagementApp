@@ -15,6 +15,7 @@ import com.netmanagement.entities.AccessPoints;
 
 public class AccessPointsCalculations {
 	//private final double pi=Math.PI/180;
+	private int EstimatedPointPosition = 0;
     private static AccessPointsCalculations AccessPointsCalculationsinstance = null;
 	
 	private AccessPointsCalculations(){}
@@ -26,6 +27,14 @@ public class AccessPointsCalculations {
 		return AccessPointsCalculationsinstance;
 	}
 	
+	public int getEstimatedPointPosition() {
+		return EstimatedPointPosition;
+	}
+
+	public void setEstimatedPointPosition(int estimatedPointPosition) {
+		EstimatedPointPosition = estimatedPointPosition;
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<APResults> EstimatedPointPosition(){
 		//Find average of rssid(=level) and calculate latitude and longitude. Finally return a list of unique AccessPoints
@@ -78,6 +87,7 @@ public class AccessPointsCalculations {
 		}
 		for (int i=0;i<alist.size();i++)
 		System.out.println(alist.get(i).getBSSID()+" "+alist.get(i).getAPlatitude()+" "+alist.get(i).getAPlongtitude());
+		EstimatedPointPosition=1;
 		return alist;
 	}
 	
