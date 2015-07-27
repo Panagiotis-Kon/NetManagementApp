@@ -1,10 +1,10 @@
 var completedEP = 0; // 0: estimation process is not complete, 1: is complete
 /*varaibles to determine if the datasets ara imported */
-var bat = 0;
+/*var bat = 0;
 var ap = 0;
 var all = 0;
 var gps = 0;
-var bs = 0;
+var bs = 0;*/
 var analysisPage = 0;
 
 var output = '';
@@ -191,7 +191,7 @@ function csvRequest(option)
 				   switch(option) {
 				   case 0: 
 					   if(resp == 'All-import'){
-						   all = 1;
+						   //all = 1;
 						   $("#popupText").text("All dataSets imported correctly");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -226,7 +226,7 @@ function csvRequest(option)
 				   break;
 				   case 1: 
 					   if(resp == 'wifi-import'){
-						   ap = 1;
+						  // ap = 1;
 						   $("#popupText").text("Wifi dataSet imported correctly");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -241,6 +241,24 @@ function csvRequest(option)
 										}
 								}
 								}); 
+					   }
+					   else if(resp == "ap-already-imported"){
+						   $("#popupText").text("Wifi dataSet already imported");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										//callback();
+										}
+								}
+								}); 
+						    
+						   
 					   }
 					   else {
 						   $("#popupText").text("Wifi dataSet NOT imported correctly");
@@ -262,7 +280,7 @@ function csvRequest(option)
 				   break;
 				   case 2: 
 					   if(resp == 'battery-import'){
-						   bat = 1;
+						   //bat = 1;
 						   $("#popupText").text("Battery dataSet imported correctly.\n Please continue your process");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -277,6 +295,22 @@ function csvRequest(option)
 										}
 								}
 								}); 
+					   }
+					   else if(resp == 'bat-already-imported'){
+						   $("#popupText").text("battery dataSet already imported");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										}
+								}
+								}); 
+						   
 					   }
 					   else {
 						   $("#popupText").text("battery dataSet NOT imported correctly");
@@ -297,7 +331,7 @@ function csvRequest(option)
 				   break;
 				   case 3:
 					   if(resp == 'gps-import'){
-						   gps = 1;
+						  // gps = 1;
 						   $("#popupText").text("GPS dataSet imported correctly");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
@@ -312,6 +346,22 @@ function csvRequest(option)
 										}
 								}
 								}); 
+					   }
+					   else if(resp == 'gps-already-imported') {
+						   $("#popupText").text("GPS dataSet already imported");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										}
+								}
+								}); 
+						   
 					   }
 					   else {
 						   $("#popupText").text("GPS dataSet NOT imported correctly");
@@ -332,7 +382,7 @@ function csvRequest(option)
 				   break;
 				   case 4:
 				   if(resp == 'bs-import'){
-					   bs = 1;
+					  // bs = 1;
 					   $("#popupText").text("Base Stations dataSet imported correctly");
 					   $("#divpopup").dialog({
 							title: "DATASET IMPORT",
@@ -348,8 +398,25 @@ function csvRequest(option)
 							}
 							}); 
 				   }
-				   else {
-					   $("#popupText").text("Base Stations NOT imported correctly");
+				   else if(resp == 'bs-already-imported')
+				   {
+					   $("#popupText").text("Base Stations dataSet already imported");
+					   $("#divpopup").dialog({
+							title: "DATASET IMPORT",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									
+									}
+							}
+							}); 
+				   }
+				   else{
+					   $("#popupText").text("Base Stations NOT imported correctly. Please Try again or check the server");
 					   $("#divpopup").dialog({
 							title: "DATASET IMPORT",
 							width: 430,
@@ -384,41 +451,40 @@ function getUsers(arg) {
 		analysisPage = 1;
 		clickableMenuAnalysis(0, 1);
 	}
-	if(ap == 1) {
+	
 		$.ajax({ 
 			type: "GET",
 		    dataType: "json",
 		    contentType: "application/json",
 		    url: "/NetManagementApp/getUsers",
 		   success: function(data){
-			   options(data);
+			   if(data == "ap-not-loaded"){
+				   $("#popupText").text("Sorry. First you must import Access Points Dataset");
+				   $("#divpopup").dialog({
+						title: "IMPORT PORBLEM",
+						width: 430,
+						height: 200,
+						modal:true,
+						buttons: {
+							OK: 
+								function(){
+								$(this).dialog('close');
+								clickableMenuAnalysis(1, 1);
+							}
+						}
+					}); 
+			   }
+			   else {
+				   options(data);
+			   }
+			   
 		   },
 		   error:function(XMLHttpRequest, textStatus, errorThrown){
 			   console.log('error',textStatus + " " + errorThrown);
 				   alert('Get Users error loading response');
 			   }
 			});
-	}
-	else {
-		
-		$("#popupText").text("Sorry. First you must import Access Points Dataset");
-		   $("#divpopup").dialog({
-				title: "IMPORT PORBLEM",
-				width: 430,
-				height: 200,
-				modal:true,
-				buttons: {
-					OK: 
-						function(){
-						$(this).dialog('close');
-					}
-				}
-			}); 
-	   
-	}
-	
-	
-	
+
 }
 
 
@@ -448,6 +514,7 @@ function getAvUserDates(userID) {
 
 function getApInfo() {
 	
+	
 	if(completedEP == 1) { // estimation process is completed
 		
 		$.ajax({ 
@@ -458,26 +525,45 @@ function getApInfo() {
 			   url: "/NetManagementApp/getApInfo",
 			   success: function(data){
 				   //console.log('success',data);
-				   $("#popupText").text("Access point gathering comleted. Load Markers on Map ?");
-				   $("#divpopup").dialog({
-						title: "ACCESS POINTS",
-						width: 430,
-						height: 200,
-						modal:true,
-						buttons: {
-							YES: 
-								function(){
-								$(this).dialog('close');
-								 $("#map-fullscreen").show();
-								 Markers(data);
-								},
-							NO:
-								function(){
-								$(this).dialog('close');
-								
+				   if(data == "ap-not-loaded"){
+					   $("#popupText").text("Sorry. First you must import Access Points Dataset");
+					   $("#divpopup").dialog({
+							title: "IMPORT PORBLEM",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									clickableMenuAnalysis(1, 1);
 								}
-						}
+							}
 						}); 
+				   }
+				   else {
+					   $("#popupText").text("Access point gathering comleted. Load Markers on Map ?");
+					   $("#divpopup").dialog({
+							title: "ACCESS POINTS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								YES: 
+									function(){
+									$(this).dialog('close');
+									 $("#map-fullscreen").show();
+									 Markers(data);
+									},
+								NO:
+									function(){
+									$(this).dialog('close');
+									
+									}
+							}
+							});  
+				   }
+				  
 			   
 			   },
 			   error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -527,28 +613,48 @@ function getBatteryInfo() {
 			   url: "/NetManagementApp/BatteryInfo",
 			   success: function(data){
 				   //console.log('success',data);
-				   $("#popupText").text("Battery Info gathering comleted. Load Graph ?");
-				   $("#divpopup").dialog({
-						title: "ACCESS POINTS",
-						width: 430,
-						height: 200,
-						modal:true,
-						buttons: {
-							YES: 
-								function(){
+				   if(data == "bat-not-loaded"){
+					   $("#popupText").text("Sorry. First you must import Battery Dataset");
+					   $("#divpopup").dialog({
+							title: "IMPORT PORBLEM",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
 									$(this).dialog('close');
-								// call for new popup window with graph
-									sessionStorage.setItem('battery',JSON.stringify(data));
-									window.open('BatteryGraph',"width=400, height=400");
-									
-								},
-							NO:
-								function(){
-								$(this).dialog('close');
-								
+									clickableMenuAnalysis(1, 1);
 								}
-						}
+							}
 						}); 
+					   
+				   }
+				   else {
+					   $("#popupText").text("Battery Info gathering comleted. Load Graph ?");
+					   $("#divpopup").dialog({
+							title: "ACCESS POINTS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								YES: 
+									function(){
+										$(this).dialog('close');
+									// call for new popup window with graph
+										sessionStorage.setItem('battery',JSON.stringify(data));
+										window.open('BatteryGraph',"width=400, height=400");
+										
+									},
+								NO:
+									function(){
+									$(this).dialog('close');
+									
+									}
+							}
+							}); 
+				   }
+				   
 			   
 			   },
 			   error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -590,11 +696,27 @@ function getCellsInfo() {
 						}); 
 					   
 				   }
+				   else if(data == "bs-not-loaded"){
+					   $("#popupText").text("Base stations dataset is not imported");
+					   $("#divpopup").dialog({
+							title: "CELLS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									
+									}
+							}
+						}); 
+				   }
 				   else {
 					 //console.log('success in getting cell info');
 					   $("#popupText").text("Base Stations Info gathering comleted. Load Graph ?");
 					   $("#divpopup").dialog({
-							title: "ACCESS POINTS",
+							title: "CELLS",
 							width: 430,
 							height: 200,
 							modal:true,
@@ -632,7 +754,7 @@ function getCellsInfo() {
 
 function StayPoints() {
 	
-	if(gps == 1) {
+	
 		
 		$.ajax({ 
 			   type: "GET",
@@ -642,27 +764,47 @@ function StayPoints() {
 			   url: "/NetManagementApp/Stay-Points",
 			   success: function(data){
 				   //console.log('success',data);
-				   $("#popupText").text("Stay Points created. Load on Map?");
-				   $("#divpopup").dialog({
-						title: "STAY POINTS",
-						width: 430,
-						height: 200,
-						modal:true,
-						buttons: {
-							YES: 
-								function(){
+				   if(data == "gps-not-loaded"){
+					   $("#popupText").text("GPS dataset is not imported. Please import dataset");
+					   $("#divpopup").dialog({
+							title: "GPS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
 									$(this).dialog('close');
-									//sessionStorage.setItem('stay-points',JSON.stringify(data));
-									DrawStayPoints(data);
 									
-								},
-							NO:
-								function(){
-								$(this).dialog('close');
-								sessionStorage.setItem('stay-points',JSON.stringify(data));
-								}
-						}
+									}
+							}
 						}); 
+				   }
+				   else {
+					   $("#popupText").text("Stay Points created. Load on Map?");
+					   $("#divpopup").dialog({
+							title: "STAY POINTS",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								YES: 
+									function(){
+										$(this).dialog('close');
+										 $("#map-fullscreen").show();
+										 DrawStayPoints(data);
+										
+									},
+								NO:
+									function(){
+									$(this).dialog('close');
+									sessionStorage.setItem('stay-points',JSON.stringify(data));
+									}
+							}
+							}); 
+				   }
+				   
+				  
 			   
 			   },
 			   error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -672,11 +814,7 @@ function StayPoints() {
 	 		});
 		//clickableMenuAnalysis(1, 2);
 		
-	}
-	else {
-		
-		requestsHandler('GPS');
-	}
+	
 	
 }
 

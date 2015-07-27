@@ -102,7 +102,76 @@ function fullCells(bsdata) {
 	
 	
 }
- 
+
+
+function fullSP(data)
+{
+var latlng = null;
+	
+	if(data == null){
+		console.log('Data is null');
+		 //data = JSON.parse(sessionStorage.getItem('stay-points'));
+	}
+	else {
+		
+		if(mapSP == null)
+		{ /* Create the map if it does not exists */
+			console.log('Map is null');
+			for(var item in data) {
+				latlng = new google.maps.LatLng(item.lat, item.lon);
+				break;
+			}
+			var mapOptions = {
+			    		zoom: 3,
+			    		center: latlng,
+			    		mapTypeId: google.maps.MapTypeId.TERRAIN
+			 		 };
+			      	
+			  mapSP = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+		}
+		console.log('mapSP: ', mapSP);
+		/*var pinColor = "0000FF";
+		var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+		        new google.maps.Size(21, 40),
+		        new google.maps.Point(0,0),
+		        new google.maps.Point(10, 34));*/
+		 var marker = null;
+		$.each(data,function(i,item){
+			
+				latlng = new google.maps.LatLng(item.lat, item.lon);
+		
+				    marker = new google.maps.Marker({
+	                position: latlng,
+	                map: mapSP,
+	               // icon: pinImage,
+	               // title: item.Operator,
+	                animation: google.maps.Animation.DROP,
+	            });
+				   
+				   
+				 
+		 		var content = "Tstart: " + item.Tstart +" --- " + " Tend: " + item.Tend;  
+
+	 			var infowindow = new google.maps.InfoWindow();
+
+	 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+	 			        return function() {
+	 			           infowindow.setContent(content);
+	 			           infowindow.open(mapSP,marker);
+	 			        };
+	 			    })(marker,content,infowindow)); 
+				
+				
+			});
+		
+
+		
+	}
+	console.log('Ending Draw stay points');
+	
+	
+	
+	}  
 function initialize() {
 	
 	var currentV = window.opener.view;
@@ -121,6 +190,10 @@ function initialize() {
 	else if(currentV == 2) {
 		//var bsdata = JSON.parse(sessionStorage.getItem('bs'));
 		DrawCells();
+	}
+	else if(currentV == 3){
+		
+		
 	}
 	
 	
