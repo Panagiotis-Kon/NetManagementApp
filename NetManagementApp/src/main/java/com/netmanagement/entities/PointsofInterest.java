@@ -1,18 +1,23 @@
 package com.netmanagement.entities;
 
+import java.util.ArrayList;
+
 public class PointsofInterest {
 	private double startlat;
 	private double startlon;
 	private double endlat;
 	private double endlon;
-	private int visited=0; //0 : not visited , 1 : visited
+	private int noise=0; //0 : poi , 1 : noise
+	private int numofPoints=0;
+	private ArrayList<StayPoints> points = new ArrayList<StayPoints>();
 	
-	public void setAll(double startlat, double startlon, double endlat, double endlon, int visited){
+	public void setAll(double startlat, double startlon, double endlat, double endlon, int noise, int numofPoints){
 		this.startlat = startlat;
 		this.startlon = startlon;
 		this.endlat = endlat;
 		this.endlon = endlon;
-		this.visited = visited;
+		this.noise = noise;
+		this.numofPoints = numofPoints;
 	}
 
 	public double getStartlat() {
@@ -47,12 +52,28 @@ public class PointsofInterest {
 		this.endlon = endlon;
 	}
 
-	public int getVisited() {
-		return visited;
+	public int getNoise() {
+		return noise;
 	}
 
-	public void setVisited(int visited) {
-		this.visited = visited;
+	public void setNoise(int noise) {
+		this.noise = noise;
+	}
+
+	public int getNumofPoints() {
+		return numofPoints;
+	}
+
+	public void setNumofPoints(int numofPoints) {
+		this.numofPoints = numofPoints;
+	}
+
+	public ArrayList<StayPoints> getPoints() {
+		return points;
+	}
+
+	public void setPoints(ArrayList<StayPoints> points) {
+		this.points = points;
 	}
 
 }

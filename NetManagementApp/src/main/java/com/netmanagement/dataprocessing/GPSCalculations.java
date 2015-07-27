@@ -26,11 +26,6 @@ public class GPSCalculations {
 		return GPSCalculationsinstance;
 	}
 	
-	
-	
-	
-	
-	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<GPS> searchUser(String userID, String startDate, String endDate){
 		//For given variables find gps points

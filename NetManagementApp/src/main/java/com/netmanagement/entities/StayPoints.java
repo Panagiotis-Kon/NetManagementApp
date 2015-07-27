@@ -6,6 +6,7 @@ public class StayPoints {
 	private double lon;
 	private String Tstart;
 	private String Tend;
+	private int visited=0; //0 : not visited , 1 : visited
 	
 	public void setAll(double lat, double lon, String Tstart, String Tend){
 		this.lat = lat;
@@ -44,6 +45,14 @@ public class StayPoints {
 
 	public void setTend(String tend) {
 		Tend = tend;
+	}
+
+	public int getVisited() {
+		return visited;
+	}
+
+	public void setVisited(int visited) {
+		this.visited = visited;
 	}
 
 }
