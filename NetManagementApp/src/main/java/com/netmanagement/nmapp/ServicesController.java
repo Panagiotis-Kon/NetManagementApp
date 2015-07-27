@@ -256,6 +256,10 @@ public class ServicesController {
 		
 	   public @ResponseBody String StayPoints(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
 			   @RequestParam String Tmin,  @RequestParam String Tmax ) {
+		 
+		 System.out.println("user: " + userID + " startDate: " + startDate + " endDate: " + endDate + " Dmax: " + Dmax + " Tmin: " + Tmin
+				 + " Tmax: " + Tmax);
+		 
 		 GPSCalculations gps = GPSCalculations.getInstance();
 		 ArrayList<GPS> GPSPoints = gps.searchUser(userID, startDate, endDate);
 		 if(!GPSPoints.isEmpty()) {
