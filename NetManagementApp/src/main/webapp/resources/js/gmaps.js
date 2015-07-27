@@ -190,7 +190,7 @@ function DrawStayPoints(data) {
 		if(map == null){ /* Create the map if it does not exists */
 			
 			for(var item in data) {
-				latlng = new google.maps.LatLng(item.lat.toString(), item.lon.toString());
+				latlng = new google.maps.LatLng(item.lat, item.lon);
 				break;
 			}
 			var mapOptions = {

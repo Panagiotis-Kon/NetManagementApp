@@ -84,9 +84,9 @@ public class GPSCalculations {
         int i=0, j=0, numofStayPoints=0;
         String t=null;
         double d=0;
-        while (i<GPSPoints.size()){
+        while (i<GPSPoints.size()-1){
         	j=i+1;
-        	while (j<GPSPoints.size()){
+        	while (j<=GPSPoints.size()-1){
         		t=TimeDifference(GPSPoints.get(j).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
         		SimpleDateFormat sdf = new SimpleDateFormat("dd:HH:mm:ss");
         		Date datet=null;
@@ -96,6 +96,7 @@ public class GPSCalculations {
 					datet=sdf.parse(t);
 					dateTmax=sdf.parse(Tmax);
 					dateTmin=sdf.parse(Tmin);
+					System.out.println(datet+" | "+dateTmin+" | "+dateTmax);
 				    if (datet.after(dateTmax)){
 				      t=TimeDifference(GPSPoints.get(i).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
 				      datet=sdf.parse(t);
@@ -132,6 +133,9 @@ public class GPSCalculations {
         }
 		if (Lsp.isEmpty()) {
 			System.out.println("Stay Points Calculations: Lsp is empty!!!");
+		}
+		else {
+			System.out.println("Stay Points Calculations: Lsp has something!!!");
 		}
 		return Lsp;
 	}
@@ -230,14 +234,18 @@ public class GPSCalculations {
 			d2 = format.parse(string2);
  
 			//in milliseconds
-			long diff = d2.getTime() - d1.getTime();
+			long diff = 0;
+			if (d2.getTime() >= d1.getTime())
+				diff = d2.getTime() - d1.getTime();
+			else
+				diff = d1.getTime() - d2.getTime();
  
 			long diffSeconds = diff / 1000 % 60;
 			long diffMinutes = diff / (60 * 1000) % 60;
 			long diffHours = diff / (60 * 60 * 1000) % 24;
 			long diffDays = diff / (24 * 60 * 60 * 1000);
-			TimeDiff=System.out.format("%02d\n", diffDays)+":"+System.out.format("%02d\n", diffHours)+":"+System.out.format("%02d\n", diffMinutes)+":"+System.out.format("%02d\n", diffSeconds);
- 
+			//TimeDiff=System.out.format("%02d", diffDays)+":"+System.out.format("%02d", diffHours)+":"+System.out.format("%02d", diffMinutes)+":"+System.out.format("%02d", diffSeconds);
+			TimeDiff=diffDays+":"+diffHours+":"+diffMinutes+":"+diffSeconds;
 			System.out.print(diffDays + " days, ");
 			System.out.print(diffHours + " hours, ");
 			System.out.print(diffMinutes + " minutes, ");
@@ -246,6 +254,7 @@ public class GPSCalculations {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Time Difference :"+TimeDiff);
 		return TimeDiff;
 	}
 	

@@ -266,6 +266,7 @@ public class ServicesController {
 			 String json = null;
 			 Double Dmaxd = Double.parseDouble(Dmax);
 			 ArrayList<StayPoints> stayPoints = gps.findStayPoints(GPSPoints, Tmin, Tmax, Dmaxd);
+			 System.out.println("Stay Points 269");
 			 if(!stayPoints.isEmpty()){
 				 json = new Gson().toJson(stayPoints);
 				 System.out.println("json string: " + json);
