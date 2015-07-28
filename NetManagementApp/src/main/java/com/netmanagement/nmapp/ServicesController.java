@@ -20,11 +20,12 @@ import com.netmanagement.dataprocessing.AccessPointsCalculations;
 import com.netmanagement.dataprocessing.BaseStationsCalculations;
 import com.netmanagement.dataprocessing.BatteryCalculations;
 import com.netmanagement.dataprocessing.GPSCalculations;
-import com.netmanagement.entities.APResults;
+import com.netmanagement.dataprocessing.PoICalculations;
 import com.netmanagement.entities.AccessPoints;
 import com.netmanagement.entities.BaseStations;
 import com.netmanagement.entities.Battery;
 import com.netmanagement.entities.GPS;
+import com.netmanagement.entities.PointsofInterest;
 import com.netmanagement.entities.StayPoints;
 
 /**
@@ -59,10 +60,10 @@ public class ServicesController {
 	      return "static/BatteryGraph.html";
 	   }
 	 
-	 @RequestMapping(value = "/dataProcessing", method = RequestMethod.GET)
+	 @RequestMapping(value = "/estimationPoit", method = RequestMethod.GET)
 	   public String dataProcessing() {
 	     
-	      return "static/dataProcessing.html";
+	      return "static/estimationPoint.html";
 	   }
 	 
 	 @RequestMapping(value = "/dataAnalysis", method = RequestMethod.GET)
@@ -93,7 +94,20 @@ public class ServicesController {
 						e.printStackTrace();
 					}
 					 if(suc == 0) {
-						 retstr = "wifi-import"; 
+						 
+						 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+						 if (!hap.isEmpty())
+						 {
+								if(AccessPointsCalculations.getInstance().EstimatedPointPosition() == 1){
+									retstr = "wifi-import-ep-ok"; 
+								}
+								
+						 }
+						else 
+						{
+							retstr = "ep-problem"; 
+						}
+						 
 					 }
 					
 			 }
@@ -197,7 +211,7 @@ public class ServicesController {
 		 
 	 }
 	 
-	 @RequestMapping(value = "/AccessPointEstimation", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+	 /*@RequestMapping(value = "/AccessPointEstimation", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String getEstimation() {
 		 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
@@ -217,7 +231,7 @@ public class ServicesController {
 				}
 		 }
 		
-	   }
+	   }*/
 	 
 	 @RequestMapping(value = "/getDates", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
@@ -351,5 +365,35 @@ public class ServicesController {
 
 	 }
 	 
+	 
+	 @RequestMapping(value = "/POI", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String CalculatePOI(@RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
+			   @RequestParam String Tmin,  @RequestParam String Tmax, @RequestParam String eps, @RequestParam String minPts ) {
+		 
+		 System.out.println(" startDate: " + startDate + " endDate: " + endDate + " Dmax: " + Dmax + " Tmin: " + Tmin
+				 + " Tmax: " + Tmax +" eps: " + eps + " minPts: " + minPts  );
+		 
+		 PoICalculations poi = PoICalculations.getInstance();
+		 double Dmaxd = Double.parseDouble(Dmax);
+		 double epsd = Double.parseDouble(eps);
+		 int minPtsd = Integer.parseInt(minPts);
+		 poi.setAll(startDate,endDate,Tmin,Tmax,Dmaxd,epsd,minPtsd);
+		 ArrayList<PointsofInterest> poiArray = poi.CalculatePoI();
+		 if(!poiArray.isEmpty()) {
+			 
+		 	String json = new Gson().toJson(poiArray);
+			System.out.println("json string: " + json);
+		    return json;
+		 
+		 }
+		 else {
+		 	return new Gson().toJson("poi-problem");
+		 
+		 
+		 }
+		 
+		
+	 }
 	
 }

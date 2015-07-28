@@ -98,13 +98,7 @@ $( "#accordion" ).accordion();
 												<li><a href="javascript:requestsHandler('GPS');">GPS</a></li>
 												<li><a href="javascript:requestsHandler('BaseStations');">Base Stations</a></li>
 										</ul>
-										</li>
-										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataProcessing();">Data Processing</a>
-										<ul class="dropdown2">
-							
-												<li><a href="javascript:requestsHandler('estimationProcess');">EP Process</a></li>
-										</ul>	
-										</li>     
+										</li>									
 										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataVisualization();">Data Visualization</a>
 										</li>  
 										<li class="dropdown1"><a class="active" href="javascript:toDataAnalysis();">Data Analysis</a>
@@ -134,7 +128,8 @@ $( "#accordion" ).accordion();
 			<div class="mini-menu">
 				<ul>
 					<li><a href="javascript:getUsers(1);" id="userLink">Choose User/Parameters</a></li>
-					<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>	
+					<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>
+					<li><a href="javascript:POIParameters();" id="POIParamLink">POI Parameters</a></li>	
 					<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>				
 				</ul>
 				
@@ -189,18 +184,7 @@ $( "#accordion" ).accordion();
 								<input type="text" id="Tmax" name="Tmax">
 							</div>
 						</div>
-						<!--</div>  -->
-						<!--  
-						<div id="parameters">
-							
-							<label for="Dmax">Dmax</label>
-							<input type="text" id="Dmax" name="Dmax">
-							<label for="Tmin">Tmin</label>
-							<input type="text" id="Tmin" name="Tmin">
-							<label for="Tmax">Tmax</label>
-							<input type="text" id="Tmax" name="Tmax">
-						</div>
-						-->
+						
 						<div id="closer"></div>
 					</div>
   				</div>
@@ -214,6 +198,42 @@ $( "#accordion" ).accordion();
 <!-- Header Ends Here -->	
 <div id="divpopup" style="display:none">
 <div id="popupText"></div>
+</div>
+
+<div id="divpopupParam" style="display:none">
+
+	<div id="poipar">
+		<label for="from">From: </label>
+		<input type="text" id="fromPOI" name="from" title="format: yyyy-mm-dd">
+	</div>
+	<div id="poipar">
+		<label for="to">to: </label>
+		<input type="text" id="toPOI" name="to" title="format: yyyy-mm-dd">
+	
+	</div>
+	<div id="poipar">
+		<label for="Dmax">Dmax</label>
+		<input type="text" id="DmaxPOI" name="Dmax">
+								
+	</div>
+							
+	<div id="poipar">
+		<label for="Tmin">Tmin</label>
+		<input type="text" id="TminPOI" name="Tmin">
+	</div>
+	<div id="poipar">
+		<label for="Tmax">Tmax</label>
+		<input type="text" id="TmaxPOI" name="Tmax">
+	</div>
+	<div id="poipar">
+		<label for="eps">eps</label>
+		<input type="text" id="epsPOI" name="eps">
+	</div>
+	<div id="poipar">
+		<label for="minPts">minPts</label>
+		<input type="text" id="minPtsPOI" name="minPts">
+	</div>
+							
 </div>
 
 <!-- #Footer -->

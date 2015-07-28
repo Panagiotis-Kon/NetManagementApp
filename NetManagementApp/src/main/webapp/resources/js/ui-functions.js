@@ -73,7 +73,11 @@ function options(data) {
 		$("#userSel").show();
         
         parent.addEventListener('click', function(e){
-        	$("#popupText").text("Are you sure you want to monitor " + e.target.innerHTML.toLowerCase()+ " ?");
+        	var elem = document.getElementById("User");
+			elem.value = e.target.innerHTML.toLowerCase();
+			userID = e.target.innerHTML.toLowerCase();
+        	
+        	/*$("#popupText").text("Are you sure you want to monitor " + e.target.innerHTML.toLowerCase()+ " ?");
         	$("#divpopup").dialog({
 				title: "User Selected",
 				width: 430,
@@ -84,9 +88,7 @@ function options(data) {
 					YES: 
 						function(){
 						$(this).dialog('close');
-						var elem = document.getElementById("User");
-						elem.value = e.target.innerHTML.toLowerCase();
-						userID = e.target.innerHTML.toLowerCase();
+						
 						},
 					NO:
 						function(){
@@ -94,7 +96,7 @@ function options(data) {
 						
 						}
 				}
-				});
+				});*/
           //console.log("You clicked row " + e.target.innerHTML.toLowerCase());
         });
    
@@ -263,7 +265,7 @@ function datePicker(data) {
   					}
   				});
   		 clickableMenuAnalysis(1, 2);
-  		 clickableMenuAnalysis(1, 3);
+  		 //clickableMenuAnalysis(1, 3);
   		 
  		 }
  		 else {
@@ -326,7 +328,7 @@ function datePicker(data) {
 	   clickableMenuVisual(0, 5);
 	   clickableMenuAnalysis(1, 1);
 	   clickableMenuAnalysis(0, 2);
-	   clickableMenuAnalysis(0, 3);
+	   clickableMenuAnalysis(0, 4);
    });
 	
 }
@@ -365,6 +367,20 @@ function clickableMenuAnalysis(option, menuitem) {
 		}
 	}
 	else if(menuitem == 3) {
+		if(option == 0){
+			var link = document.getElementById('POIParamLink');
+			link.href="javascript:void(0);"
+			link.style.color="grey";
+		}
+		else {
+			var link = document.getElementById('POIParamLink');
+			link.href="javascript:POIParameters();"
+				link.style.color="#000";
+				link.onmouseover= function(){this.style.color="red";}
+				link.onmouseout = function(){this.style.color="#000";}	
+		}
+	}
+	else if(menuitem == 4) {
 		if(option == 0){
 			var link = document.getElementById('PoiLink');
 			link.href="javascript:void(0);"
@@ -463,6 +479,40 @@ function clickableMenuVisual(option, menuitem){
 				
 		}
 	}
+	
+}
+
+
+function POIParameters() {
+	
+	 //$("#popupText").text("Stay Points created. Load on Map?");
+	   $("#divpopupParam").dialog({
+			title: "POI PARAMETERS",
+			width: 500,
+			height: 500,
+			modal:true,
+			buttons: {
+				Submit: 
+					function(){
+						$(this).dialog('close');
+						// make ajax call 
+						var dataArray = null;
+						dataArray.push(document.getElementById('fromPOI').value);
+						dataArray.push(document.getElementById('toPOI').value);
+						dataArray.push(document.getElementById('DmaxPOI').value);
+						dataArray.push(document.getElementById('TminPOI').value);
+						dataArray.push(document.getElementById('TmaxPOI').value);
+						dataArray.push(document.getElementById('epsPOI').value);
+						dataArray.push(document.getElementById('minPtsPOI').value);
+						CalculatePOI(dataArray);
+					},
+				Cancel:
+					function(){
+					$(this).dialog('close');
+				
+					}
+			}
+			}); 
 	
 }
 

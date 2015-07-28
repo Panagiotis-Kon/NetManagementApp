@@ -62,34 +62,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		};</script>
 
 
-		
-		
-
-
-
-
-<script type="text/javascript">
-
-function getCustomer() {
-	
-	$.ajax({ 
-		   type: "GET",
-		   datatype: "json",
-		   data:{name:"Alex",id:"10",age:20},
-		   url: "/NetManagementApp/customer",
-		   success: function(data){ 
-			 console.log('success',data);  
-		     //alert(data);
-		   },
-		   error: function(){
-			   alert('error loading response');
-		   }
-		});
-	
-	
-}
-
-</script>
 
 
 
@@ -113,10 +85,7 @@ function getCustomer() {
 												<li><a href="javascript:requestsHandler('Battery');">Battery</a></li>
 												<li><a href="javascript:requestsHandler('GPS');">GPS</a></li>
 												<li><a href="javascript:requestsHandler('BaseStations');">Base Stations</a></li>
-											</ul>
-										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataProcessing();">Data Processing</a>
-											
-										</li>     
+											</ul>							
 										<li class="dropdown1"><a href="javascript:toDataVisualization()">Data Visualization</a>
 										</li>  
 										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataAnalysis();">Data Analysis</a>

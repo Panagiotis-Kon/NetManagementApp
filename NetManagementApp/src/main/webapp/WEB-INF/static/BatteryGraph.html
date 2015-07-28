@@ -52,14 +52,16 @@ window.onload = function(){
 		var prevTime = null;
 		$.each(sentdata,function(i,item){
 			var str = item.timestamp;
+			console.log('timestamp: ', item.timestamp);
 			var split = str.split(' ');
 			
 			level.push(item.level);
-			time.push(split[0]);
+			time.push(split[1]);
 		})
 	
 	window.myLine = new Chart(ctx).Line(lineChartData, {
-		responsive: true
+		responsive: true,
+		scaleShowVerticalLines: false,
 	});
 }
 	

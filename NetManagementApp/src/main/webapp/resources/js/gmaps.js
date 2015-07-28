@@ -3,8 +3,6 @@ var view = -1; // 0-> markers, 1->polyline, 2->cells
 mapSP = null;
 function Markers(data) {
 
-	
-			
 			view = 0;
 			var latlng = null;
 			sessionStorage.setItem('sent',JSON.stringify(data));
@@ -31,8 +29,8 @@ function Markers(data) {
 		                animation: google.maps.Animation.DROP,
 		            });
 			 		
-			 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + ' Mean RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
-			 		 "<br />" + "lat:  " + item.APlatitude + "<br />" + "lon:  " + item.APlongtitude + "</p>";     
+			 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' Mean RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
+			 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + "</p>";     
 
 		 			var infowindow = new google.maps.InfoWindow();
 
@@ -56,7 +54,7 @@ function Polyline(){
 		if(map == null) {
 			Markers(data);
 		}
-		else {
+		//else {
 			view = 1;
 			var sentdata = JSON.parse(sessionStorage.getItem('sent'));
 			var flightPlanCoordinates = [];
@@ -76,7 +74,7 @@ function Polyline(){
 				});
 			flightPath.setMap(map);
 	
-		}
+		//}
 	
 }
 
@@ -97,34 +95,30 @@ function Cells() {
 
 function DrawCells() {
 	//console.log("DrawCells function");
-	var latlng = null;
+	//var latlng = null;
 	//latlng = new google.maps.LatLng('37.58','23.46');
 	var bsdata = JSON.parse(sessionStorage.getItem('bs'));
-	if(map == null) { // if a map does not exists create it
-		
-		for(var item in bsdata) {
-			latlng = new google.maps.LatLng(item.BSlatitude, item.BSlongtitude);
-			break;
-		}
-		var mapOptions = {
-		    		zoom: 8,
-		    		center: latlng,
-		    		mapTypeId: google.maps.MapTypeId.TERRAIN
-		 		 };
-		      	
-		  map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-	}
-	
-	
-	
-	
+
 	var pinColor = "52bdb0";
 	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
 	        new google.maps.Size(21, 40),
 	        new google.maps.Point(0,0),
 	        new google.maps.Point(10, 34));
 	$.each(bsdata,function(i,item){
-			latlng = new google.maps.LatLng(item.BSlatitude, item.BSlongtitude);
+		var latlng = new google.maps.LatLng(item.BSlatitude, item.BSlongtitude);
+			if(i==0)
+			{
+
+		      	var mapOptions = {
+		    		zoom: 8,
+		    		center: latlng,
+		    		mapTypeId: google.maps.MapTypeId.TERRAIN
+		 		 };
+		      	
+		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+	
+			}
+			
 	
 			   var marker = new google.maps.Marker({
                 position: latlng,
@@ -161,7 +155,7 @@ function DrawStayPoints(data) {
 	//var marker = null;
 	if(data == null){
 		console.log('Data is null');
-		 //data = JSON.parse(sessionStorage.getItem('stay-points'));
+		 data = JSON.parse(sessionStorage.getItem('stay-points'));
 	}
 	else {
 		
@@ -218,6 +212,48 @@ function DrawStayPoints(data) {
 }
 
 
+function DrawPOI(data) {
+	if(data == null){
+		alert('Null data in POI');
+	}
+	else {
+		
+		$.each(data,function(i,item){
+			
+			
+			if(i==0)
+			{
+				var latlng = new google.maps.LatLng(item.startlat, item.startlon);
+					
+			      	var mapOptions = {
+			    		zoom: 8,
+			    		center: latlng,
+			    		mapTypeId: google.maps.MapTypeId.TERRAIN
+			 		 };
+			      	
+			 		 mapSP = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
+		
+			}
+			    
+			var rectangle = new google.maps.Rectangle({
+			    strokeColor: '#FF0000',
+			    strokeOpacity: 0.8,
+			    strokeWeight: 2,
+			    fillColor: '#FF0000',
+			    fillOpacity: 0.35,
+			    map: mapSP,
+			    bounds: new google.maps.LatLngBounds(
+			      new google.maps.LatLng(item.startlat, item.startlon),
+			      new google.maps.LatLng(item.endlat, item.endlon))
+			  });
+		
+		
+		});
+	}
+	
+	console.log('ending Draw Points')
+	
+}
 
 
 

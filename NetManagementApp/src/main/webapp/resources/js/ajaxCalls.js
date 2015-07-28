@@ -1,4 +1,4 @@
-var completedEP = 0; // 0: estimation process is not complete, 1: is complete
+
 /*varaibles to determine if the datasets ara imported */
 /*var bat = 0;
 var ap = 0;
@@ -11,7 +11,7 @@ var output = '';
 
 function requestsHandler(arg)
 {
-	if(arg == "estimationProcess")
+	/*if(arg == "estimationProcess")
 	{
 		estimationProcess();
 		
@@ -23,7 +23,8 @@ function requestsHandler(arg)
 	else if(arg == "createTableEP"){
 		createTableEP();
 	}
-	else if(arg == "all")
+	*/ 
+	if(arg == "all")
 	{
 		csvRequest(0);
 		
@@ -47,7 +48,7 @@ function requestsHandler(arg)
 
 }
 
-
+/*
 function estimationProcess() {
 	
 	$.ajax({ 
@@ -83,89 +84,7 @@ function estimationProcess() {
  		});
 }
 
-
-function createTableEP() {
-	
-				var epdata = JSON.parse(sessionStorage.getItem('ep'));
-	 			  var header = $('<h2 id="headerTagId"></h2>').text('Final Estimation Point');
-	 			  $('#headerTag').append(header);
-	 			  
-	 			 var table =  $('<table id="tableID"></table>');
-	 		     
-	 		     head = $('<tr></tr>');
-	 		     var headData1 = $('<th></th>').text('BSSID');
-	 		     head.append(headData1); 
-	 		     var headData2 = $('<th></th>').text('Latitude');
-	 		     head.append(headData2);
-	 		     var headData3 = $('<th></th>').text('Longtitude');
-	 		     head.append(headData3);
-	 		     table.append(head);
-	 		
-	 			   $.each(epdata,function(i,item){
-	 				  // $orders.append('<li>bssid: ' + item.BSSID + 'lan: ' + item.APlatitude + 'lon: '+ item.APlongtitude + '</li>');
-	 				  row = $('<tr></tr>');
-	 	               
-	 	              var rowData1 = $('<td></td>').text(item.BSSID);
-	 	              var rowData2 = $('<td></td>').text(item.APlatitude);
-	 	              var rowData3 = $('<td></td>').text(item.APlongtitude);
-	 	                //rowData.id=i;
-	 	                row.append(rowData1);
-	 	                row.append(rowData2);
-	 	                row.append(rowData3);
-	 	                table.append(row);
-	 			   })
-	 			   
-	 			  if ($('#tableID').length) {
-				        $("#bssidTable tr:first").after(row);
-				    
-				   }
-				   else {
-					  // var table =  $('#tableID');
-				       $('#bssidTable').append(table);
-				   } 
-	 			  console.log('table passed');  
-	 			 clickableMenuProcess(0);
-}
-
-
-
-function removeTableEP() {
-	
-	//var closeBtn = document.querySelector('#removal');
-	if(!document.getElementById("tableID") || !document.getElementById("headerTagId")){
-		alert("Table does not exists to be removed");
-	}else {
-		
-		var tab = document.querySelector('#tableID');
-	 	var hTag = document.querySelector('#headerTagId');
-	 	
-	 	tab.parentNode.removeChild(tab); 
-		hTag.parentNode.removeChild(hTag);
-		document.getElementById("showEP").hide();
-		document.getElementById("removalEP").hide();
-		clickableMenuProcess(1); 
-	}
-    
-
-
-}
-
-
-function clickableMenuProcess(option){
-	if(option == 0){
-		var link = document.getElementById('starterEP');
-		link.href="javascript:void(0);"
-		link.style.color="grey";
-	}
-	else {
-		var link = document.getElementById('starterEP');
-		link.href="javascript:requestsHandler('estimationProcess');"
-			link.style.color="#000";
-			link.onmouseover= function(){this.style.color="red";}
-			link.onmouseout = function(){this.style.color="#000";}
-			
-	}
-}
+*/
 
 
 
@@ -207,6 +126,24 @@ function csvRequest(option)
 								}
 								}); 
 					   }
+					   else if(resp == "all-already-imported"){
+						   $("#popupText").text("All dataSets already imported");
+						   $("#divpopup").dialog({
+								title: "DATASET IMPORT",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										//callback();
+										}
+								}
+								}); 
+						    
+						   
+					   }
 					   else {
 						   $("#popupText").text("All dataSets NOT imported correctly");
 						   $("#divpopup").dialog({
@@ -225,9 +162,9 @@ function csvRequest(option)
 					   } 
 				   break;
 				   case 1: 
-					   if(resp == 'wifi-import'){
+					   if(resp == 'wifi-import-ep-ok'){
 						  // ap = 1;
-						   $("#popupText").text("Wifi dataSet imported correctly");
+						   $("#popupText").text("Wifi dataSet imported correctly and Estimation Point calculated." +"<br />" +"If you want to see the result" + "<br />" + "go to Estimation Point page");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
 								width: 430,
@@ -259,6 +196,23 @@ function csvRequest(option)
 								}); 
 						    
 						   
+					   }
+					   else if(resp == "ep-problem"){
+						   $("#popupText").text("A problem occured in estimation process." + "<br />" + "Please try again or check the server for errors");
+						   $("#divpopup").dialog({
+								title: "ESTIMATION PROCESS",
+								width: 430,
+								height: 200,
+								modal:true,
+								buttons: {
+									OK: 
+										function(){
+										$(this).dialog('close');
+										//callback();
+										}
+								}
+								}); 
+						    
 					   }
 					   else {
 						   $("#popupText").text("Wifi dataSet NOT imported correctly");
@@ -514,8 +468,6 @@ function getAvUserDates(userID) {
 
 function getApInfo() {
 	
-	
-	if(completedEP == 1) { // estimation process is completed
 		
 		$.ajax({ 
 			   type: "GET",
@@ -571,31 +523,7 @@ function getApInfo() {
 	 			   alert('Get App Info error loading response');
 	 		   }
 	 		});
-
-	}
-	else {
-			$("#popupText").text("Estimation Point is not calculated. \n Do you want to calculate it automatically \n or redirect to dataProcessing page ?");
-		   $("#divpopup").dialog({
-				title: "ACCESS POINTS",
-				width: 430,
-				height: 200,
-				modal:true,
-				buttons: {
-					Automatically: 
-						function(){
-						$(this).dialog('close');
-						estimationProcess();
-						},
-					Redirect:
-						function(){
-						$(this).dialog('close');
-						toDataProcessing();
-						}
-				}
-				}); 
-			
-		
-	}
+	
 		
 }
 
@@ -814,6 +742,74 @@ function StayPoints() {
 	 		});
 		//clickableMenuAnalysis(1, 2);
 		
+	
+	
+}
+
+
+function CalculatePOI(dataArray){
+	
+	$.ajax({ 
+		type: "GET",
+	    dataType: "json",
+	    data:{startDate:dataArray[0],endDate:dataArray[1],Dmax:dataArray[2],Tmin:dataArray[3],Tmax:dataArray[4],eps:dataArray[5],minPts:dataArray[6]},
+	    contentType: "application/json",
+	    url: "/NetManagementApp/POI",
+	   success: function(data){
+		   if(data == "poi-problem"){
+			   
+			   $("#popupText").text("POI problem detected. Check the server");
+			   $("#divpopup").dialog({
+					title: "POI'S",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+								$(this).dialog('close');
+								
+							}
+						
+					}
+					}); 
+			   
+			   
+		   }
+		   else {
+			   $("#popupText").text("POI's have been calculated. Load on Map?");
+			   $("#divpopup").dialog({
+					title: "POI'S",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						YES: 
+							function(){
+								$(this).dialog('close');
+								// draw the pois
+								DrawPOI(data);
+								
+							},
+						NO:
+							function(){
+							$(this).dialog('close');
+							
+							}
+					}
+					}); 
+			   
+		   }
+	   },
+	   
+	   error:function(XMLHttpRequest, textStatus, errorThrown){
+		   console.log('error',textStatus + " " + errorThrown);
+			   alert('POI error loading response');
+		   }
+		});
+	
+	
+	
 	
 	
 }
