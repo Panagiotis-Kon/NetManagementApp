@@ -150,12 +150,12 @@ public class PoICalculations {
 			Clusters.get(pos).setAll(point.getStartlat(), point.getStartlon(), point.getEndlat(), point.getEndlon(), point.getNoise(), point.getNumofPoints());
 		}
 		Clusters.get(pos).getPoints().add(Lsp.get(spointpos));
-		for (int i=0;i<neighbors.size();i++){
+		for (int i=0;i<neighbors.size();i++){ //neighbors.get(pos).get(i) = NeighborPts', neighbors.get(pos) = NeighborPts
 			if (neighbors.get(pos).get(i).getVisited()==0){
 				neighbors.get(pos).get(i).setVisited(1);
 				neighbors.get(i).addAll(regionQuery(Lsp, pos));
 				if (neighbors.get(i).size()>=minPts){
-					neighbors.get(pos).addAll(neighbors.get(i));
+					neighbors.get(pos).addAll(neighbors.get(i));//neighbors.get(i) = NeighborPts'
 				}
 			}
 			int found = 0;
