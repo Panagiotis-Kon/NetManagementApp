@@ -117,7 +117,10 @@ public class PoICalculations {
 				Map.Entry me = (Map.Entry)it.next();
 				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<GPS> array = GPSCalculations.getInstance().searchUser(me.getKey().toString(), startDate, endDate);
-				Lsp.addAll(GPSCalculations.getInstance().findStayPoints(array, Tmin, Tmax, Dmax));
+				ArrayList<StayPoints> temp = GPSCalculations.getInstance().findStayPoints(array, Tmin, Tmax, Dmax);
+				if (!temp.isEmpty()){
+					Lsp.addAll(temp);
+				}
 			}
 		}
 		generateDistanceMatrix(Lsp);
