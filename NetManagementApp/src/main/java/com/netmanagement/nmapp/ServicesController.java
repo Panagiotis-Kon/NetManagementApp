@@ -245,6 +245,7 @@ public class ServicesController {
 			 if(!apInfo.isEmpty()){
 				 
 				 String json = new Gson().toJson(apInfo);
+				 System.out.println("List size: " + apInfo.size());
 				 System.out.println("json string: " + json);
 			     return json;	
 			 }
