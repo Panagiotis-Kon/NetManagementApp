@@ -15,7 +15,6 @@ public class AccessPoints implements Comparable<AccessPoints>{
 	private double APlatitude;
 	private double APlongtitude;
 	private String timestamp;
-	private Date date;
 	
 	public void setAll(String[] Data) {
 		id=Data[0];
@@ -80,27 +79,18 @@ public class AccessPoints implements Comparable<AccessPoints>{
 		this.frequency = frequency;
 	}
 	
-	
 	public String getTimestamp() {
 		return timestamp;
 	}
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-	
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
 
 	 @Override
 	  public int compareTo(AccessPoints o) {
-	    if (getDate() == null || o.getDate() == null)
+	    if (getTimestamp() == null || o.getTimestamp() == null)
 	      return 0;
-	    return getDate().compareTo(o.getDate());
+	    return getTimestamp().compareTo(o.getTimestamp());
 	  }
 	
 }

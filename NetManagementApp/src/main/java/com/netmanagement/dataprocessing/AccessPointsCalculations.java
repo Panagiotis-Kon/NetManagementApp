@@ -10,9 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import com.netmanagement.csvdatasets.ParseAccessPoints;
-import com.netmanagement.entities.APResults;
 import com.netmanagement.entities.AccessPoints;
 
 public class AccessPointsCalculations {
@@ -38,10 +36,9 @@ public class AccessPointsCalculations {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<APResults> EstimatedPointPosition(){
+	public int EstimatedPointPosition(){
 		//Find average of rssid(=level) and calculate latitude and longitude. Finally return a list of unique AccessPoints
 		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
-		ArrayList<APResults> alist = new ArrayList<APResults>();
 		if (!hap.isEmpty()){
 			Set<?> set = hap.entrySet();
 			Iterator<?> it = set.iterator();
@@ -77,20 +74,10 @@ public class AccessPointsCalculations {
 					array.get(i).setAPlongtitude(lon);
 					array.get(i).setRssi(level);
 				}
-				APResults temp = new APResults();
-				temp.setAPlatitude(lat);
-				temp.setAPlongtitude(lon);
-				temp.setBSSID(array.get(0).getBssid());
-				if (!alist.contains(temp)){
-					alist.add(temp);
-				}
-				//System.out.println(alist.toString());
 			}
 		}
-		for (int i=0;i<alist.size();i++)
-		System.out.println(alist.get(i).getBSSID()+" "+alist.get(i).getAPlatitude()+" "+alist.get(i).getAPlongtitude());
 		EstimatedPointPosition=1;
-		return alist;
+		return EstimatedPointPosition;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -119,10 +106,6 @@ public class AccessPointsCalculations {
 							//System.out.println(date1+" | "+date2+" | "+dateu);
 							if (date1.equals(dateu) || date1.before(dateu)){
 								if (date2.equals(dateu) || date2.after(dateu)){
-									System.out.println(date1+" | "+date2+" | "+dateu);
-									SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-									Date datet = sdft.parse(tempap.getTimestamp());
-									tempap.setDate(datet);
 									alist.add(tempap);
 								}
 							}
