@@ -17,6 +17,11 @@ public class PoICalculations {
     private double esp;
     private int minPts;
     private double[][] matrix = null;
+    String startDate;
+    String endDate;
+    String Tmin;
+    String Tmax;
+    Double Dmax;
     ArrayList<ArrayList<StayPoints>> neighbors = new ArrayList<ArrayList<StayPoints>>();
 	
 	private PoICalculations(){}
@@ -26,6 +31,16 @@ public class PoICalculations {
 			PoICalculationsinstance = new PoICalculations();
 		}
 		return PoICalculationsinstance;
+	}
+	
+	public void setAll(String startDate, String endDate, String Tmin, String Tmax, Double Dmax, Double esp, int minPts){
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.Tmin = Tmin;
+		this.Tmax = Tmax;
+		this.Dmax = Dmax;
+		this.esp = esp;
+		this.minPts = minPts;
 	}
 	
 	public double getEsp() {
@@ -52,7 +67,47 @@ public class PoICalculations {
 		this.matrix = matrix;
 	}
 
-	public ArrayList<PointsofInterest> CalculatePoI(String startDate, String endDate, String Tmin, String Tmax, Double Dmax){
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getTmin() {
+		return Tmin;
+	}
+
+	public void setTmin(String tmin) {
+		Tmin = tmin;
+	}
+
+	public String getTmax() {
+		return Tmax;
+	}
+
+	public void setTmax(String tmax) {
+		Tmax = tmax;
+	}
+
+	public Double getDmax() {
+		return Dmax;
+	}
+
+	public void setDmax(Double dmax) {
+		Dmax = dmax;
+	}
+
+	public ArrayList<PointsofInterest> CalculatePoI(){
 		HashMap<String, ArrayList<GPS>> hgps = ParseGPS.getInstance().getHap();
 		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();
 		if (!hgps.isEmpty()){
