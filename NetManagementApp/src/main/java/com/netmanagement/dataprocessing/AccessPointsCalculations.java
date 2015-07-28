@@ -3,6 +3,8 @@ package com.netmanagement.dataprocessing;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -109,13 +111,18 @@ public class AccessPointsCalculations {
 					if (tempap.getUser().equals(userID)){
 						try {
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+							
 							Date date1 = sdf.parse(startDate);
 							Date date2 = sdf.parse(endDate);
 							Date dateu = sdf.parse(tempap.getTimestamp());
+							
 							//System.out.println(date1+" | "+date2+" | "+dateu);
 							if (date1.equals(dateu) || date1.before(dateu)){
 								if (date2.equals(dateu) || date2.after(dateu)){
 									System.out.println(date1+" | "+date2+" | "+dateu);
+									SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+									Date datet = sdft.parse(tempap.getTimestamp());
+									tempap.setDate(datet);
 									alist.add(tempap);
 								}
 							}
@@ -131,6 +138,7 @@ public class AccessPointsCalculations {
 		if(alist.isEmpty()){
 			System.out.println("AccessPointsCalculations: alist is empty!!!");
 		}
+		Collections.sort(alist);
 		return alist;
 	}
 	

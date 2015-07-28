@@ -1,8 +1,10 @@
 package com.netmanagement.entities;
 
+import java.util.Date;
 
 
-public class AccessPoints {
+
+public class AccessPoints implements Comparable<AccessPoints>{
 	
 	private String id;
 	private String user;
@@ -13,6 +15,7 @@ public class AccessPoints {
 	private double APlatitude;
 	private double APlongtitude;
 	private String timestamp;
+	private Date date;
 	
 	public void setAll(String[] Data) {
 		id=Data[0];
@@ -85,5 +88,19 @@ public class AccessPoints {
 		this.timestamp = timestamp;
 	}
 	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	 @Override
+	  public int compareTo(AccessPoints o) {
+	    if (getDate() == null || o.getDate() == null)
+	      return 0;
+	    return getDate().compareTo(o.getDate());
+	  }
 	
 }

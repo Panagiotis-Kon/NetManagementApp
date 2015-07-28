@@ -31,7 +31,8 @@ function Markers(data) {
 		                animation: google.maps.Animation.DROP,
 		            });
 			 		
-			 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + ' Mean RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + "</p>";     
+			 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + ' Mean RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
+			 		 "<br />" + "lat:  " + item.APlatitude + "<br />" + "lon:  " + item.APlongtitude + "</p>";     
 
 		 			var infowindow = new google.maps.InfoWindow();
 
