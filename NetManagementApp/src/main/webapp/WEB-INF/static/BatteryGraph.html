@@ -50,6 +50,7 @@ window.onload = function(){
 		var sentdata = JSON.parse(sessionStorage.getItem('battery'));
 		
 		var prevTime = null;
+		var steps = 0;
 		$.each(sentdata,function(i,item){
 			var str = item.timestamp;
 			console.log('timestamp: ', item.timestamp);
@@ -57,11 +58,15 @@ window.onload = function(){
 			
 			level.push(item.level);
 			time.push(split[1]);
+			steps++;
 		})
 	
 	window.myLine = new Chart(ctx).Line(lineChartData, {
 		responsive: true,
 		scaleShowVerticalLines: false,
+		scaleSteps: steps,                     
+        scaleStepWidth: Math.ceil(100 / steps), 
+        scaleStartValue : 0,
 	});
 }
 	

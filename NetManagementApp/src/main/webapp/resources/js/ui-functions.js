@@ -10,6 +10,7 @@
 	    var matcherN = /[^0-9]/g;
         var submittedChoice = 0;
         var dateRange = [];
+        //var dataArray = [];
         
 function sortAlphaNum(a,b) {
 	
@@ -483,29 +484,72 @@ function clickableMenuVisual(option, menuitem){
 }
 
 
+function addParameters() {
+	
+	dataArray.push(document.getElementById('fromPOI').value);
+	dataArray.push(document.getElementById('toPOI').value);
+	dataArray.push(document.getElementById('DmaxPOI').value);
+	dataArray.push(document.getElementById('TminPOI').value);
+	dataArray.push(document.getElementById('TmaxPOI').value);
+	dataArray.push(document.getElementById('epsPOI').value);
+	dataArray.push(document.getElementById('minPtsPOI').value);
+	return true;
+	//CalculatePOI(dataArray);
+	
+}
+
 function POIParameters() {
 	
 	 //$("#popupText").text("Stay Points created. Load on Map?");
+	$( "#fromPOI" ).datepicker({
+	      changeMonth: true,
+	      numberOfMonths: 1,
+	      dateFormat: "yy-mm-dd",
+	      changeYear: true,
+	      //beforeShowDay: enableSpecificDates,
+	      onClose: function( selectedDate ) {
+	    	 
+	        $( "#toPOI" ).datepicker( "option", "minDate", selectedDate );
+	        //startDate = selectedDate;
+	        //console.log(' startDate: ' + startDate);
+	      }
+	    });
+	    $( "#toPOI" ).datepicker({
+	      changeMonth: true,
+	      numberOfMonths: 1,
+	      dateFormat: "yy-mm-dd",
+	      changeYear: true,
+	     // beforeShowDay:enableSpecificDates,
+	      onClose: function(selectedDate ) {
+	    	  
+	        $( "#fromPOI" ).datepicker( "option", "maxDate", selectedDate );
+	       // endDate = selectedDate;
+	        //console.log(' endDate: ' + selectedDate);
+	      }
+	    });
 	   $("#divpopupParam").dialog({
 			title: "POI PARAMETERS",
 			width: 500,
 			height: 500,
 			modal:true,
 			buttons: {
-				Submit: 
-					function(){
-						$(this).dialog('close');
-						// make ajax call 
-						var dataArray = null;
-						dataArray.push(document.getElementById('fromPOI').value);
-						dataArray.push(document.getElementById('toPOI').value);
-						dataArray.push(document.getElementById('DmaxPOI').value);
-						dataArray.push(document.getElementById('TminPOI').value);
-						dataArray.push(document.getElementById('TmaxPOI').value);
-						dataArray.push(document.getElementById('epsPOI').value);
-						dataArray.push(document.getElementById('minPtsPOI').value);
-						CalculatePOI(dataArray);
-					},
+				Submit: function(){
+					
+					
+					var dataArray = [];
+					dataArray.push(document.getElementById('fromPOI').value);
+					dataArray.push(document.getElementById('toPOI').value);
+					dataArray.push(document.getElementById('DmaxPOI').value);
+					dataArray.push(document.getElementById('TminPOI').value);
+					dataArray.push(document.getElementById('TmaxPOI').value);
+					dataArray.push(document.getElementById('epsPOI').value);
+					dataArray.push(document.getElementById('minPtsPOI').value);
+					
+					$(this).dialog('close');
+					CalculatePOI(dataArray);
+					
+				},
+
 				Cancel:
 					function(){
 					$(this).dialog('close');
@@ -513,6 +557,7 @@ function POIParameters() {
 					}
 			}
 			}); 
+	   
 	
 }
 
