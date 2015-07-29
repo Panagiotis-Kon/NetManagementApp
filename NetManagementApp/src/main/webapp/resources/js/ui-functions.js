@@ -132,23 +132,17 @@ function options(data) {
            
 }
 
-function createRange() {
-	var tempArr = [];
-	while (minDate <= maxDate)
-	{
-		tempArr.push(new Date(minDate));
-		minDate.setDate(minDate.getDate()+1);
-    }
-	if(dateRange.length > tempArr.length) {
+function createRange(data) {
+	
+	if(dateRange.length > 0) {
 		dateRange.length = 0;
 	}
-	for(var i=0; i<tempArr.length; i++){
-		
-		var m = tempArr[i].getMonth();
-		var d = tempArr[i].getDate();
-		var y = tempArr[i].getFullYear();
-		var finalDate = y + '-'+ (m+1) + '-' + d;
+	
+	for(var i=0; i< data.length; i++) {
+		var tempDate = new Date(data[i]);
+		var finalDate = tempDate.getFullYear() + '-'+ (tempDate.getMonth() +1) + '-' + tempDate.getDate();
 		dateRange.push(finalDate);
+		
 	}
 	for(var i=0; i<dateRange.length; i++){
 		console.log('daterange: ', dateRange[i]);
@@ -180,24 +174,9 @@ function enableSpecificDates(date) {
 
 
 function datePicker(data) {
-	//alert('datePicker');
-	
-	
-	var strTime = '';
-	var splitter = '';
-	var splitter1 = '';
-	var splitter2 = '';
-	
-	strTime = data;
-	var splitter = strTime.split('#');
-	var splitter1 = splitter[0].split(' ');
-	var splitter2 = splitter[1].split(' ');
-	minDate = new Date(splitter1[0]);
-	maxDate = new Date(splitter2[0]);
-	
-	console.log('minDate(string)',splitter1[0]);
-	console.log('maxDate(string)',splitter2[0]);
-	createRange();
+
+
+	createRange(data);
 	
 	
 	$("#timeline").show();

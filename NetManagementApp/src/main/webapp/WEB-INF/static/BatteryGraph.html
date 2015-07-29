@@ -9,7 +9,7 @@
 <link href="resources/css/jquery-ui.css" rel='stylesheet' type='text/css' />
 <script src="resources/js/jquery-ui.js"></script>
 <script src="resources/js/amcharts.js" type="text/javascript"></script>
-<script src="resources/js/serial.js" type="text/javascript"></script>
+<script src="resources/js/xy.js" type="text/javascript"></script>
 
 <style>
 body {
@@ -28,104 +28,125 @@ a:active {color: #84c4e2;}
 
 <script>
 
-
+var chart;
 var chartData = [];
             generateChartData();
 
-            var chart = AmCharts.makeChart("chartdiv", {
-                type: "serial",
-                dataProvider: chartData,
-                categoryField: "date",
-                categoryAxis: {
-                    parseDates: true,
-                    gridAlpha: 0.15,
-                    minorGridEnabled: true,
-                    axisColor: "#DADADA"
-                },
-                valueAxes: [{
-                    axisAlpha: 0.2,
-                    id: "v1"
-                }],
-                graphs: [{
-                    title: "red line",
-                    id: "g1",
-                    valueAxis: "v1",
-                    valueField: "visits",
-                    bullet: "round",
-                    bulletBorderColor: "#FFFFFF",
-                    bulletBorderAlpha: 1,
-                    lineThickness: 2,
-                    lineColor: "#b5030d",
-                    negativeLineColor: "#0352b5",
-                    balloonText: "[[category]]<br><b><span style='font-size:14px;'>value: [[value]]</span></b>"
-                }],
-                chartCursor: {
-                    fullWidth:true,
-                    cursorAlpha:0.1
-                },
-                chartScrollbar: {
-                    scrollbarHeight: 40,
-                    color: "#FFFFFF",
-                    autoGridCount: true,
-                    graph: "g1"
-                },
-
-                mouseWheelZoomEnabled:true
-            });
-
-            chart.addListener("dataUpdated", zoomChart);
-
-
             // generate some random data, quite different range
             function generateChartData() {
-                var firstDate = new Date();
-                firstDate.setDate(firstDate.getDate() - 500);
+            	
+            	var data = JSON.parse(sessionStorage.getItem('battery'));
+            	
+                
 
-                for (var i = 0; i < 500; i++) {
-                    // we create date objects here. In your data, you can have date strings
-                    // and then set format of your dates using chart.dataDateFormat property,
-                    // however when possible, use date objects, as this will speed up chart rendering.
-                    var newDate = new Date(firstDate);
-                    newDate.setDate(newDate.getDate() + i);
-
-                    var visits = Math.round(Math.random() * 40) - 20;
-
+                for (var i = 0; i < data.length; i++) {
+                   
+                	var date = data[i].timestamp;
+                	var dateTime = date.split(' ');
+                	console.log('date bat: ', dateTime[0]);
+                	var level = data[i].level;
+                	
+                   
                     chartData.push({
-                        date: newDate,
-                        visits: visits
+                        date: dateTime[0],
+                        level: level
                     });
                 }
             }
+            
+            
+            AmCharts.ready(function () {
+                // XY CHART
 
-            // this method is called when chart is first inited as we listen for "dataUpdated" event
-            function zoomChart() {
-                // different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
-                chart.zoomToIndexes(chartData.length - 40, chartData.length - 1);
-            }
+                chart = new AmCharts.AmXYChart();
+                chart.dataDateFormat = "YYYY-MM-DD";
 
-            // changes cursor mode from pan to select
-            function setPanSelect() {
-                var chartCursor = chart.chartCursor;
+                chart.dataProvider = chartData;
+                chart.startDuration = 1;
 
-                if (document.getElementById("rb1").checked) {
-                    chartCursor.pan = false;
-                    chartCursor.zoomable = true;
+                // AXES
+                // X
+                var xAxis = new AmCharts.ValueAxis();
+                xAxis.title = "Time";
+                xAxis.position = "bottom";
+                xAxis.dashLength = 1;
+                xAxis.axisAlpha = 0;
+                xAxis.type = "date";
+                xAxis.autoGridCount = true;
+                chart.addValueAxis(xAxis);
 
-                } else {
-                    chartCursor.pan = true;
-                }
-                chart.validateNow();
-            }
+                // Y
+                var yAxis = new AmCharts.ValueAxis();
+                yAxis.position = "left";
+                yAxis.title = "Level";
+                yAxis.dashLength = 1;
+                yAxis.axisAlpha = 0;
+                yAxis.autoGridCount = true;
+                chart.addValueAxis(yAxis);
+
+                // GRAPHS
+                // triangles up
+                var graph1 = new AmCharts.AmGraph();
+                graph1.lineColor = "#FF6600";
+                graph1.balloonText = "x:[[x]] y:[[y]]";
+                graph1.xField = "date";
+                graph1.yField = "ay";
+                graph1.lineAlpha = 1;
+                graph1.type = "smoothedLine";
+                graph1.bullet = "triangleUp";
+                chart.addGraph(graph1);
+
+                // triangles down
+                /*
+                var graph2 = new AmCharts.AmGraph();
+                graph2.lineColor = "#FCD202";
+                graph2.balloonText = "x:[[x]] y:[[y]]";
+                graph2.xField = "date";
+                graph2.yField = "by";
+                graph2.lineAlpha = 1;
+                graph2.type = "smoothedLine";
+                graph2.bullet = "triangleDown";
+                chart.addGraph(graph2);*/
+
+                // first trend line
+                var trendLine = new AmCharts.TrendLine();
+                trendLine.lineColor = "#FF6600";
+                trendLine.initialXValue = 1;
+                trendLine.initialValue = 2;
+                trendLine.finalXValue = 12;
+                trendLine.finalValue = 11;
+                chart.addTrendLine(trendLine);
+
+                // second trend line
+                /*
+                trendLine = new AmCharts.TrendLine();
+                trendLine.lineColor = "#FCD202";
+                trendLine.initialXValue = 1;
+                trendLine.initialValue = 1;
+                trendLine.finalXValue = 12;
+                trendLine.finalValue = 19;
+                chart.addTrendLine(trendLine);*/
+
+                // CURSOR
+                var chartCursor = new AmCharts.ChartCursor();
+                chart.addChartCursor(chartCursor);
+
+                // SCROLLBAR
+
+                var chartScrollbar = new AmCharts.ChartScrollbar();
+                chart.addChartScrollbar(chartScrollbar);
+
+                // WRITE
+                chart.write("chartdiv");
+            });
+
+         
             </script>
 		
 	</head>
 	<body>
-		<div id="chartdiv" style="width: 100%; height: 400px;"></div>
-        <div style="margin-left:35px;">
-            <input type="radio" checked="true" name="group" id="rb1" onclick="setPanSelect()">Select
-            <input type="radio" name="group" id="rb2" onclick="setPanSelect()">Pan
-		</div>
-
+		
+	 	<div id="chartdiv" style="width: 100%; height: 400px;"></div>
 	
 	</body>
 </html>

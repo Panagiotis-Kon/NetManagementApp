@@ -561,7 +561,7 @@ function getBatteryInfo() {
 				   else {
 					   $("#popupText").text("Battery Info gathering comleted. Load Graph ?");
 					   $("#divpopup").dialog({
-							title: "ACCESS POINTS",
+							title: "BATTERY",
 							width: 430,
 							height: 200,
 							modal:true,

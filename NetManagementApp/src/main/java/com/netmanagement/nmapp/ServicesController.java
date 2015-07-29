@@ -238,8 +238,8 @@ public class ServicesController {
 	   public @ResponseBody String getDates(@RequestParam String userID) {
 		 
 		 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
-		 String udates = apc.minmaxTimestamp(userID);
-		 String json = new Gson().toJson(udates);
+		 ArrayList<String> dates = apc.allTimestamps(userID);
+		 String json = new Gson().toJson(dates);
 		 return json;
 	 }
 	 
