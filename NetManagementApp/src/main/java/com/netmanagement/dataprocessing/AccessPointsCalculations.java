@@ -121,7 +121,10 @@ public class AccessPointsCalculations {
 		if(alist.isEmpty()){
 			System.out.println("AccessPointsCalculations: alist is empty!!!");
 		}
-		Collections.sort(alist);
+		else {
+			Collections.sort(alist);
+			System.out.println(alist.get(0).getUser()+" | "+alist.get(0).getTimestamp()+" ||| "+alist.get(alist.size()-1).getUser()+" | "+alist.get(alist.size()-1).getTimestamp());
+		}
 		return alist;
 	}
 	
@@ -239,6 +242,9 @@ public class AccessPointsCalculations {
 				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				for (int i=0;i<array.size();i++){
+					if (!array.get(i).getUser().equals(user)){
+						continue;
+					}
 					if (first==1){
 						MIN=array.get(i).getTimestamp();
 						MAX=array.get(i).getTimestamp();
@@ -250,7 +256,7 @@ public class AccessPointsCalculations {
 							Date datemin = sdf.parse(MIN);
 							Date datemax = sdf.parse(MAX);
 							Date datenow = sdf.parse(array.get(i).getTimestamp());
-							System.out.println(datemin+" | "+datemax+" | "+datenow);
+							//System.out.println(datemin+" | "+datemax+" | "+datenow);
 							if (datemin.after(datenow)){
 								MIN=array.get(i).getTimestamp();
 							}
