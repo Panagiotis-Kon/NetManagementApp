@@ -10,6 +10,7 @@
 	    var matcherN = /[^0-9]/g;
         var submittedChoice = 0;
         var dateRange = [];
+        var firstTimeClicked = 0;
         //var dataArray = [];
         
 function sortAlphaNum(a,b) {
@@ -30,7 +31,7 @@ function sortAlphaNum(a,b) {
         
 function options(data) {
    	
-	/*In this function we return the available users */
+	
 		  var arr = [];
 		 
 		  
@@ -65,10 +66,7 @@ function options(data) {
             $('#usersTable').append(table);
             console.log("Table created (else)");
         }
-        
-        
-        
-        
+
 		var parent = document.querySelector('#usersTable');
 		
 		$("#userSel").show();
@@ -106,6 +104,19 @@ function options(data) {
 
         var submitUser = document.getElementById("addUserBtn");
         submitUser.addEventListener('click',function(e){
+        	firstTimeClicked++;
+        	var time = document.getElementById('timeline');
+        	var submit = document.getElementById("btnIdSub");
+        	var close = document.getElementById("btnId");
+        	if(firstTimeClicked > 1 && time != null && submit != null && close!=null){
+        		
+        		document.getElementById('from').value = '';
+        		document.getElementById('to').value = '';
+        		$("#timeline").hide();
+        		submit.parentNode.removeChild(submit);
+        		close.parentNode.removeChild(close);
+        	}
+
         	 if(document.getElementById('User').value == '') {
         		 alert("Please fill user field");
              }
@@ -170,6 +181,8 @@ function enableSpecificDates(date) {
 
 function datePicker(data) {
 	//alert('datePicker');
+	
+	
 	var strTime = '';
 	var splitter = '';
 	var splitter1 = '';
@@ -241,7 +254,10 @@ function datePicker(data) {
  		 userID = document.getElementById('User').value;
  		 startDate = document.getElementById('from').value;
  		 endDate = document.getElementById('to').value;
+ 		 
  		 if(analysisPage == 1) {
+ 			 
+ 			 console.log('analysis page');
  			if(document.getElementById('Dmax').value == '' || document.getElementById('Tmin').value=='' || document.getElementById('Tmax').value=='')
  			{
  				alert("Please fill the parameters");
@@ -249,8 +265,10 @@ function datePicker(data) {
  			Dmax = document.getElementById('Dmax').value;
  			Tmin = document.getElementById('Tmin').value;
  			Tmax = document.getElementById('Tmax').value;
+ 			
  			$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate + "\n" +
  					"Dmax: " + Dmax + "\n" + "Tmin: " + Tmin + "\n" + "Tmax: " + Tmax);
+ 			
   		   $("#divpopup").dialog({
   				title: "Choice Submission",
   				width: 430,
@@ -281,6 +299,9 @@ function datePicker(data) {
  						function(){
  						$(this).dialog('close');
  						
+ 						/*$("#timeline").hide();
+ 		        		$("#btnIdSub").hide();
+ 		        		$("#btnId").hide();*/
  						}
  					
  					}
