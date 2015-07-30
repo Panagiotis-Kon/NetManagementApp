@@ -26,7 +26,7 @@
 <script type="text/javascript">
 
 var map = null;
-function fullMarkers(apdata) {
+/*function fullMarkers(apdata) {
 	
 	
 	var latlng = null;
@@ -72,7 +72,7 @@ function fullMarkers(apdata) {
 		 fullMarkers(apdata);
 		 
 	 }
-	 else {
+	 
 		 var flightPlanCoordinates = [];
 		 $.each(apdata,function(i,item){
 			 
@@ -80,8 +80,6 @@ function fullMarkers(apdata) {
 				
 				
 			});
-
-	 }
 
 	var flightPath = new google.maps.Polyline({
 		path: flightPlanCoordinates,
@@ -94,7 +92,7 @@ function fullMarkers(apdata) {
 		
 	 
  }
- 
+ */
  
 function fullCells(bsdata) {
 	
@@ -182,9 +180,9 @@ function initialize() {
 		//fullMarkers(apdata);
 	}
 	else if(currentV == 1){
-		//var apdata = JSON.parse(sessionStorage.getItem('sent'));
+		
 		Polyline()
-		//fullPolyline(apdata);
+		
 		
 	}
 	else if(currentV == 2) {
@@ -192,7 +190,7 @@ function initialize() {
 		DrawCells();
 	}
 	else if(currentV == 3){
-		
+		DrawStayPoints(data);
 		
 	}
 	

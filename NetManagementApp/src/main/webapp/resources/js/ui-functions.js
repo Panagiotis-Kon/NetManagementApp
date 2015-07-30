@@ -33,8 +33,7 @@ function options(data) {
    	
 	
 		  var arr = [];
-		 
-		  
+
 		  clickableMenuVisual(0, 1);
 		  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
 		  $('#headerTag').append(header);
@@ -75,28 +74,6 @@ function options(data) {
         	var elem = document.getElementById("User");
 			elem.value = e.target.innerHTML.toLowerCase();
 			userID = e.target.innerHTML.toLowerCase();
-        	
-        	/*$("#popupText").text("Are you sure you want to monitor " + e.target.innerHTML.toLowerCase()+ " ?");
-        	$("#divpopup").dialog({
-				title: "User Selected",
-				width: 430,
-				height: 200,
-				modal:true,
-				
-				buttons: {
-					YES: 
-						function(){
-						$(this).dialog('close');
-						
-						},
-					NO:
-						function(){
-						$(this).dialog('close');
-						
-						}
-				}
-				});*/
-          //console.log("You clicked row " + e.target.innerHTML.toLowerCase());
         });
    
     	var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
@@ -116,7 +93,6 @@ function options(data) {
         		submit.parentNode.removeChild(submit);
         		close.parentNode.removeChild(close);
         	}
-
         	 if(document.getElementById('User').value == '') {
         		 alert("Please fill user field");
              }
@@ -124,12 +100,9 @@ function options(data) {
         		 userID = document.getElementById('User').value;
         		 getAvUserDates(userID);
         		 
-        	 }
-        	
+        	 }        	
         })
-        
-        
-           
+                     
 }
 
 function createRange(data) {
@@ -465,7 +438,7 @@ function clickableMenuVisual(option, menuitem){
 		}
 		else {
 			var link = document.getElementById('graphLink');
-			link.href="javascript:BatteryGraph();"
+			link.href="javascript:getBatteryInfo();"
 				link.style.color="#000";
 				link.onmouseover= function(){this.style.color="red";}
 				link.onmouseout = function(){this.style.color="#000";}
@@ -480,7 +453,7 @@ function clickableMenuVisual(option, menuitem){
 		}
 		else {
 			var link = document.getElementById('cellsLink');
-			link.href="javascript:Cells();"
+			link.href="javascript:getCellsInfo();"
 				link.style.color="#000";
 				link.onmouseover= function(){this.style.color="red";}
 				link.onmouseout = function(){this.style.color="#000";}
@@ -565,6 +538,24 @@ function POIParameters() {
 			}
 			}); 
 	   
+	
+}
+
+
+
+/*------------------------------------- Bar Diagrams ---------------------------------------------------- */
+function DrawDiagram1(data){
+	
+	
+	
+	
+}
+
+
+function DrawDiagram2(data){
+	
+	
+	
 	
 }
 

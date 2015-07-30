@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Data Analysis</title>
+<title>Bar Diagrams</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Hosting Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template, 
@@ -11,6 +11,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="resources/js/jquery-1.11.1.min.js"></script>
 
+<!--  link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+ 
+<!--  script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
 
 <link href="resources/css/jquery-ui.css" rel='stylesheet' type='text/css' />
 <script src="resources/js/jquery-ui.js"></script>
@@ -47,6 +50,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
 
+
 <script type="text/javascript">paceOptions = {
 
 		  ajax: false, // Monitors all ajax requests on the page
@@ -63,11 +67,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		};</script>
 
-<!-- <script type="text/javascript">
-window.onload = function(){
-$( "#accordion" ).accordion();
-})
-</script> -->    
+    
+
 
 <script type="text/javascript">
   $(function() {
@@ -98,13 +99,13 @@ $( "#accordion" ).accordion();
 												<li><a href="javascript:requestsHandler('GPS');">GPS</a></li>
 												<li><a href="javascript:requestsHandler('BaseStations');">Base Stations</a></li>
 										</ul>
-										</li>									
+										</li>		    
 										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataVisualization();">Data Visualization</a>
 										</li>  
-										<li class="dropdown1"><a class="active" href="javascript:toDataAnalysis();">Data Analysis</a>
+										<li class="dropdown1"><a class="down-scroll" href="javascript:toDataAnalysis();">Data Analysis</a>
 											
 										</li> 
-										<li class="dropdown1"><a class="down-scroll" href="">Bar Diagrams</a>
+										<li class="dropdown1"><a class="active" href="javascript:toBarDiagrams();">Bar Diagrams</a>
 											
 										</li>						
 										<li class="dropdown1"><a href="#">Conclusions</a></li>  
@@ -121,16 +122,16 @@ $( "#accordion" ).accordion();
 	</div>
 	</div>
 			<div class="banner-info-serv">
-			<h1 class="banner-info-serv2">Data Analysis</h1>
+			<h1 class="banner-info-serv2">Data Visualization</h1>
 			</div>
 			
 			
 			<div class="mini-menu">
 				<ul>
-					<li><a href="javascript:getUsers(1);" id="userLink">Choose User/Parameters</a></li>
-					<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>
-					<li><a href="javascript:POIParameters();" id="POIParamLink">POI Parameters</a></li>	
-					<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>				
+					<li><a href="javascript:graphBatUsers();" id="Bar-users">Battery(15%) and Users</a></li>
+					<li><a href="javascript:graphOpUsers();" id="Operator-users">Operators and Users</a></li>					
+				
+				
 				</ul>
 				
 			</div>
@@ -138,57 +139,7 @@ $( "#accordion" ).accordion();
 			<div class="border"></div>
 			
 			<div class="container">
-			<div class="row">
-  				<div class="span9">
-  			
-  				 <div id="map-fullscreen" style="text-align:left;display:none;"><p>View Map on <a href="javascript:fullscreenMode()" style="color:blue;">full screen</a></p></div> 
-    			 <div id="map-canvas2" style="float:left; width: 50%; height: 800px; margin-bottom:2em; margin-top:1em;"></div>
-   					
-  				</div>
-  			
-  				<div class="span9">
-    				
-    				<div id="graph" style="float:right; width: 50%; height:800px;margin-bottom:2em; margin-top:1em;">
-						<div id="headerTag"></div>
-						<div id="usersTable"></div>
-						<div id="userSel">
-							<label for="user">User</label>
-							<input type="text" id="User" name="user">
-						</div>
-						<div id="timeline">
-							
-							<label for="from">From</label>
-							<input type="text" id="from" name="from" title="format: yyyy-mm-dd">
-							<label for="to">to</label>
-							<input type="text" id="to" name="to" title="format: yyyy-mm-dd">
-						</div>
-						<div id=parameters>
-						<!--  <div id="accordion"> -->
-							
-							<div>
-								<label for="Dmax">Dmax</label>
-								<input type="text" id="Dmax" name="Dmax">
-								
-							</div>
-							
-							
-							<div>
-						
-								<label for="Tmin">Tmin</label>
-								<input type="text" id="Tmin" name="Tmin">
-							</div>
-							
-							<div>
-							
-								<label for="Tmax">Tmax</label>
-								<input type="text" id="Tmax" name="Tmax">
-							</div>
-						</div>
-						
-						<div id="closer"></div>
-					</div>
-  				</div>
-			</div>
+	
 			</div>
 				
 			
@@ -198,42 +149,6 @@ $( "#accordion" ).accordion();
 <!-- Header Ends Here -->	
 <div id="divpopup" style="display:none">
 <div id="popupText"></div>
-</div>
-
-<div id="divpopupParam" style="display:none">
-
-	<div id="poipar">
-		<label for="from">From: </label>
-		<input type="text" id="fromPOI" name="from" title="format: yyyy-mm-dd">
-	</div>
-	<div id="poipar">
-		<label for="to">To: </label>
-		<input type="text" id="toPOI" name="to" title="format: yyyy-mm-dd">
-	
-	</div>
-	<div id="poipar">
-		<label for="Dmax">Dmax</label>
-		<input type="text" id="DmaxPOI" name="Dmax">
-								
-	</div>
-							
-	<div id="poipar">
-		<label for="Tmin">Tmin</label>
-		<input type="text" id="TminPOI" name="Tmin">
-	</div>
-	<div id="poipar">
-		<label for="Tmax">Tmax</label>
-		<input type="text" id="TmaxPOI" name="Tmax">
-	</div>
-	<div id="poipar">
-		<label for="eps">eps</label>
-		<input type="text" id="epsPOI" name="eps">
-	</div>
-	<div id="poipar">
-		<label for="minPts">minPts</label>
-		<input type="text" id="minPtsPOI" name="minPts">
-	</div>
-							
 </div>
 
 <!-- #Footer -->

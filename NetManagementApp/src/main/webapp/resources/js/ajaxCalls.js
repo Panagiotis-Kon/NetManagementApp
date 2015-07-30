@@ -653,10 +653,10 @@ function getCellsInfo() {
 								YES: 
 									function(){
 									$(this).dialog('close');
-									// call for new popup window with graph
-										sessionStorage.setItem('bs',JSON.stringify(data));
-										DrawCells();
-										//window.open('BatteryGraph',"width=400, height=400");
+								
+										//sessionStorage.setItem('bs',JSON.stringify(data));
+										DrawCells(data);
+										
 										
 									},
 								NO:
@@ -809,11 +809,135 @@ function CalculatePOI(dataArray){
 		   }
 		});
 	
-	
+}
+
+/*----------------------------------------- Bar Diagrams ---------------------------------------*/
+
+
+
+function graphBatUsers() {
+	$.ajax({ 
+		type: "GET",
+	    dataType: "json",
+	    contentType: "application/json",
+	    url: "/NetManagementApp/Battery-15%-Users-Graph",
+	   success: function(data){
+		   if(data == "bar-bat-problem"){
+			   
+			   $("#popupText").text("Bar Diagram 1 problem detected. Check the server");
+			   $("#divpopup").dialog({
+					title: "Bar Diagram 1",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+								$(this).dialog('close');
+								
+							}
+						
+					}
+					}); 
+			   
+			   
+		   }
+		   else {
+			   $("#popupText").html("Bar Diagram 1 has been generated.<br/> Load Diagram?");
+			   $("#divpopup").dialog({
+					title: "Bar Diagram 1",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						YES: 
+							function(){
+								$(this).dialog('close');
+								DrawDiagram1(data);
+								
+							},
+						NO:
+							function(){
+							$(this).dialog('close');
+							
+							}
+					}
+					}); 
+			   
+		   }
+	   },
+	   
+	   error:function(XMLHttpRequest, textStatus, errorThrown){
+		   console.log('error',textStatus + " " + errorThrown);
+			   alert('Bar Diagram 1 error loading response');
+		   }
+		});
 	
 	
 	
 }
 
+
+
+function graphOpUsers() {
+	
+	$.ajax({ 
+		type: "GET",
+	    dataType: "json",
+	    contentType: "application/json",
+	    url: "/NetManagementApp/Operators-Users-Graph",
+	   success: function(data){
+		   if(data == "bar-bat-problem"){
+			   
+			   $("#popupText").text("Bar Diagram 2 problem detected. Check the server");
+			   $("#divpopup").dialog({
+					title: "Bar Diagram 2",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+								$(this).dialog('close');
+								DrawDiagram2(data);
+							}
+						
+					}
+					}); 
+			   
+			   
+		   }
+		   else {
+			   $("#popupText").html("Bar Diagram 2 has been generated.<br/> Load Diagram?");
+			   $("#divpopup").dialog({
+					title: "Bar Diagram 2",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						YES: 
+							function(){
+								$(this).dialog('close');
+								
+								
+							},
+						NO:
+							function(){
+							$(this).dialog('close');
+							
+							}
+					}
+					}); 
+			   
+		   }
+	   },
+	   
+	   error:function(XMLHttpRequest, textStatus, errorThrown){
+		   console.log('error',textStatus + " " + errorThrown);
+			   alert('Bar Diagram 2 error loading response');
+		   }
+		});
+	
+}
 
 

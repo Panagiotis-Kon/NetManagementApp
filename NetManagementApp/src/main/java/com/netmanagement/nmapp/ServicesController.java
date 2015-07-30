@@ -42,11 +42,6 @@ public class ServicesController {
 		   return "forward:static/index.html";
 	   }
 	
-	 @RequestMapping(value = "/login", method = RequestMethod.GET)
-	   public String redirect() {
-	     
-	      return "static/login.html";
-	   }
 	 
 	 @RequestMapping(value = "/fullscreenMap", method = RequestMethod.GET)
 	   public String fullscreenMap() {
@@ -59,12 +54,7 @@ public class ServicesController {
 	     
 	      return "static/BatteryGraph.html";
 	   }
-	 
-	 @RequestMapping(value = "/estimationPoit", method = RequestMethod.GET)
-	   public String dataProcessing() {
-	     
-	      return "static/estimationPoint.html";
-	   }
+	
 	 
 	 @RequestMapping(value = "/dataAnalysis", method = RequestMethod.GET)
 	   public String dataAnalysis() {
@@ -76,6 +66,12 @@ public class ServicesController {
 	   public String dataVisualization() {
 	     
 	      return "static/dataVisualization.html";
+	   }
+	 
+	 @RequestMapping(value = "/Bar-Diagrams", method = RequestMethod.GET)
+	   public String BarDiagrams() {
+	     
+	      return "static/BarDiagrams.html";
 	   }
 	 
 	 
@@ -422,6 +418,25 @@ public class ServicesController {
 		 }
 		 
 		
+	 }
+	 
+	 /* ----------------------------------------- Bar Diagrams ------------------------------------------ */
+	 /* Bar Diagram 1 */
+	 @RequestMapping(value = "/Battery-15%-Users-Graph", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String BarDiagram1(){
+		 
+		 
+		 return "";
+	 }
+	 
+	 /* Bar Diagram 2 */
+	 @RequestMapping(value = "/Operators-Users-Graph", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String BarDiagram2(){
+		 
+		 
+		 return "";
 	 }
 	
 }

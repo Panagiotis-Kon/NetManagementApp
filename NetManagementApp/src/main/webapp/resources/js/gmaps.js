@@ -1,11 +1,11 @@
 map = null;
 var view = -1; // 0-> markers, 1->polyline, 2->cells
-mapSP = null;
+//mapSP = null;
 function Markers(data) {
 
 			view = 0;
 			var latlng = null;
-			sessionStorage.setItem('sent',JSON.stringify(data));
+			sessionStorage.setItem('apdata',JSON.stringify(data));
 	 		
 	 		$.each(data,function(i,item){
 	 			latlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
@@ -54,9 +54,9 @@ function Polyline(){
 		if(map == null) {
 			Markers(data);
 		}
-		//else {
+		
 			view = 1;
-			var sentdata = JSON.parse(sessionStorage.getItem('sent'));
+			var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
 			var flightPlanCoordinates = [];
 			$.each(sentdata,function(i,item){
 				
@@ -74,30 +74,26 @@ function Polyline(){
 				});
 			flightPath.setMap(map);
 	
-		//}
+		
 	
 }
-
+/*
 function BatteryGraph() {
 	getBatteryInfo(); 
 	
-}
+}*/
 
-function Cells() {
+/*function Cells() {
 
-		view = 2;
+		
 		//console.log("Trying to gather cell info")
 		getCellsInfo();
-		
 	
+}*/
 
-}
-
-function DrawCells() {
-	//console.log("DrawCells function");
-	//var latlng = null;
-	//latlng = new google.maps.LatLng('37.58','23.46');
-	var bsdata = JSON.parse(sessionStorage.getItem('bs'));
+function DrawCells(bsdata) {
+	view = 2;
+	//var bsdata = JSON.parse(sessionStorage.getItem('bs'));
 
 	var pinColor = "52bdb0";
 	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
@@ -153,6 +149,7 @@ function DrawStayPoints(data) {
 	//var spdata = null;
 	//var latlng = null;
 	//var marker = null;
+	view = 3;
 	if(data == null){
 		console.log('Data is null');
 		 data = JSON.parse(sessionStorage.getItem('stay-points'));
@@ -177,12 +174,12 @@ function DrawStayPoints(data) {
  		    		mapTypeId: google.maps.MapTypeId.TERRAIN
  		 		 };
  		      	
- 		 		 mapSP = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
+ 		 		 map = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
  	
  				}
 			    var marker = new google.maps.Marker({
                 position: latlng,
-                map: mapSP,
+                map: map,
                icon: pinImage,
                title: 'Stay Point',
                 animation: google.maps.Animation.DROP,
@@ -213,6 +210,8 @@ function DrawStayPoints(data) {
 
 
 function DrawPOI(data) {
+	
+	view = 4;
 	if(data == null){
 		alert('Null data in POI');
 	}
@@ -231,7 +230,7 @@ function DrawPOI(data) {
 			    		mapTypeId: google.maps.MapTypeId.TERRAIN
 			 		 };
 			      	
-			 		 mapSP = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
+			 		 map = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
 		
 			}
 			    
@@ -241,7 +240,7 @@ function DrawPOI(data) {
 			    strokeWeight: 2,
 			    fillColor: '#FF0000',
 			    fillOpacity: 0.35,
-			    map: mapSP,
+			    map: map,
 			    bounds: new google.maps.LatLngBounds(
 			      new google.maps.LatLng(item.startlat, item.startlon),
 			      new google.maps.LatLng(item.endlat, item.endlon))
