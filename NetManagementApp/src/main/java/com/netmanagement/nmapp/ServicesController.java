@@ -81,9 +81,37 @@ public class ServicesController {
 	 
 	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
 	 public @ResponseBody String csvRequest(@RequestParam int option) {
-		 int suc = -1;
+		 int suc = -1; // suc = 0 for success
 		 String retstr = "";
-		 if(option == 1){
+		 if(option == 0) {
+			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
+			 ParseBattery pb = ParseBattery.getInstance();
+			 ParseGPS GPS = ParseGPS.getInstance();
+			 ParseBaseStations pbs = ParseBaseStations.getInstance();
+			 if(pcsv.getLoaded() == 0 && pb.getLoaded() == 0 && GPS.getLoaded() == 0 && pbs.getLoaded() == 0) {
+				 
+				 try {
+						if((pcsv.LoadAccessPoints() == 0) && (pb.LoadBattery() == 0 ) && (GPS.LoadGPS() == 0) && (pbs.LoadBaseStations() == 0)){
+							suc = 0;
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				 	if(suc == 0) {
+				 		retstr = "All-import";
+				 	}
+				 	else {
+				 		retstr = "error-import";
+				 	}
+				
+					
+			 }
+			 else {
+				 retstr = "all-already-imported";
+			 }
+		 }
+		 else if(option == 1){
 			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
 			 if(pcsv.getLoaded() == 0) {
 				 

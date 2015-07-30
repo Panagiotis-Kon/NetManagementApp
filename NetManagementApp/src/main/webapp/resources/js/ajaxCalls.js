@@ -164,7 +164,7 @@ function csvRequest(option)
 				   case 1: 
 					   if(resp == 'wifi-import-ep-ok'){
 						  // ap = 1;
-						   $("#popupText").text("Wifi dataSet imported correctly and Estimation Point calculated." +"<br />" +"If you want to see the result" + "<br />" + "go to Estimation Point page");
+						   $("#popupText").html("Wifi dataSet imported correctly and Estimation Point calculated.<br/>Please Continue your process");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
 								width: 430,
@@ -198,7 +198,7 @@ function csvRequest(option)
 						   
 					   }
 					   else if(resp == "ep-problem"){
-						   $("#popupText").text("A problem occured in estimation process." + "<br />" + "Please try again or check the server for errors");
+						   $("#popupText").html("A problem occured in estimation process.<br />Please try again or check the server for errors");
 						   $("#divpopup").dialog({
 								title: "ESTIMATION PROCESS",
 								width: 430,
@@ -235,7 +235,7 @@ function csvRequest(option)
 				   case 2: 
 					   if(resp == 'battery-import'){
 						   //bat = 1;
-						   $("#popupText").text("Battery dataSet imported correctly.\n Please continue your process");
+						   $("#popupText").html("Battery dataSet imported correctly.<br/> Please continue your process");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
 								width: 430,
@@ -370,7 +370,7 @@ function csvRequest(option)
 							}); 
 				   }
 				   else{
-					   $("#popupText").text("Base Stations NOT imported correctly. Please Try again or check the server");
+					   $("#popupText").html("Base Stations NOT imported correctly.<br/> Please Try again or check the server");
 					   $("#divpopup").dialog({
 							title: "DATASET IMPORT",
 							width: 430,
