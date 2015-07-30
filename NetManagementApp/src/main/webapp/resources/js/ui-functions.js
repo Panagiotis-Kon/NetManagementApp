@@ -139,8 +139,13 @@ function createRange(data) {
 	}
 	
 	for(var i=0; i< data.length; i++) {
-		var tempDate = new Date(data[i]);
+		
+		//console.log('data[i]',data[i]);
+		var replacer = data[i].replace(/-/g , "/");
+		var tempDate = new Date(replacer);
+		//console.log('tempDate: ',tempDate);
 		var finalDate = tempDate.getFullYear() + '-'+ (tempDate.getMonth() +1) + '-' + tempDate.getDate();
+		//console.log('finalDate',finalDate);
 		dateRange.push(finalDate);
 		
 	}
@@ -148,6 +153,8 @@ function createRange(data) {
 		console.log('daterange: ', dateRange[i]);
 	}
 }
+
+
 
 function enableSpecificDates(date) {
 
@@ -173,7 +180,7 @@ function enableSpecificDates(date) {
 }
 
 
-function datePicker(data) {
+function Pickerdate(data) {
 
 
 	createRange(data);

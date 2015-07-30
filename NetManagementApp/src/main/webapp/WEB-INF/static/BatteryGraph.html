@@ -39,7 +39,9 @@ var chartData = [];
                 for (var i = 0; i < data.length; i++) {
                    
                 	//var temp = (data[i].timestamp).split(' ');
-                	var Ddate =	new Date(data[i].timestamp);
+                	console.log('data[i].timestamp: ',data[i].timestamp);
+                	var replacer = (data[i].timestamp).replace(/-/g , "/");
+                	var Ddate =	new Date(replacer);
                 	var DTime = Ddate.getHours() + ':'+ Ddate.getMinutes() + ':' + Ddate.getSeconds();
                 	//console.log('date bat: ', dateTime[0]);
                 	var level = data[i].level;
