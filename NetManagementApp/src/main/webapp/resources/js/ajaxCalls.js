@@ -452,7 +452,8 @@ function getAvUserDates(userID) {
 	    contentType: "application/json",
 	    url: "/NetManagementApp/getDates",
 	   success: function(data){
-		   datePicker(data);
+		   Pickerdate(data);
+		   console.log(data);
 	   },
 	   
 	   error:function(XMLHttpRequest, textStatus, errorThrown){
