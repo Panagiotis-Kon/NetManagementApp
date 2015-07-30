@@ -147,18 +147,20 @@ public class PoICalculations {
 				continue;
 			}
 			Lsp.get(i).setVisited(1);
-			neighbors.get(i).addAll(regionQuery(Lsp, i));
-			if (neighbors.get(i).size() < minPts){
-				//Mark Lsp.get(i) as noise
-				PointsofInterest poi = new PointsofInterest();
-				poi.setAll(Lsp.get(i).getLat(), Lsp.get(i).getLon(), Lsp.get(i).getLat(), Lsp.get(i).getLon(), 1, 1);
-				noiselist.add(poi);
+			ArrayList<StayPoints> region = regionQuery(Lsp, i);
+			if (region.size()>0){
+				neighbors.get(i).addAll(region);
+				if (neighbors.get(i).size() < minPts){
+					//Mark Lsp.get(i) as noise
+					PointsofInterest poi = new PointsofInterest();
+					poi.setAll(Lsp.get(i).getLat(), Lsp.get(i).getLon(), Lsp.get(i).getLat(), Lsp.get(i).getLon(), 1, 1);
+					noiselist.add(poi);
+				}
+				else {
+					C++;
+					expandCluster(poilist,Lsp,i,C);
+				}
 			}
-			else {
-				C++;
-				expandCluster(poilist,Lsp,i,C);
-			}
-			
 		}
 		return poilist;
 	}
