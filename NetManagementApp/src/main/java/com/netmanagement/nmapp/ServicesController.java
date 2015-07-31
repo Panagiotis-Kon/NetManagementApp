@@ -455,12 +455,27 @@ public class ServicesController {
 	 
 	 /* ----------------------------------------- Bar Diagrams ------------------------------------------ */
 	 /* Bar Diagram 1 */
-	 @RequestMapping(value = "/Battery-15%-Users-Graph", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+	 @RequestMapping(value = "/Low-Battery-Graph", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String BarDiagram1(){
+		if(ParseBattery.getInstance().getLoaded() == 0){
+			 return new Gson().toJson("bat-not-loaded");
+		}
+		else{
+			ArrayList<String> blist = BatteryCalculations.getInstance().LowBatterySearch();
+			if(!blist.isEmpty()){
+				String json = new Gson().toJson(blist);
+				System.out.println("json string: " + json);
+			    return json;
+			}
+			else {
+				System.out.println("low battery list is empty");
+				String json = new Gson().toJson("bar-bat-problem");
+			    return json;
+			}
+		}
 		 
-		 
-		 return "";
+
 	 }
 	 
 	 /* Bar Diagram 2 */

@@ -612,7 +612,10 @@ function DrawDiagram1(data){
     }
     else {
     	var iDiv = document.createElement('div');
-    	
+    	iDiv.style.width = "100%";
+    	iDiv.style.height = "500px";
+    	document.getElementsByClassName("container")[0].appendChild(iDiv);
+    	chart.write("chartdiv");
     }
     
 
@@ -696,8 +699,17 @@ function DrawDiagram2(data){
 
          chart.creditsPosition = "top-right";
 
-         // WRITE
-         chart.write("chartdiv");
+      // WRITE
+         if(!document.getElementById("chartdiv")) {
+         	chart.write("chartdiv");
+         }
+         else {
+         	var iDiv = document.createElement('div');
+         	iDiv.style.width = "100%";
+         	iDiv.style.height = "500px";
+         	document.getElementsByClassName("container")[0].appendChild(iDiv);
+         	chart.write("chartdiv");
+         }
     
 	
 	

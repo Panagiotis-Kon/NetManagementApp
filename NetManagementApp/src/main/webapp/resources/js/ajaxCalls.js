@@ -873,7 +873,7 @@ function graphBatUsers() {
 		type: "GET",
 	    dataType: "json",
 	    contentType: "application/json",
-	    url: "/NetManagementApp/Battery-15%-Users-Graph",
+	    url: "/NetManagementApp/Low-Battery-Graph",
 	   success: function(data){
 		   if(data == "bar-bat-problem"){
 			   
@@ -894,6 +894,22 @@ function graphBatUsers() {
 					}); 
 			   
 			   
+		   }
+		   else if(data == "bat-not-loaded"){
+			   $("#popupText").text("Battery dataSet is not loaded!");
+			   $("#divpopup").dialog({
+					title: "DATASET IMPORT",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+							
+							}
+					}
+					}); 
 		   }
 		   else {
 			   $("#popupText").html("Bar Diagram 1 has been generated.<br/> Load Diagram?");
