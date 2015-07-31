@@ -112,7 +112,9 @@ public class BaseStationsCalculations {
 					for (j=0;j<operators.size();j++){
 						if ((operators.get(j).mcc == array.get(i).getMcc()) && (operators.get(j).mnc == array.get(i).getMnc())){
 							if (!operators.get(j).users.contains(array.get(i).getUser())){
-								operators.get(j).setAll(array.get(i).getOperator(),operators.get(j).numofUsers+1,array.get(i).getMcc(),array.get(i).getMnc(),array.get(i).getUser());
+								//operators.get(j).setAll(array.get(i).getOperator(),operators.get(j).numofUsers+1,array.get(i).getMcc(),array.get(i).getMnc(),array.get(i).getUser());
+								operators.get(j).numofUsers++;
+								operators.get(j).users.add(array.get(i).getUser());
 								found=1;
 								break;
 							}
