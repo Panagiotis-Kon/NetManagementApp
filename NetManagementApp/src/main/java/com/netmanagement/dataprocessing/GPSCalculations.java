@@ -3,6 +3,7 @@ package com.netmanagement.dataprocessing;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -94,6 +95,30 @@ public class GPSCalculations {
 		if(alist.isEmpty()){
 			System.out.println("GPSCalculations: alist is empty!!!");
 		}
+		return alist;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ArrayList<String> allTimestamps(String user){
+		//Find minimum and maximum Date of the user return MIN#MAX
+		HashMap<String, ArrayList<GPS>> hap = ParseGPS.getInstance().getHap();
+		ArrayList<String> alist = new ArrayList<String>();
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<GPS> array = (ArrayList<GPS>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					if (!array.get(i).getUser().equals(user)){
+						continue;
+					}
+					alist.add(array.get(i).getTimestamp());
+				}
+			}
+		}
+		Collections.sort(alist);
 		return alist;
 	}
 	
