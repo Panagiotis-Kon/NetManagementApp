@@ -431,24 +431,31 @@ public class ServicesController {
 		 System.out.println(" startDate: " + startDate + " endDate: " + endDate + " Dmax: " + Dmax + " Tmin: " + Tmin
 				 + " Tmax: " + Tmax +" eps: " + eps + " minPts: " + minPts  );
 		 
-		 PoICalculations poi = PoICalculations.getInstance();
-		 double Dmaxd = Double.parseDouble(Dmax);
-		 double epsd = Double.parseDouble(eps);
-		 int minPtsd = Integer.parseInt(minPts);
-		 poi.setAll(startDate,endDate,Tmin,Tmax,Dmaxd,epsd,minPtsd);
-		 ArrayList<PointsofInterest> poiArray = poi.CalculatePoI();
-		 if(!poiArray.isEmpty()) {
-			 
-		 	String json = new Gson().toJson(poiArray);
-			System.out.println("json string: " + json);
-		    return json;
 		 
+		 if(ParseGPS.getInstance().getLoaded() == 0){
+			 return new Gson().toJson("gps-not-loaded");
 		 }
 		 else {
-		 	return new Gson().toJson("poi-problem");
-		 
-		 
+			 PoICalculations poi = PoICalculations.getInstance();
+			 double Dmaxd = Double.parseDouble(Dmax);
+			 double epsd = Double.parseDouble(eps);
+			 int minPtsd = Integer.parseInt(minPts);
+			 poi.setAll(startDate,endDate,Tmin,Tmax,Dmaxd,epsd,minPtsd);
+			 ArrayList<PointsofInterest> poiArray = poi.CalculatePoI();
+			 if(!poiArray.isEmpty()) {
+				 
+			 	String json = new Gson().toJson(poiArray);
+				System.out.println("json string: " + json);
+			    return json;
+			 
+			 }
+			 else {
+			 	return new Gson().toJson("poi-problem");
+			 
+			 
+			 }
 		 }
+		
 		 
 		
 	 }

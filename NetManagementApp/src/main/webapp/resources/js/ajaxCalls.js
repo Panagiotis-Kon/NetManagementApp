@@ -830,6 +830,22 @@ function CalculatePOI(dataArray){
 			   
 			   
 		   }
+		   else if(data == "gps-not-loaded"){
+			   $("#popupText").text("GPS dataset is not imported. Please import dataset");
+			   $("#divpopup").dialog({
+					title: "GPS",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+							
+							}
+					}
+				}); 
+		   }
 		   else {
 			   $("#popupText").text("POI's have been calculated. Load on Map?");
 			   $("#divpopup").dialog({
