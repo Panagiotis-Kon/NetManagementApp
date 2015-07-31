@@ -98,7 +98,12 @@ function options(data) {
              }
         	 else {
         		 userID = document.getElementById('User').value;
-        		 getAvUserDates(userID);
+        		 if(analysisPage == 1) {
+        			 getAvUserDates(userID,1);
+        	    }
+        		else{
+        			 getAvUserDates(userID,0);
+        		 }
         		 
         	 }        	
         })
@@ -546,15 +551,127 @@ function POIParameters() {
 /*------------------------------------- Bar Diagrams ---------------------------------------------------- */
 function DrawDiagram1(data){
 	
+	var chart;
+	var chartData = [];
+	for(var i=0; i<data.length; i++){
+		var splitter = data[i].split('#');
+		chartData.push({
+            operator: splitter[0],
+            Nusers: splitter[1],
+            
+        });
+		
+	}
 	
-	
+	 
+         // SERIAL CHART
+         chart = new AmCharts.AmSerialChart();
+         chart.dataProvider = chartData;
+         chart.categoryField = "operator";
+         // this single line makes the chart a bar chart,
+         // try to set it to false - your bars will turn to columns
+         chart.rotate = true;
+         // the following two lines makes chart 3D
+         chart.depth3D = 20;
+         chart.angle = 30;
+
+         // AXES
+         // Category
+         var categoryAxis = chart.categoryAxis;
+         categoryAxis.gridPosition = "start";
+         categoryAxis.axisColor = "#DADADA";
+         categoryAxis.title = "Operators";
+         categoryAxis.fillAlpha = 1;
+         categoryAxis.gridAlpha = 0;
+         categoryAxis.fillColor = "#FAFAFA";
+
+         // value
+         var valueAxis = new AmCharts.ValueAxis();
+         valueAxis.axisColor = "#DADADA";
+         valueAxis.title = "Number of Users";
+         valueAxis.gridAlpha = 1;
+         chart.addValueAxis(valueAxis);
+
+         // GRAPH
+         var graph = new AmCharts.AmGraph();
+         graph.title = "Users";
+         graph.valueField = "Nusers";
+         graph.type = "column";
+         graph.balloonText = "Users in [[category]]:[[value]]";
+         graph.lineAlpha = 0;
+         graph.fillColors = ["#bf1c25","#00CCFF","#009900"];
+         graph.fillAlphas = 1;
+         chart.addGraph(graph);
+
+         chart.creditsPosition = "top-right";
+
+         // WRITE
+         chart.write("chartdiv");  
+	           
 	
 }
 
 
 function DrawDiagram2(data){
 	
+	var chart;
+
+    var chartData = [];
+	for(var i=0; i<data.length; i++){
+		var splitter = data[i].split('#');
+		chartData.push({
+            operator: splitter[0],
+            Nusers: splitter[1],
+            
+        });
+		
+	}
 	
+	 
+         // SERIAL CHART
+         chart = new AmCharts.AmSerialChart();
+         chart.dataProvider = chartData;
+         chart.categoryField = "operator";
+         // this single line makes the chart a bar chart,
+         // try to set it to false - your bars will turn to columns
+         chart.rotate = true;
+         // the following two lines makes chart 3D
+         chart.depth3D = 20;
+         chart.angle = 30;
+
+         // AXES
+         // Category
+         var categoryAxis = chart.categoryAxis;
+         categoryAxis.gridPosition = "start";
+         categoryAxis.axisColor = "#DADADA";
+         categoryAxis.title = "Operators";
+         categoryAxis.fillAlpha = 1;
+         categoryAxis.gridAlpha = 0;
+         categoryAxis.fillColor = "#FAFAFA";
+
+         // value
+         var valueAxis = new AmCharts.ValueAxis();
+         valueAxis.axisColor = "#DADADA";
+         valueAxis.title = "Number of Users";
+         valueAxis.gridAlpha = 1;
+         chart.addValueAxis(valueAxis);
+
+         // GRAPH
+         var graph = new AmCharts.AmGraph();
+         graph.title = "Users";
+         graph.valueField = "Nusers";
+         graph.type = "column";
+         graph.balloonText = "Users in [[category]]:[[value]]";
+         graph.lineAlpha = 0;
+         graph.fillColors = "#bf1c25";
+         graph.fillAlphas = 1;
+         chart.addGraph(graph);
+
+         chart.creditsPosition = "top-right";
+
+         // WRITE
+         chart.write("chartdiv");
+    
 	
 	
 }

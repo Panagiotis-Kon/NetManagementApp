@@ -409,11 +409,28 @@ function getUsers(arg) {
 		$.ajax({ 
 			type: "GET",
 		    dataType: "json",
+		    data:{arg:arg},
 		    contentType: "application/json",
 		    url: "/NetManagementApp/getUsers",
 		   success: function(data){
 			   if(data == "ap-not-loaded"){
 				   $("#popupText").text("Sorry. First you must import Access Points Dataset");
+				   $("#divpopup").dialog({
+						title: "IMPORT PORBLEM",
+						width: 430,
+						height: 200,
+						modal:true,
+						buttons: {
+							OK: 
+								function(){
+								$(this).dialog('close');
+								clickableMenuAnalysis(1, 1);
+							}
+						}
+					}); 
+			   }
+			   else if(data == "gps-not-loaded"){
+				   $("#popupText").text("Sorry. First you must import GPS Dataset");
 				   $("#divpopup").dialog({
 						title: "IMPORT PORBLEM",
 						width: 430,
@@ -442,18 +459,54 @@ function getUsers(arg) {
 }
 
 
-function getAvUserDates(userID) {
+function getAvUserDates(userID,arg) {
 	
 	console.log(userID);
 	$.ajax({ 
 		type: "GET",
 	    dataType: "json",
-	    data:{userID:userID},
+	    data:{userID:userID,arg:arg},
 	    contentType: "application/json",
 	    url: "/NetManagementApp/getDates",
 	   success: function(data){
-		   Pickerdate(data);
-		   console.log(data);
+		   
+		   if(data == "ap-not-loaded"){
+			   $("#popupText").text("Sorry. First you must import Access Points Dataset");
+			   $("#divpopup").dialog({
+					title: "IMPORT PORBLEM",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+							clickableMenuAnalysis(1, 1);
+						}
+					}
+				}); 
+		   }
+		   else if(data == "gps-not-loaded"){
+			   $("#popupText").text("Sorry. First you must import GPS Dataset");
+			   $("#divpopup").dialog({
+					title: "IMPORT PORBLEM",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+							clickableMenuAnalysis(1, 1);
+						}
+					}
+				}); 
+		   }
+		   else {
+			   Pickerdate(data);
+		   }
+		   
+		   //console.log(data);
 	   },
 	   
 	   error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -887,9 +940,9 @@ function graphOpUsers() {
 	    contentType: "application/json",
 	    url: "/NetManagementApp/Operators-Users-Graph",
 	   success: function(data){
-		   if(data == "bar-bat-problem"){
+		   if(data == "bar-users-problem"){
 			   
-			   $("#popupText").text("Bar Diagram 2 problem detected. Check the server");
+			   $("#popupText").html("Bar Diagram 2 problem detected.<br/> Check the server");
 			   $("#divpopup").dialog({
 					title: "Bar Diagram 2",
 					width: 430,
@@ -907,6 +960,22 @@ function graphOpUsers() {
 			   
 			   
 		   }
+		   else if(data == "bs-not-loaded"){
+			   $("#popupText").text("Base Stations dataSet is not loaded!");
+			   $("#divpopup").dialog({
+					title: "DATASET IMPORT",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+							
+							}
+					}
+					}); 
+		   }
 		   else {
 			   $("#popupText").html("Bar Diagram 2 has been generated.<br/> Load Diagram?");
 			   $("#divpopup").dialog({
@@ -918,7 +987,7 @@ function graphOpUsers() {
 						YES: 
 							function(){
 								$(this).dialog('close');
-								
+								 DrawDiagram2(data);
 								
 							},
 						NO:

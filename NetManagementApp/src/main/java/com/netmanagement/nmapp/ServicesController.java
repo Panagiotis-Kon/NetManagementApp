@@ -217,19 +217,33 @@ public class ServicesController {
 	 
 	 @RequestMapping(value = "/getUsers", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
-	   public @ResponseBody String RetrieveUsers() {
-		 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
-		 if(pcsv.getLoaded() == 0){ // access points dataset is not imported
-			return new Gson().toJson("ap-not-loaded");
+	   public @ResponseBody String RetrieveUsers(@RequestParam int arg) {
+		 
+		 if(arg == 0){
+			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
+			 if(pcsv.getLoaded() == 0){ // access points dataset is not imported
+				return new Gson().toJson("ap-not-loaded");
+			 }
+			 else {
+			
+				 ArrayList<String> users = AccessPointsCalculations.getInstance().getUsers();
+				 String json = new Gson().toJson(users);
+				 return json;
+			 }
+			 			
 		 }
 		 else {
-			 
-			 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
-			 ArrayList<String> users = apc.getUsers();
-			 String json = new Gson().toJson(users);
-			 return json;
+			 ParseGPS pgps = ParseGPS.getInstance();
+			 if(pgps.getLoaded() == 0){
+				 return new Gson().toJson("gps-not-loaded");
+			 }
+			 else {
+				 ArrayList<String> users = GPSCalculations.getInstance().getUsers();
+				 String json = new Gson().toJson(users);
+				 return json;
+			 }
 		 }
-		 			
+		
 		 
 		 
 		 
@@ -259,12 +273,31 @@ public class ServicesController {
 	 
 	 @RequestMapping(value = "/getDates", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
-	   public @ResponseBody String getDates(@RequestParam String userID) {
+	   public @ResponseBody String getDates(@RequestParam String userID,@RequestParam int arg) {
+		 if(arg == 0) {
+			 if(ParseAccessPoints.getInstance().getLoaded() == 0){
+				 return new Gson().toJson("ap-not-loaded");
+			 }
+			 else {
+				 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
+				 ArrayList<String> dates = apc.allTimestamps(userID);
+				 String json = new Gson().toJson(dates);
+				 return json;
+			 }
+		 }
+		 else {
+			 if(ParseGPS.getInstance().getLoaded() == 0){
+				 return new Gson().toJson("gps-not-loaded");
+			 }
+			 else {
+				 	
+				 ArrayList<String> dates = GPSCalculations.getInstance().allTimestamps(userID);
+				 String json = new Gson().toJson(dates);
+				 return json;
+			 }
+		 }
 		 
-		 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
-		 ArrayList<String> dates = apc.allTimestamps(userID);
-		 String json = new Gson().toJson(dates);
-		 return json;
+		
 	 }
 	 
 	 
@@ -434,9 +467,23 @@ public class ServicesController {
 	 @RequestMapping(value = "/Operators-Users-Graph", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String BarDiagram2(){
+		 if(ParseBaseStations.getInstance().getLoaded() == 0) {
+			 return new Gson().toJson("bs-not-loaded");
+		 }
+		 else {
+			ArrayList<String> op_users = BaseStationsCalculations.getInstance().Operators_numofUsers(); 
+			if(!op_users.isEmpty()){
+				String json = new Gson().toJson(op_users);
+				System.out.println("json string: " + json);
+			    return json;
+			}
+			else {
+				System.out.println("Operators-Users is empty");
+				String json = new Gson().toJson("bar-users-problem");
+			    return json;
+			}
+		 }
 		 
-		 
-		 return "";
 	 }
 	
 }

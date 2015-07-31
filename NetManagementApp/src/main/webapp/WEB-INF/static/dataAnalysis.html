@@ -104,7 +104,7 @@ $( "#accordion" ).accordion();
 										<li class="dropdown1"><a class="active" href="javascript:toDataAnalysis();">Data Analysis</a>
 											
 										</li> 
-										<li class="dropdown1"><a class="down-scroll" href="">Bar Diagrams</a>
+										<li class="dropdown1"><a class="down-scroll" href="javascript:toBarDiagrams()">Bar Diagrams</a>
 											
 										</li>						
 										<li class="dropdown1"><a href="#">Conclusions</a></li>  
@@ -159,26 +159,26 @@ $( "#accordion" ).accordion();
 							
 							<label for="from">From</label>
 							<input type="text" id="from" name="from" title="format: yyyy-mm-dd">
-							<label for="to">to</label>
+							<label for="to">To</label>
 							<input type="text" id="to" name="to" title="format: yyyy-mm-dd">
 						</div>
 						<div id=parameters>
 						<!--  <div id="accordion"> -->
 							
-							<div>
+							<div id="poipar">
 								<label for="Dmax">Dmax</label>
 								<input type="text" id="Dmax" name="Dmax">
 								
 							</div>
 							
 							
-							<div>
+							<div id="poipar">
 						
 								<label for="Tmin">Tmin</label>
 								<input type="text" id="Tmin" name="Tmin">
 							</div>
 							
-							<div>
+							<div id="poipar">
 							
 								<label for="Tmax">Tmax</label>
 								<input type="text" id="Tmax" name="Tmax">

@@ -21,7 +21,7 @@ public class PoICalculations2 {
     String Tmin;
     String Tmax;
     Double Dmax;
-    ArrayList<ArrayList<StayPoints>> neighbors = new ArrayList<ArrayList<StayPoints>>();
+    ArrayList<ArrayList<StayPoints>> neighbors = null;
 	
 	private PoICalculations2(){}
 	
@@ -107,6 +107,7 @@ public class PoICalculations2 {
 	}
 	
 	public void neighborsInit(int size){
+		neighbors = new ArrayList<ArrayList<StayPoints>>();
 		for (int i=0;i<size;i++){
 			neighbors.add(new ArrayList<StayPoints>());
 		}

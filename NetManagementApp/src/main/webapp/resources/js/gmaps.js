@@ -194,7 +194,7 @@ function DrawStayPoints(data) {
 	 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
 	 			        return function() {
 	 			           infowindow.setContent(content);
-	 			           infowindow.open(mapSP,marker);
+	 			           infowindow.open(map,marker);
 	 			        };
 	 			    })(marker,content,infowindow)); 
 				
@@ -233,7 +233,11 @@ function DrawPOI(data) {
 			 		 map = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
 		
 			}
-			    
+			console.log('startlat: ', item.startlat);
+			console.log('endlat: ', item.endlat);
+			console.log('startlon: ', item.startlon);
+			console.log('endlon: ', item.endlon);
+			
 			var rectangle = new google.maps.Rectangle({
 			    strokeColor: '#FF0000',
 			    strokeOpacity: 0.8,
