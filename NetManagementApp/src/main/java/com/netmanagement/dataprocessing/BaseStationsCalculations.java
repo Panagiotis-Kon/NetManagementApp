@@ -80,6 +80,7 @@ public class BaseStationsCalculations {
 		ArrayList<String> users = new ArrayList<String>();
 		
 		void setAll(String operator, int i, int mcc, int mnc, String user){
+			System.out.println(Operator+" | "+numofUsers+" | "+mcc+" | "+mnc+" | "+users);
 			this.Operator = operator;
 			this.numofUsers = i;
 			this.mcc = mcc;
@@ -116,8 +117,8 @@ public class BaseStationsCalculations {
 								operators.get(j).numofUsers++;
 								operators.get(j).users.add(array.get(i).getUser());
 								found=1;
-								break;
 							}
+							break;
 						}
 					}
 					if (found==0 && j==operators.size()){
