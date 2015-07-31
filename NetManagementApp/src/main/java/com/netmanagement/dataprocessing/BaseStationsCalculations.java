@@ -73,15 +73,15 @@ public class BaseStationsCalculations {
 	}
 	
 	class Operator {
-		String Operator;
+		String Name;
 		int numofUsers=0;
 		int mcc;
 		int mnc;
 		ArrayList<String> users = new ArrayList<String>();
 		
 		void setAll(String operator, int i, int mcc, int mnc, String user){
-			System.out.println(Operator+" | "+numofUsers+" | "+mcc+" | "+mnc+" | "+users);
-			this.Operator = operator;
+			System.out.println(Name+" | "+numofUsers+" | "+mcc+" | "+mnc+" | "+users);
+			this.Name = operator;
 			this.numofUsers = i;
 			this.mcc = mcc;
 			this.mnc = mnc;
@@ -131,7 +131,7 @@ public class BaseStationsCalculations {
 		}
 		ArrayList<String> finaldata = new ArrayList<String>();
 		for (int i=0;i<operators.size();i++){
-			finaldata.add(operators.get(i).Operator+"#"+operators.get(i).numofUsers);
+			finaldata.add(operators.get(i).Name+"#"+operators.get(i).numofUsers);
 		}
 		return finaldata;
 	}
