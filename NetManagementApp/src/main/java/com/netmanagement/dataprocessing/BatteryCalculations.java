@@ -66,5 +66,28 @@ public class BatteryCalculations {
 		}
 		return alist;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ArrayList<String> LowBatterySearch(){
+		
+		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance().getHap();
+		ArrayList<String> alist = new ArrayList<String>();
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<Battery> array = (ArrayList<Battery>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					
+				}
+			}
+		}
+		if(alist.isEmpty()){
+			System.out.println("BatteryCalculations: alist is empty!!!");
+		}
+		return alist;
+	}
 
 }
