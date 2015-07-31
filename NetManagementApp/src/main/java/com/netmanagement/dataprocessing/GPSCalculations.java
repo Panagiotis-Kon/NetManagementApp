@@ -192,15 +192,18 @@ public class GPSCalculations {
 		StayPoints sp = new StayPoints();
 		double lat=list.get(start).getUlatitude(),lon=list.get(start).getUlatitude();
 		String Tstart = list.get(start).getTimestamp(), Tend = list.get(end).getTimestamp();
-		for (int i=start+1;i<=end;i++){
+		/*for (int i=start+1;i<=end;i++){
 			lat=estimateCentroid(lat, list.get(i).getUlatitude());
 			lon=estimateCentroid(lon, list.get(i).getUlongtitude());
-		}
+		}*/
+		double a[] = estimateCentroid(list,start,end);
+		lat=a[0];
+		lon=a[1];
 		sp.setAll(lat, lon, Tstart, Tend);
 		return sp;
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+/*	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<GPS> findStayPoints2(ArrayList<GPS> GPSPoints, String Tmin,
 			String Tmax, Double Dmax) { // List of specific gps points
 		// For given variables find stay points, Tmin and Tmax are in format dd:HH:mm:ss
@@ -269,7 +272,7 @@ public class GPSCalculations {
 			System.out.println("GPSCalculations: alist is empty!!!");
 		}
 		return Lsp;
-	}
+	}*/
 	
 	String TimeDifference(String string1, String string2){
 		//Find time difference between given variables and return it to dd:HH:mm:ss format
@@ -327,10 +330,16 @@ public class GPSCalculations {
 		return distance;
 	}
 	
-	double estimateCentroid(double value1,double value2){
-		double center=0;
-		center=(value1+value2)/2;
-		return center;
+	double[] estimateCentroid(ArrayList<GPS> points,int start, int end){
+		double center=0,center1=0;
+		for (int i=start;i<=end;i++){
+			center=center+points.get(i).getUlatitude();
+			center1=center1+points.get(i).getUlongtitude();
+		}
+        center = center/(end-start+1);
+        center1 = center1/(end-start+1);
+        double a[] = {center,center1};
+		return a;
 	}
 
 }
