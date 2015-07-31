@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import com.netmanagement.csvdatasets.ParseBaseStations;
 import com.netmanagement.entities.BaseStations;
 
@@ -67,6 +68,83 @@ public class BaseStationsCalculations {
 			System.out.println("BaseStationsCalculations: alist is empty!!!");
 		}
 		return alist;
+	}
+	
+	class Operator {
+		String Operator;
+		int numofUsers=0;
+		ArrayList<String> users = new ArrayList<String>();
+		
+		void setAll(String operator, int i, String user){
+			this.Operator = operator;
+			this.numofUsers = i;
+			this.users.add(user);
+		}
+
+		public String getOperator() {
+			return Operator;
+		}
+
+		public void setOperator(String operator) {
+			Operator = operator;
+		}
+
+		public int getNumofUsers() {
+			return numofUsers;
+		}
+
+		public void setNumofUsers(int numofUsers) {
+			this.numofUsers = numofUsers;
+		}
+
+		public ArrayList<String> getUsers() {
+			return users;
+		}
+
+		public void setUsers(ArrayList<String> users) {
+			this.users = users;
+		}
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ArrayList<String> Operators_numofUsers(){
+		
+		HashMap<String, ArrayList<BaseStations>> hap = ParseBaseStations.getInstance().getHap();
+		ArrayList<Operator> operators = new ArrayList<Operator>();
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<BaseStations> array = (ArrayList<BaseStations>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					if (operators.size()==0){
+						Operator temp = new Operator();
+						temp.setAll(array.get(i).getOperator(),temp.getNumofUsers()+1,array.get(i).getUser());
+						operators.add(temp);
+					}
+					else {
+						if (operators.contains(array.get(i).getOperator())){
+							if (!operators.get(operators.indexOf(array.get(i).getOperator())).users.contains(array.get(i).getUser())){
+								operators.get(operators.indexOf(array.get(i).getOperator())).users.add(array.get(i).getUser());
+								operators.get(operators.indexOf(array.get(i).getOperator())).numofUsers++;
+							}
+						}
+						else {
+							Operator temp = new Operator();
+							temp.setAll(array.get(i).getOperator(),temp.getNumofUsers()+1,array.get(i).getUser());
+							operators.add(temp);
+						}
+					}
+				}
+			}
+		}
+		ArrayList<String> finaldata = new ArrayList<String>();
+		for (int i=0;i<operators.size();i++){
+			finaldata.add(operators.get(i).Operator+"#"+operators.get(i).getNumofUsers());
+		}
+		return finaldata;
 	}
 	
 }
