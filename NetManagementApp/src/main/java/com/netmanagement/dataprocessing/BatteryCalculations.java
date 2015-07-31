@@ -88,29 +88,7 @@ public class BatteryCalculations {
 				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<Battery> array = (ArrayList<Battery>) me.getValue();
 				for (int i=0;i<array.size();i++){
-					/*for (int j=0;j<blist.size()-1;j++){
-						if (StringtoDate(array.get(i).getTimestamp()).equals(StringtoDate(blist.get(j).hour))){
-							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
-								blist.get(j).numofUsers++;
-								blist.get(j).users.add(array.get(i).getUser());
-							}
-							break;
-						}
-						else if (StringtoDate(array.get(i).getTimestamp()).after(StringtoDate(blist.get(j).hour)) && StringtoDate(array.get(i).getTimestamp()).before(StringtoDate(blist.get(j+1).hour))){
-							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
-								blist.get(j).numofUsers++;
-								blist.get(j).users.add(array.get(i).getUser());
-							}
-							break;
-						}
-						else if (StringtoDate(array.get(i).getTimestamp()).after(StringtoDate(blist.get(blist.size()-1).hour))){
-							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
-								blist.get(j).numofUsers++;
-								blist.get(j).users.add(array.get(i).getUser());
-							}
-							break;
-						}
-					}*/
+					
 					Date pdate = zeroMin_Sec(array.get(i).getTimestamp());
 					long diff = pdate.getTime() - StringtoDate(min).getTime();
 					long totalSecs = diff/1000;
@@ -120,17 +98,6 @@ public class BatteryCalculations {
 						blist.get(diffHours).numofUsers++;
 						blist.get(diffHours).users.add(array.get(i).getUser());
 					}
-					
-					//System.out.println(pdate);
-					/*for (int j=0;j<blist.size();j++){
-						if (pdate.equals(StringtoDate(blist.get(j).hour))){
-							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
-								blist.get(j).numofUsers++;
-								blist.get(j).users.add(array.get(i).getUser());
-							}
-							break;
-						}
-					}*/
 				}
 			}
 		}
