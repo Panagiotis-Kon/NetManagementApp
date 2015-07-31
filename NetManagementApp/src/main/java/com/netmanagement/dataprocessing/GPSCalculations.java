@@ -9,7 +9,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.csvdatasets.ParseGPS;
+import com.netmanagement.entities.AccessPoints;
 import com.netmanagement.entities.GPS;
 import com.netmanagement.entities.StayPoints;
 
@@ -24,6 +26,32 @@ public class GPSCalculations {
 			GPSCalculationsinstance = new GPSCalculations();
 		}
 		return GPSCalculationsinstance;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public ArrayList<String> getUsers(){
+		
+		HashMap<String, ArrayList<GPS>> hap = ParseGPS.getInstance().getHap();
+		ArrayList<String> alist = new ArrayList<String>();
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<GPS> array = (ArrayList<GPS>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					GPS tempap = array.get(i);
+					if (!alist.contains(tempap.getUser())){
+						alist.add(tempap.getUser());
+					}
+				}
+			}
+		}
+		if(alist.isEmpty()){
+			System.out.println("getUsers: alist is empty!!!");
+		}
+		return alist;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
