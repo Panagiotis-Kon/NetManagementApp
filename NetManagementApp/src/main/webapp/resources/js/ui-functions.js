@@ -582,6 +582,7 @@ function DrawDiagram1(data){
     // value
     var valueAxis = new AmCharts.ValueAxis();
     valueAxis.title = "Users battery <= 15%";
+    valueAxis.gridAlpha = 1;
     valueAxis.dashLength = 5;
     chart.addValueAxis(valueAxis);
 
@@ -599,22 +600,30 @@ function DrawDiagram1(data){
     // CURSOR
     var chartCursor = new AmCharts.ChartCursor();
     chartCursor.cursorAlpha = 0;
-    chartCursor.zoomable = false;
+    chartCursor.zoomable = true;
     chartCursor.categoryBalloonEnabled = false;
     chart.addChartCursor(chartCursor);
 
     chart.creditsPosition = "top-right";
 
+    // CURSOR
+    //var chartCursor = new AmCharts.ChartCursor();
+    //chart.addChartCursor(chartCursor);
 
+    // SCROLLBAR
+
+    var chartScrollbar = new AmCharts.ChartScrollbar();
+    chart.addChartScrollbar(chartScrollbar);
     // WRITE
-    if(!document.getElementById("chartdiv")) {
+    if(document.getElementById('chartdiv')) {
     	chart.write("chartdiv");
     }
     else {
     	var iDiv = document.createElement('div');
+    	iDiv.setAttribute('id','chartdiv');
     	iDiv.style.width = "100%";
     	iDiv.style.height = "500px";
-    	document.getElementsByClassName("container")[0].appendChild(iDiv);
+    	document.getElementById('bar-diagram1').appendChild(iDiv);
     	chart.write("chartdiv");
     }
     
@@ -700,15 +709,18 @@ function DrawDiagram2(data){
          chart.creditsPosition = "top-right";
 
       // WRITE
-         if(!document.getElementById("chartdiv")) {
+         if(document.getElementById('chartdiv')) {
          	chart.write("chartdiv");
          }
          else {
          	var iDiv = document.createElement('div');
+         	iDiv.setAttribute('id','chartdiv');
          	iDiv.style.width = "100%";
          	iDiv.style.height = "500px";
-         	document.getElementsByClassName("container")[0].appendChild(iDiv);
+         	document.getElementById('bar-diagram1').appendChild(iDiv);
          	chart.write("chartdiv");
+         	//$("#chartdiv").show();
+         	//console.log('hiiiii');
          }
     
 	

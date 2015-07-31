@@ -112,8 +112,17 @@ public class BatteryCalculations {
 						}
 					}*/
 					Date pdate = zeroMin_Sec(array.get(i).getTimestamp());
-					System.out.println(pdate);
-					for (int j=0;j<blist.size();j++){
+					long diff = pdate.getTime() - StringtoDate(min).getTime();
+					long totalSecs = diff/1000;
+					int diffHours = (int) (totalSecs / 3600);
+					System.out.println(diffHours);
+					if (!blist.get(diffHours).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
+						blist.get(diffHours).numofUsers++;
+						blist.get(diffHours).users.add(array.get(i).getUser());
+					}
+					
+					//System.out.println(pdate);
+					/*for (int j=0;j<blist.size();j++){
 						if (pdate.equals(StringtoDate(blist.get(j).hour))){
 							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
 								blist.get(j).numofUsers++;
@@ -121,7 +130,7 @@ public class BatteryCalculations {
 							}
 							break;
 						}
-					}
+					}*/
 				}
 			}
 		}
@@ -227,8 +236,8 @@ public class BatteryCalculations {
 			e.printStackTrace();
 		}
 		System.out.println("Size :"+list.size());
-		for (int k=0;k<list.size();k++)
-			System.out.println("List :"+list.get(k).hour);
+		//for (int k=0;k<list.size();k++)
+			//System.out.println("List :"+list.get(k).hour);
 		return list;
 	}
 	
