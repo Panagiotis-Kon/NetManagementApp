@@ -88,7 +88,7 @@ public class BatteryCalculations {
 				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<Battery> array = (ArrayList<Battery>) me.getValue();
 				for (int i=0;i<array.size();i++){
-					for (int j=0;j<blist.size()-1;j++){
+					/*for (int j=0;j<blist.size()-1;j++){
 						if (StringtoDate(array.get(i).getTimestamp()).equals(StringtoDate(blist.get(j).hour))){
 							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
 								blist.get(j).numofUsers++;
@@ -104,6 +104,17 @@ public class BatteryCalculations {
 							break;
 						}
 						else if (StringtoDate(array.get(i).getTimestamp()).after(StringtoDate(blist.get(blist.size()-1).hour))){
+							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
+								blist.get(j).numofUsers++;
+								blist.get(j).users.add(array.get(i).getUser());
+							}
+							break;
+						}
+					}*/
+					Date pdate = zeroMin_Sec(array.get(i).getTimestamp());
+					System.out.println(pdate);
+					for (int j=0;j<blist.size();j++){
+						if (pdate.equals(StringtoDate(blist.get(j).hour))){
 							if (!blist.get(j).users.contains(array.get(i).getUser()) && array.get(i).getLevel()<=15){
 								blist.get(j).numofUsers++;
 								blist.get(j).users.add(array.get(i).getUser());
@@ -141,8 +152,22 @@ public class BatteryCalculations {
 		ArrayList<String> users = new ArrayList<String>();
 	}
 	
-	public int compareDate(){
-		return 0;
+	public Date zeroMin_Sec(String sdate){
+		//make zero the minutes and seconds of date
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date ddate=null;
+		try {
+			ddate=sdf.parse(sdate);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(ddate);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			ddate = calendar.getTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ddate;
 	}
 	
 	public ArrayList<BatteryInfo> generateDateRange(String start, String end){
@@ -165,6 +190,7 @@ public class BatteryCalculations {
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			d2 = calendar.getTime();
+			System.out.println(d1+" | "+d2);
  
 			//in milliseconds
 			long diff = 0;
@@ -184,12 +210,15 @@ public class BatteryCalculations {
 			System.out.print(diffMinutes + " minutes, ");
 			System.out.print(diffSeconds + " seconds.");
 			int counter=0;
-			for (long i=0;i<diffHours;i++){
+			diff = diffHours+24*diffDays;
+			System.out.println("Hours :"+diff);
+			for (long i=0;i<diff;i++){
 				BatteryInfo temp = new BatteryInfo();
 				calendar.setTime(d1);
-				calendar.set(Calendar.HOUR, Calendar.HOUR+counter);
+				calendar.add(Calendar.HOUR_OF_DAY, 1);
+				
 				d1 = calendar.getTime();
-				temp.hour = d1.toString();
+				temp.hour = format.format(d1);
 				list.add(temp);
 				counter++;
 			}
@@ -197,8 +226,9 @@ public class BatteryCalculations {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("Size :"+list.size());
 		for (int k=0;k<list.size();k++)
-			System.out.println("Time Difference :"+list.get(k));
+			System.out.println("List :"+list.get(k).hour);
 		return list;
 	}
 	
