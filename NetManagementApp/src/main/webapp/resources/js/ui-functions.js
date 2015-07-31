@@ -556,7 +556,7 @@ function DrawDiagram1(data){
 	for(var i=0; i<data.length; i++){
 		var splitter = data[i].split('#');
 		chartData.push({
-            operator: splitter[0],
+            time: splitter[0],
             Nusers: splitter[1],
             
         });
@@ -564,50 +564,58 @@ function DrawDiagram1(data){
 	}
 	
 	 
-         // SERIAL CHART
-         chart = new AmCharts.AmSerialChart();
-         chart.dataProvider = chartData;
-         chart.categoryField = "operator";
-         // this single line makes the chart a bar chart,
-         // try to set it to false - your bars will turn to columns
-         chart.rotate = true;
-         // the following two lines makes chart 3D
-         chart.depth3D = 20;
-         chart.angle = 30;
+	 // SERIAL CHART
+    chart = new AmCharts.AmSerialChart();
+    chart.dataProvider = chartData;
+    chart.categoryField = "time";
+    // the following two lines makes chart 3D
+    chart.depth3D = 20;
+    chart.angle = 30;
 
-         // AXES
-         // Category
-         var categoryAxis = chart.categoryAxis;
-         categoryAxis.gridPosition = "start";
-         categoryAxis.axisColor = "#DADADA";
-         categoryAxis.title = "Operators";
-         categoryAxis.fillAlpha = 1;
-         categoryAxis.gridAlpha = 0;
-         categoryAxis.fillColor = "#FAFAFA";
+    // AXES
+    // category
+    var categoryAxis = chart.categoryAxis;
+    categoryAxis.labelRotation = 90;
+    categoryAxis.dashLength = 5;
+    categoryAxis.gridPosition = "start";
 
-         // value
-         var valueAxis = new AmCharts.ValueAxis();
-         valueAxis.axisColor = "#DADADA";
-         valueAxis.title = "Number of Users";
-         valueAxis.gridAlpha = 1;
-         chart.addValueAxis(valueAxis);
+    // value
+    var valueAxis = new AmCharts.ValueAxis();
+    valueAxis.title = "Users battery <= 15%";
+    valueAxis.dashLength = 5;
+    chart.addValueAxis(valueAxis);
 
-         // GRAPH
-         var graph = new AmCharts.AmGraph();
-         graph.title = "Users";
-         graph.valueField = "Nusers";
-         graph.type = "column";
-         graph.balloonText = "Users in [[category]]:[[value]]";
-         graph.lineAlpha = 0;
-         graph.fillColors = ["#bf1c25","#00CCFF","#009900"];
-         graph.fillAlphas = 1;
-         chart.addGraph(graph);
+    // GRAPH
+    var graph = new AmCharts.AmGraph();
+    graph.valueField = "Nusers";
+    //graph.colorField = "color";
+    graph.balloonText = "<span style='font-size:14px'>[[time]]: <b>[[value]]</b></span>";
+    graph.type = "column";
+    graph.lineAlpha = 0;
+    
+    graph.fillAlphas = 1;
+    chart.addGraph(graph);
 
-         chart.creditsPosition = "top-right";
+    // CURSOR
+    var chartCursor = new AmCharts.ChartCursor();
+    chartCursor.cursorAlpha = 0;
+    chartCursor.zoomable = false;
+    chartCursor.categoryBalloonEnabled = false;
+    chart.addChartCursor(chartCursor);
 
-         // WRITE
-         chart.write("chartdiv");  
-	           
+    chart.creditsPosition = "top-right";
+
+
+    // WRITE
+    if(!document.getElementById("chartdiv")) {
+    	chart.write("chartdiv");
+    }
+    else {
+    	var iDiv = document.createElement('div');
+    	
+    }
+    
+
 	
 }
 
@@ -615,19 +623,38 @@ function DrawDiagram1(data){
 function DrawDiagram2(data){
 	
 	var chart;
-
+	var colorVal;
     var chartData = [];
 	for(var i=0; i<data.length; i++){
 		var splitter = data[i].split('#');
+		if(splitter[0] == "GR COSMOTE" || splitter[0] == "COSMOT" || splitter[0] == "COSMOTE")
+		{
+			colorVal = "#00CC00";
+			
+		}
+		else if(splitter[0] == "VODAFONEGR" || splitter[0] == "VODAFONE GR" || splitter[0] == "vodafone GR" || splitter[0] == "VODAFONE gr"){
+			colorVal = "#bf1c25";
+			
+		}
+		else if(splitter[0] == "WIND GR " || splitter[0] == "WIND "){
+			colorVal ="#00FFFF";
+			
+		}
+		else{
+			colorVal = "#FF9933";
+			
+		}
 		chartData.push({
             operator: splitter[0],
             Nusers: splitter[1],
-            
+            color: colorVal,
         });
 		
 	}
 	
-	 
+	chartData.sort(function(a, b){
+		 return b.Nusers - a.Nusers})
+	
          // SERIAL CHART
          chart = new AmCharts.AmSerialChart();
          chart.dataProvider = chartData;
@@ -663,7 +690,7 @@ function DrawDiagram2(data){
          graph.type = "column";
          graph.balloonText = "Users in [[category]]:[[value]]";
          graph.lineAlpha = 0;
-         graph.fillColors = "#bf1c25";
+         graph.colorField = "color";
          graph.fillAlphas = 1;
          chart.addGraph(graph);
 
@@ -675,7 +702,6 @@ function DrawDiagram2(data){
 	
 	
 }
-
 
 
 
