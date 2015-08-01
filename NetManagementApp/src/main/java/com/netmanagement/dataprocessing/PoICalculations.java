@@ -1,6 +1,5 @@
 package com.netmanagement.dataprocessing;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,7 +12,7 @@ import com.netmanagement.entities.PointsofInterest;
 import com.netmanagement.entities.StayPoints;
 
 public class PoICalculations {
-    private static PoICalculations PoICalculationsinstance = null;
+	private static PoICalculations PoICalculationsinstance = null;
     private double esp;
     private int minPts;
     private double[][] matrix = null;
@@ -22,7 +21,7 @@ public class PoICalculations {
     String Tmin;
     String Tmax;
     Double Dmax;
-    ArrayList<ArrayList<StayPoints>> neighbors = new ArrayList<ArrayList<StayPoints>>();
+    ArrayList<ArrayList<StayPoints>> neighbors = null;
 	
 	private PoICalculations(){}
 	
@@ -108,13 +107,14 @@ public class PoICalculations {
 	}
 	
 	public void neighborsInit(int size){
+		neighbors = new ArrayList<ArrayList<StayPoints>>();
 		for (int i=0;i<size;i++){
 			neighbors.add(new ArrayList<StayPoints>());
 		}
 	}
 
 	public ArrayList<PointsofInterest> CalculatePoI(){
-		/*HashMap<String, ArrayList<GPS>> hgps = ParseGPS.getInstance().getHap();
+		HashMap<String, ArrayList<GPS>> hgps = ParseGPS.getInstance().getHap();
 		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();
 		if (!hgps.isEmpty()){
 			Set<?> set = hgps.entrySet();
@@ -129,9 +129,8 @@ public class PoICalculations {
 				}
 			}
 		}
-		generateDistanceMatrix(Lsp);*/
-		PoICalculations2.getInstance().setAll(startDate, endDate, Tmin, Tmax, Dmax, esp, minPts);
-		return PoICalculations2.getInstance().CalculatePoI();//DBSCAN(Lsp);
+		generateDistanceMatrix(Lsp);
+		return DBSCAN(Lsp);
 	}
 	
 	public void generateDistanceMatrix(ArrayList<StayPoints> Lsp){
@@ -145,30 +144,24 @@ public class PoICalculations {
 	}
 	
 	public ArrayList<PointsofInterest> DBSCAN(ArrayList<StayPoints> Lsp){
-		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>();
+		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>(); //cluster
 		ArrayList<PointsofInterest> noiselist = new ArrayList<PointsofInterest>();
+		ArrayList<StayPoints> visited = new ArrayList<StayPoints>();
 		final int size = Lsp.size();
-		int C=0;
 		neighborsInit(size);
+		int c=0;
 		for (int i=0;i<size;i++){
-			if (Lsp.get(i).getVisited()==1){
+			if (visited.contains(Lsp.get(i))){
 				continue;
 			}
-			Lsp.get(i).setVisited(1);
-			ArrayList<StayPoints> region = regionQuery(Lsp, i);
-			if (region.size()>0){
-				neighbors.get(i).addAll(region);
-				if (neighbors.get(i).size() < minPts){
-					//Mark Lsp.get(i) as noise
-					PointsofInterest poi = new PointsofInterest();
-					poi.setAll(Lsp.get(i).getLat(), Lsp.get(i).getLon(), Lsp.get(i).getLat(), Lsp.get(i).getLon(), 1, 1);
-					noiselist.add(poi);
-				}
-				else {
-					poilist.add(new PointsofInterest());
-					expandCluster(poilist,Lsp,i,C);
-					C++;
-				}
+			visited.add(Lsp.get(i));
+			neighbors.get(i).addAll(regionQuery(Lsp, i));
+			if (neighbors.get(i).size()>minPts){
+				poilist.add(new PointsofInterest());
+				poilist.get(poilist.size()-1).getPoints().add(Lsp.get(i));
+				updatePoint(poilist.get(c), Lsp.get(i));
+				expandCluster(poilist.get(poilist.size()-1), Lsp, visited, neighbors.get(i));
+				c++;
 			}
 		}
 		return poilist;
@@ -205,39 +198,19 @@ public class PoICalculations {
 		return list;
 	}
 	
-	void expandCluster(ArrayList<PointsofInterest> Clusters, ArrayList<StayPoints> Lsp,int spointpos, int pos){
-		ArrayList<ArrayList<StayPoints>> neighbor = new ArrayList<ArrayList<StayPoints>>();
-		if (Clusters.size()>=pos){
-			System.out.println("Cluster: "+Clusters.size()+" and pos: "+pos+" \nLsp: "+Lsp.size()+" spoointpos: "+spointpos);
-			PointsofInterest point = updatePoint(Clusters.get(pos), Lsp.get(spointpos));
-			Clusters.get(pos).setAll(point.getStartlat(), point.getStartlon(), point.getEndlat(), point.getEndlon(), point.getNoise(), point.getNumofPoints());
-		}
-		else {
-			PointsofInterest point = new PointsofInterest();
-			Clusters.add(point);
-			point = updatePoint(Clusters.get(Clusters.size()-1), Lsp.get(spointpos));
-			pos = Clusters.size()-1;
-			Clusters.get(pos).setAll(point.getStartlat(), point.getStartlon(), point.getEndlat(), point.getEndlon(), point.getNoise(), point.getNumofPoints());
-		}
-		Clusters.get(pos).getPoints().add(Lsp.get(spointpos));
-		for (int i=0;i<neighbors.size();i++){ //neighbors.get(pos).get(i) = NeighborPts', neighbors.get(pos) = NeighborPts
-			if (neighbors.get(pos).get(i).getVisited()==0){
-				neighbors.get(pos).get(i).setVisited(1);
-				neighbors.get(i).addAll(regionQuery(Lsp, pos));
-				if (neighbors.get(i).size()>=minPts){
-					neighbors.get(pos).addAll(neighbors.get(i));//neighbors.get(i) = NeighborPts'
-				}
+	void expandCluster(PointsofInterest cluster, ArrayList<StayPoints> Lsp, ArrayList<StayPoints> visited, ArrayList<StayPoints> neighbours){
+		ArrayList<StayPoints> currentneighbours = new ArrayList<StayPoints>();
+		currentneighbours.addAll(neighbours);
+		for (int i=0;i<neighbours.size();i++){
+			if (visited.contains(neighbours.get(i))){
+				continue;
 			}
-			int found = 0;
-			for (int k=0;k<Clusters.size();k++){
-				if (Clusters.get(k).getPoints().contains(neighbors.get(pos).get(i))){
-					found = 1;
-					break;
-				}
-			}
-			if (found==0){
-				Clusters.get(pos).getPoints().add(neighbors.get(pos).get(i));
-			}
+			visited.add(neighbours.get(i));
+			ArrayList<StayPoints> extendedneighbours = regionQuery(Lsp, Lsp.indexOf(neighbours.get(i)));
+			currentneighbours.addAll(extendedneighbours);
+			neighbours.addAll(extendedneighbours);
+			cluster.getPoints().add(neighbours.get(i));
+			updatePoint(cluster, neighbours.get(i));
 		}
 	}
 	

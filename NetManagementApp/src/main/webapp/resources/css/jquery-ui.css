@@ -780,11 +780,13 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-tabs .ui-tabs-nav {
 	margin: 0;
+	text-align: center;
 	padding: .2em .2em 0;
 }
 .ui-tabs .ui-tabs-nav li {
 	list-style: none;
-	float: left;
+	display: inline-block;
+    float: none;
 	position: relative;
 	top: 0;
 	margin: 1px .2em 0 0;
@@ -812,7 +814,7 @@ button.ui-button::-moz-focus-inner {
 .ui-tabs .ui-tabs-panel {
 	display: block;
 	border-width: 0;
-	padding: 1em 1.4em;
+	padding: 1em 1em;
 	background: none;
 }
 .ui-tooltip {
@@ -845,14 +847,14 @@ body .ui-tooltip {
 }
 .ui-widget-content {
 	border: 1px solid #dddddd;
-	background: #eeeeee url("../images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x;
+	background: #eeeeee;
 	color: #333333;
 }
 .ui-widget-content a {
 	color: #333333;
 }
 .ui-widget-header {
-	border: 1px solid #fff;
+	border: 1px solid #000;
 	background:#66A0CC;
 	/*1b5fbc*/
 	color: #66A0CC;
@@ -879,12 +881,12 @@ body .ui-tooltip {
 	border: 1px solid #cccccc;
 	background: #f6f6f6 url("../images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x;
 	font-weight: bold;
-	color: #1c94c4;
+	color: #66A0CC;
 }
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
-	color: #fff;
+	color: #e9eff4;
 	text-decoration: none;
 }
 .ui-state-hover,
@@ -894,9 +896,9 @@ body .ui-tooltip {
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus {
 	border: 1px solid #fff;
-	background: #66A0CC;
+	background: #e9eff4;
 	font-weight: bold;
-	color: #fff;
+	color: #000;
 }
 .ui-state-hover a,
 .ui-state-hover a:hover,
@@ -906,14 +908,14 @@ body .ui-tooltip {
 .ui-state-focus a:hover,
 .ui-state-focus a:link,
 .ui-state-focus a:visited {
-	color: #66A0CC;
+	color: #000;
 	text-decoration: none;
 }
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
 	border: 1px solid #fff;
-	background: #ffffff url("../images/ui-bg_glass_65_ffffff_1x400.png") 50% 50% repeat-x;
+	background: #e9eff4;
 	font-weight: bold;
 	color: #66A0CC;
 }

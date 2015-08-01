@@ -174,7 +174,7 @@ function DrawStayPoints(data) {
  		    		mapTypeId: google.maps.MapTypeId.TERRAIN
  		 		 };
  		      	
- 		 		 map = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
+ 		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
  	
  				}
 			    var marker = new google.maps.Marker({
@@ -204,7 +204,7 @@ function DrawStayPoints(data) {
 
 		
 	}
-	console.log('Ending Draw stay points');
+	console.log('Ending STAY stay points');
 	
 }
 
@@ -212,10 +212,12 @@ function DrawStayPoints(data) {
 function DrawPOI(data) {
 	
 	view = 4;
+	var mapPOI=null;
 	if(data == null){
 		alert('Null data in POI');
 	}
 	else {
+		
 		
 		$.each(data,function(i,item){
 			
@@ -230,7 +232,7 @@ function DrawPOI(data) {
 			    		mapTypeId: google.maps.MapTypeId.TERRAIN
 			 		 };
 			      	
-			 		 map = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
+			      	mapPOI = new google.maps.Map(document.getElementById('map-canvas2'),mapOptions);
 		
 			}
 			console.log('startlat: ', item.startlat);
@@ -244,7 +246,7 @@ function DrawPOI(data) {
 			    strokeWeight: 2,
 			    fillColor: '#FF0000',
 			    fillOpacity: 0.35,
-			    map: map,
+			    map: mapPOI,
 			    bounds: new google.maps.LatLngBounds(
 			      new google.maps.LatLng(item.startlat, item.startlon),
 			      new google.maps.LatLng(item.endlat, item.endlon))

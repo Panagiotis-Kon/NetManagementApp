@@ -63,17 +63,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		};</script>
 
-<!-- <script type="text/javascript">
-window.onload = function(){
-$( "#accordion" ).accordion();
-})
-</script> -->    
-
-<script type="text/javascript">
-  $(function() {
-    $( document ).tooltip();
-  });
-  </script>
+ <script type="text/javascript"> 
+$(function(){
+$( "#tabs" ).tabs();
+$( document ).tooltip();
+ });
+</script>
 
 
 <!-- end-smoth-scrolling -->
@@ -124,25 +119,33 @@ $( "#accordion" ).accordion();
 			<h1 class="banner-info-serv2">Data Analysis</h1>
 			</div>
 			
-			
-			<div class="mini-menu">
-				<ul>
-					<li><a href="javascript:getUsers(1);" id="userLink">Choose User/Parameters</a></li>
-					<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>
-					<li><a href="javascript:POIParameters();" id="POIParamLink">POI Parameters</a></li>	
-					<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>				
-				</ul>
+			<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Stay Points</a></li>
+				<li><a href="#tabs-2">POI</a></li>
 				
-			</div>
-			<div class="clearfix"> </div>
-			<div class="border"></div>
+			</ul>
 			
-			<div class="container" id="view-area">
-			<div class="row" id="view-area-row">
+									<!-- First Tab for the Stay Points -->
+			<div id="tabs-1">
+					<div class="mini-menu">
+						<ul>
+							<li><a href="javascript:getUsers(1);" id="userLink">Choose User/Parameters</a></li>
+							<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>
+							
+						</ul>
+				
+					</div>
+					
+				<div class="clearfix"> </div>
+				<div class="border"></div>
+				
+				<div class="container" id="view-area-stay">
+				<div class="row" id="view-area-row-stay">
   				<div class="span9">
   			
   				 <div id="map-fullscreen" style="text-align:left;display:none;"><p>View Map on <a href="javascript:fullscreenMode()" style="color:blue;">full screen</a></p></div> 
-    			 <div id="map-canvas2" style="float:left; width: 50%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
+    			 <div id="map-canvas" style="float:left; width: 50%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
    					
   				</div>
   			
@@ -190,6 +193,39 @@ $( "#accordion" ).accordion();
   				</div>
 			</div>
 			</div>
+			
+			
+			
+			</div>
+									<!-- Second Tab for the POI -->
+			<div id="tabs-2">
+				<div class="mini-menu">
+				<ul>
+					<li><a href="javascript:POIParameters();" id="POIParamLink">POI Parameters</a></li>	
+					<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>				
+				</ul>
+				
+			</div>
+			<div class="clearfix"> </div>
+			<div class="border"></div>
+			
+			<div class="container" id="view-area-poi">
+				<div class="row" id="view-area-row-poi">
+  				
+  			
+  				 <div id="map-fullscreen" style="text-align:center;display:none;"><p>View Map on <a href="javascript:fullscreenMode()" style="color:blue;">full screen</a></p></div> 
+    			 <div id="map-canvas2" style="width: 100%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
+   					
+  				
+				</div>
+			
+			
+			
+			</div> <!-- container -->
+			</div> <!-- tabs2 -->
+			</div> <!-- tabs -->
+			
+			
 				
 			
 </div>

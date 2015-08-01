@@ -168,7 +168,7 @@ function csvRequest(option)
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
 								width: 430,
-								height: 200,
+								height: 300,
 								modal:true,
 								buttons: {
 									OK: 
@@ -202,7 +202,7 @@ function csvRequest(option)
 						   $("#divpopup").dialog({
 								title: "ESTIMATION PROCESS",
 								width: 430,
-								height: 200,
+								height: 300,
 								modal:true,
 								buttons: {
 									OK: 
@@ -864,6 +864,7 @@ function CalculatePOI(dataArray){
 							function(){
 								$(this).dialog('close');
 								// draw the pois
+								
 								DrawPOI(data);
 								
 							},
