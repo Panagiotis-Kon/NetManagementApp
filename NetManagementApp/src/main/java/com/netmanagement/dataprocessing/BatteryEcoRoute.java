@@ -15,7 +15,8 @@ import com.netmanagement.entities.AccessPoints;
 
 public class BatteryEcoRoute {
 	 private static BatteryEcoRoute BatteryEcoRouteinstance = null;
-		
+	 private int currentMaxRSSI;
+	 private int pos=-1;
 		private BatteryEcoRoute(){}
 		
 		public static BatteryEcoRoute getInstance(){
@@ -24,12 +25,30 @@ public class BatteryEcoRoute {
 			}
 			return BatteryEcoRouteinstance;
 		}
+		
+		public int getCurrentMaxRSSI() {
+			return currentMaxRSSI;
+		}
+
+		public void setCurrentMaxRSSI(int currentMaxRSSI) {
+			this.currentMaxRSSI = currentMaxRSSI;
+		}
+
+		public int getPos() {
+			return pos;
+		}
+
+		public void setPos(int pos) {
+			this.pos = pos;
+		}
+	
 	
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public ArrayList<AccessPoints> EconomicRoute(String userID, String startDate, String endDate){
 			
 			System.out.println("userID: " + userID + " startDate: " + startDate + " endDate: " + endDate);
 			HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+			ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
 			ArrayList<AccessPoints> alist = new ArrayList<AccessPoints>();
 			if (!hap.isEmpty()){
 				Set<?> set = hap.entrySet();
@@ -69,10 +88,37 @@ public class BatteryEcoRoute {
 			else {
 				Collections.sort(alist);
 				System.out.println(alist.get(0).getUser()+" | "+alist.get(0).getTimestamp()+" ||| "+alist.get(alist.size()-1).getUser()+" | "+alist.get(alist.size()-1).getTimestamp());
+				
+				ArrayList<String> visited = new ArrayList<String>();
+				
+				for(int i=0; i<alist.size();i++){
+					setCurrentMaxRSSI(alist.get(i).getRssi());
+					if(visited.contains(alist.get(i).getTimestamp()) && visited.isEmpty() == false){
+						continue;
+					}
+					for(int j=i+1; j<alist.size()-1;j++){
+	
+						if(alist.get(i).getTimestamp().equals(alist.get(j).getTimestamp())){
+							System.out.println("Hii" + i);
+							visited.add(alist.get(j).getTimestamp()); // mark as visited
+							if(alist.get(j).getRssi() > currentMaxRSSI ){
+								currentMaxRSSI = alist.get(j).getRssi();
+								setPos(j);
+								System.out.println("Found bigger RSSI in pos: " + pos);
+							}
+						}
+					}
+					if(pos > -1){
+						AccessPoints ap = alist.get(pos);
+						ecoList.add(ap);
+					}
+					
+				}
 			}
 			
 			
-			return alist;
+			return ecoList;
 		}
-	
+
+		
 }

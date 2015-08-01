@@ -19,6 +19,7 @@ import com.netmanagement.csvdatasets.ParseGPS;
 import com.netmanagement.dataprocessing.AccessPointsCalculations;
 import com.netmanagement.dataprocessing.BaseStationsCalculations;
 import com.netmanagement.dataprocessing.BatteryCalculations;
+import com.netmanagement.dataprocessing.BatteryEcoRoute;
 import com.netmanagement.dataprocessing.GPSCalculations;
 import com.netmanagement.dataprocessing.PoICalculations;
 import com.netmanagement.entities.AccessPoints;
@@ -512,9 +513,22 @@ public class ServicesController {
 	 /*--------------------------------------------- Battery Economic Route ---------------------------------------*/
 	 @RequestMapping(value = "/Battery-Economic-Route", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
-	   public @ResponseBody String EcoRoute(){
+	   public @ResponseBody String EcoRoute(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate){
 	
-		return ""; 
+		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EconomicRoute(userID, startDate, endDate);
+		 if(!ecoList.isEmpty()){
+			 	String json = new Gson().toJson(ecoList);
+				System.out.println("json string: " + json);
+				System.out.println("Eco Route length: " + ecoList.size());
+			    return json;
+		 }
+		 else
+		 {
+			 	System.out.println("EcoList is empty");
+				String json = new Gson().toJson("Economic-route-problem");
+			    return json;
+		 }
+		 
 	 }
 	
 }

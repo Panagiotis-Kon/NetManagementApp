@@ -1055,10 +1055,47 @@ function EconomicRoute() {
 	$.ajax({ 
 		type: "GET",
 	    dataType: "json",
+	    data:{userID:userID,startDate:startDate,endDate:endDate},
 	    contentType: "application/json",
-	    url: "/NetManagementApp/Operators-Users-Graph",
+	    url: "/NetManagementApp/Battery-Economic-Route",
 	   success: function(data){
-		   
+		   if(data == "Economic-route-problem"){
+			   
+			   $("#popupText").html("Economic-route problem Detected.<br/> Check the server");
+			   $("#divpopup").dialog({
+					title: "Economic Route",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+								$(this).dialog('close');
+								
+							}
+						
+					}
+					}); 
+			   
+			   
+		   }
+		   else {
+			   $("#popupText").html("Economic-route calculated.Load on Map?");
+			   $("#divpopup").dialog({
+					title: "Economic Route",
+					width: 430,
+					height: 200,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+								$(this).dialog('close');
+								BatEcoRoute(data);
+							}
+						
+					}
+					}); 
+		   }
 	   },
 	   
 	   error:function(XMLHttpRequest, textStatus, errorThrown){

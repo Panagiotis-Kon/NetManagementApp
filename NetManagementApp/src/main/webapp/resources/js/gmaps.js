@@ -52,15 +52,49 @@ function Markers(data) {
 }
 
 
+function CenterControl(controlDiv, map) {
+
+	  // Set CSS for the control border
+	  var controlUI = document.createElement('div');
+	  controlUI.style.backgroundColor = '#fff';
+	  controlUI.style.border = '2px solid #fff';
+	  controlUI.style.borderRadius = '3px';
+	  controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+	  controlUI.style.cursor = 'pointer';
+	  controlUI.style.marginTop = '5px';
+	  controlUI.style.textAlign = 'center';
+	  controlUI.title = 'Click to Estimate Economic Route';
+	  controlDiv.appendChild(controlUI);
+
+	  // Set CSS for the control interior
+	  var controlText = document.createElement('div');
+	  controlText.style.color = 'rgb(25,25,25)';
+	  controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+	  controlText.style.fontSize = '16px';
+	  controlText.style.lineHeight = '38px';
+	  controlText.style.paddingLeft = '5px';
+	  controlText.style.paddingRight = '5px';
+	  controlText.innerHTML = 'Battery Economic Route';
+	  controlUI.appendChild(controlText);
+
+	  // Setup the click event listeners: simply set the map to
+	  // Chicago
+	  google.maps.event.addDomListener(controlUI, 'click', function() {
+		  EconomicRoute();
+	  });
+
+	}
+
+
 function Polyline(){
 	
 		
-		if(map == null) {
-			Markers(data);
-		}
+	var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
+			//Markers(sentdata);
+		
 		
 			view = 1;
-			var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
+			
 			var flightPlanCoordinates = [];
 			$.each(sentdata,function(i,item){
 				
@@ -68,6 +102,12 @@ function Polyline(){
 				
 				
 			});
+			var centerControlDiv = document.createElement('div');
+			var centerControl = new CenterControl(centerControlDiv, map);
+
+			centerControlDiv.index = 1;
+			map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+			
 			
 			 flightPath = new google.maps.Polyline({
 				path: flightPlanCoordinates,
@@ -78,12 +118,50 @@ function Polyline(){
 				});
 			flightPath.setMap(map);
 	
-		
+			
 	
 }
 
-function BatEcoRoute() {
+function BatEcoRoute(data) {
 	  flightPath.setMap(null);
+	  var latlng = null;
+	  var flightPlanCoordinates = [];	
+		
+		$.each(data,function(i,item){
+		
+			
+			var marker = new google.maps.Marker({
+	                position: latlng,
+	                map: map,
+	               title: item.ssid,
+	                animation: google.maps.Animation.DROP,
+	            });
+			flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
+				
+		 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
+		 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + "</p>";     
+
+	 			var infowindow = new google.maps.InfoWindow();
+
+	 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+	 			        return function() {
+	 			           infowindow.setContent(content);
+	 			           infowindow.open(map,marker);
+	 			        };
+	 			    })(marker,content,infowindow)); 
+	 			
+	 			var flightPath1 = new google.maps.Polyline({
+					path: flightPlanCoordinates,
+					geodesic: true,
+					strokeColor: '#FF0000',
+					strokeOpacity: 1.0,
+					strokeWeight: 2
+					});
+				flightPath1.setMap(map);
+			
+			
+		});
+		console.log('Ending economy route');
 	  
 	}
 

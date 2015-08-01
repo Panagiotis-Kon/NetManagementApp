@@ -194,23 +194,7 @@ function Pickerdate(data) {
 	      }
 	    });
 	    
-	    if(startDate == endDate) {
-	    	$("#popupText").html("Start Date and End Date are the same <br/> Please select another date range");
-			   $("#divpopup").dialog({
-					title: "DATE PROBLEM",
-					width: 430,
-					height: 300,
-					modal:true,
-					buttons: {
-						OK: 
-							function(){
-							$(this).dialog('close');
-						
-							}
-					}
-					}); 
-			    
-	    }
+	    
 	    if(analysisPage == 1) {
 	    	 $("#parameters").show();
 	    }
@@ -227,6 +211,7 @@ function Pickerdate(data) {
  	 if(document.getElementById('User').value == '' || document.getElementById('from').value=='' || document.getElementById('to').value=='')
      {
  		 	alert("Please fill all the fields");
+ 		 	
  	 }
  	 else
  	 {
@@ -235,6 +220,25 @@ function Pickerdate(data) {
  		 userID = document.getElementById('User').value;
  		 startDate = document.getElementById('from').value;
  		 endDate = document.getElementById('to').value;
+ 		 
+ 		if(startDate == endDate) {
+	    	$("#popupText").html("Start Date and End Date are the same <br/> Please select another date range");
+			   $("#divpopup").dialog({
+					title: "DATE PROBLEM",
+					width: 430,
+					height: 300,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+						
+							}
+					}
+					}); 
+			    
+	    }
+ 		 
  		 
  		 if(analysisPage == 1) {
  			 
