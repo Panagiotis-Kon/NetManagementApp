@@ -332,7 +332,7 @@ function clickableMenuAnalysis(option, menuitem) {
 		}
 		else {
 			var link = document.getElementById('userLink');
-			link.href="javascript:getUsers();"
+			link.href="javascript:getUsers(1);"
 				link.style.color="#000";
 				link.onmouseover= function(){this.style.color="red";}
 				link.onmouseout = function(){this.style.color="#000";}	
@@ -396,7 +396,7 @@ function clickableMenuVisual(option, menuitem){
 		}
 		else {
 			var link = document.getElementById('userLink');
-			link.href="javascript:getUsers();"
+			link.href="javascript:getUsers(0);"
 				link.style.color="#000";
 				link.onmouseover= function(){this.style.color="red";}
 				link.onmouseout = function(){this.style.color="#000";}

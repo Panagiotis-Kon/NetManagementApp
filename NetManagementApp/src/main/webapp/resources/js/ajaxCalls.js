@@ -403,9 +403,9 @@ function csvRequest(option)
 function getUsers(arg) {
 	if(arg == 1){
 		analysisPage = 1;
-		clickableMenuAnalysis(0, 1);
+		
 	}
-	
+	console.log('arg: ', arg);
 		$.ajax({ 
 			type: "GET",
 		    dataType: "json",
@@ -414,6 +414,7 @@ function getUsers(arg) {
 		    url: "/NetManagementApp/getUsers",
 		   success: function(data){
 			   if(data == "ap-not-loaded"){
+				   clickableMenuVisual(1, 1);
 				   $("#popupText").text("Sorry. First you must import Access Points Dataset");
 				   $("#divpopup").dialog({
 						title: "IMPORT PORBLEM",
@@ -424,12 +425,13 @@ function getUsers(arg) {
 							OK: 
 								function(){
 								$(this).dialog('close');
-								clickableMenuAnalysis(1, 1);
+								
 							}
 						}
 					}); 
 			   }
 			   else if(data == "gps-not-loaded"){
+				   clickableMenuAnalysis(1, 1);
 				   $("#popupText").text("Sorry. First you must import GPS Dataset");
 				   $("#divpopup").dialog({
 						title: "IMPORT PORBLEM",
@@ -440,12 +442,14 @@ function getUsers(arg) {
 							OK: 
 								function(){
 								$(this).dialog('close');
-								clickableMenuAnalysis(1, 1);
+								
 							}
 						}
 					}); 
 			   }
 			   else {
+				   clickableMenuAnalysis(0, 1);
+				   clickableMenuVisual(0, 1);
 				   options(data);
 			   }
 			   
@@ -471,6 +475,7 @@ function getAvUserDates(userID,arg) {
 	   success: function(data){
 		   
 		   if(data == "ap-not-loaded"){
+			   clickableMenuVisual(1, 1);
 			   $("#popupText").text("Sorry. First you must import Access Points Dataset");
 			   $("#divpopup").dialog({
 					title: "IMPORT PORBLEM",
@@ -481,12 +486,13 @@ function getAvUserDates(userID,arg) {
 						OK: 
 							function(){
 							$(this).dialog('close');
-							clickableMenuAnalysis(1, 1);
+							
 						}
 					}
 				}); 
 		   }
 		   else if(data == "gps-not-loaded"){
+			   clickableMenuAnalysis(1, 1);
 			   $("#popupText").text("Sorry. First you must import GPS Dataset");
 			   $("#divpopup").dialog({
 					title: "IMPORT PORBLEM",
@@ -497,7 +503,7 @@ function getAvUserDates(userID,arg) {
 						OK: 
 							function(){
 							$(this).dialog('close');
-							clickableMenuAnalysis(1, 1);
+							
 						}
 					}
 				}); 
@@ -511,7 +517,7 @@ function getAvUserDates(userID,arg) {
 	   
 	   error:function(XMLHttpRequest, textStatus, errorThrown){
 		   console.log('error',textStatus + " " + errorThrown);
-			   alert('Get Users error loading response');
+			   alert('Get Users Dates error loading response');
 		   }
 		});
 	
@@ -641,7 +647,7 @@ function getBatteryInfo() {
 			   },
 			   error: function(XMLHttpRequest, textStatus, errorThrown){
 				   console.log('error',textStatus + " " + errorThrown);
-	 			   alert('Get App Info error loading response');
+	 			   alert('Get Battery Info error loading response');
 	 		   }
 	 		});
 
@@ -791,7 +797,7 @@ function StayPoints() {
 			   },
 			   error: function(XMLHttpRequest, textStatus, errorThrown){
 				   console.log('error',textStatus + " " + errorThrown);
-	 			   alert('Get App Info error loading response');
+	 			   alert('Get Stay Points error loading response');
 	 		   }
 	 		});
 		//clickableMenuAnalysis(1, 2);
