@@ -1049,3 +1049,23 @@ function graphOpUsers() {
 }
 
 
+
+function EconomicRoute() {
+	
+	$.ajax({ 
+		type: "GET",
+	    dataType: "json",
+	    contentType: "application/json",
+	    url: "/NetManagementApp/Operators-Users-Graph",
+	   success: function(data){
+		   
+	   },
+	   
+	   error:function(XMLHttpRequest, textStatus, errorThrown){
+		   console.log('error',textStatus + " " + errorThrown);
+			   alert('Economic Route error loading response');
+		   }
+		});
+	
+}
+

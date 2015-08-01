@@ -1,12 +1,17 @@
 package com.netmanagement.dataprocessing;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.csvdatasets.ParseGPS;
+import com.netmanagement.entities.AccessPoints;
 import com.netmanagement.entities.GPS;
 import com.netmanagement.entities.PointsofInterest;
 import com.netmanagement.entities.StayPoints;
@@ -234,5 +239,51 @@ public class PoICalculations {
 		}
 		return point;
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public String minmaxTimestamp(){
+		//Find minimum and maximum Date of the user return MIN#MAX
+		String DATE=null,MIN=null,MAX=null;
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+		int first=1;
+		if (!hap.isEmpty()){
+			Set<?> set = hap.entrySet();
+			Iterator<?> it = set.iterator();
+			while(it.hasNext()){
+				Map.Entry me = (Map.Entry)it.next();
+				//System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
+				for (int i=0;i<array.size();i++){
+					
+					if (first==1){
+						MIN=array.get(i).getTimestamp();
+						MAX=array.get(i).getTimestamp();
+						first=0;
+					}
+					else {
+						try {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+							Date datemin = sdf.parse(MIN);
+							Date datemax = sdf.parse(MAX);
+							Date datenow = sdf.parse(array.get(i).getTimestamp());
+							//System.out.println(datemin+" | "+datemax+" | "+datenow);
+							if (datemin.after(datenow)){
+								MIN=array.get(i).getTimestamp();
+							}
+							if (datemax.before(datenow)){
+								MAX=array.get(i).getTimestamp();
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		DATE=MIN+"#"+MAX;
+		System.out.println("MIN-MAX DATES: " + DATE);
+		return DATE;
+	}
+	
 
 }

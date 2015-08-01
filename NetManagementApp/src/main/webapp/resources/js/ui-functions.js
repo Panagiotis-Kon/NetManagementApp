@@ -11,6 +11,7 @@
         var submittedChoice = 0;
         var dateRange = [];
         var firstTimeClicked = 0;
+        var MinMaxD = [];
         //var dataArray = [];
         
 function sortAlphaNum(a,b) {
@@ -193,7 +194,23 @@ function Pickerdate(data) {
 	      }
 	    });
 	    
-	    
+	    if(startDate == endDate) {
+	    	$("#popupText").html("Start Date and End Date are the same <br/> Please select another date range");
+			   $("#divpopup").dialog({
+					title: "DATE PROBLEM",
+					width: 430,
+					height: 300,
+					modal:true,
+					buttons: {
+						OK: 
+							function(){
+							$(this).dialog('close');
+						
+							}
+					}
+					}); 
+			    
+	    }
 	    if(analysisPage == 1) {
 	    	 $("#parameters").show();
 	    }
@@ -469,29 +486,63 @@ function clickableMenuVisual(option, menuitem){
 }
 
 
-function addParameters() {
-	
-	dataArray.push(document.getElementById('fromPOI').value);
-	dataArray.push(document.getElementById('toPOI').value);
-	dataArray.push(document.getElementById('DmaxPOI').value);
-	dataArray.push(document.getElementById('TminPOI').value);
-	dataArray.push(document.getElementById('TmaxPOI').value);
-	dataArray.push(document.getElementById('epsPOI').value);
-	dataArray.push(document.getElementById('minPtsPOI').value);
-	return true;
-	//CalculatePOI(dataArray);
+
+function getMINMAXDates() {
+
+	    var s = new Date(2015,2,27);
+	    var e = new Date(2015,4,6);
+	    
+
+	    while(s < e) {
+	    	MinMaxD.push(s);
+	        s = new Date(s.setDate(
+	            s.getDate() + 1
+	        ))
+	    }
+
+	  
 	
 }
+
+function allowDatesPOI(date) {
+	var m = date.getMonth();
+	var d = date.getDate();
+	var y = date.getFullYear();
+	var currentDate = y + '-'+ (m+1) + '-' + d;
+	for(var i=0; i<MinMaxD.length; i++){
+		
+		if ($.inArray(currentDate, MinMaxD) > -1) {
+			console.log('currentdate OK',currentDate);
+			 return [true];
+			 
+		 }
+		else
+		{
+			//console.log('currentdate NOT OK',currentDate);
+			return [false];
+		}
+		
+	}
+	
+}
+
 
 function POIParameters() {
 	
 	 //$("#popupText").text("Stay Points created. Load on Map?");
+	if(MinMaxD.length == 0){
+		getMINMAXDates();
+	}
+	
+	
+	
+	
 	$( "#fromPOI" ).datepicker({
 	      changeMonth: true,
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
 	      changeYear: true,
-	      //beforeShowDay: enableSpecificDates,
+	      beforeShowDay: allowDatesPOI,
 	      onClose: function( selectedDate ) {
 	    	 
 	        $( "#toPOI" ).datepicker( "option", "minDate", selectedDate );
@@ -504,7 +555,7 @@ function POIParameters() {
 	      numberOfMonths: 1,
 	      dateFormat: "yy-mm-dd",
 	      changeYear: true,
-	     // beforeShowDay:enableSpecificDates,
+	      beforeShowDay:allowDatesPOI,
 	      onClose: function(selectedDate ) {
 	    	  
 	        $( "#fromPOI" ).datepicker( "option", "maxDate", selectedDate );

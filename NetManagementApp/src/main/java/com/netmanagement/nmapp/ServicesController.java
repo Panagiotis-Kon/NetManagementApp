@@ -507,5 +507,14 @@ public class ServicesController {
 		 }
 		 
 	 }
+	 
+	 
+	 /*--------------------------------------------- Battery Economic Route ---------------------------------------*/
+	 @RequestMapping(value = "/Battery-Economic-Route", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String EcoRoute(){
+	
+		return ""; 
+	 }
 	
 }

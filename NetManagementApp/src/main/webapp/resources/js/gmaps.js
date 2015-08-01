@@ -1,5 +1,9 @@
 map = null;
 var view = -1; // 0-> markers, 1->polyline, 2->cells
+var flightPath;
+
+
+
 //mapSP = null;
 function Markers(data) {
 
@@ -65,7 +69,7 @@ function Polyline(){
 				
 			});
 			
-			var flightPath = new google.maps.Polyline({
+			 flightPath = new google.maps.Polyline({
 				path: flightPlanCoordinates,
 				geodesic: true,
 				strokeColor: '#FF0000',
@@ -77,6 +81,12 @@ function Polyline(){
 		
 	
 }
+
+function BatEcoRoute() {
+	  flightPath.setMap(null);
+	  
+	}
+
 /*
 function BatteryGraph() {
 	getBatteryInfo(); 

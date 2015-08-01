@@ -179,12 +179,14 @@ $( document ).tooltip();
 						
 								<label for="Tmin">Tmin</label>
 								<input type="text" id="Tmin" name="Tmin">
+								<label for="format">[DD:HH:MM:SS]</label>
 							</div>
 							
 							<div id="poipar">
 							
 								<label for="Tmax">Tmax</label>
 								<input type="text" id="Tmax" name="Tmax">
+								<label for="format">[DD:HH:MM:SS]</label>
 							</div>
 						</div>
 						
@@ -206,17 +208,16 @@ $( document ).tooltip();
 				</ul>
 				
 			</div>
+			
 			<div class="clearfix"> </div>
 			<div class="border"></div>
 			
 			<div class="container" id="view-area-poi">
 				<div class="row" id="view-area-row-poi">
-  				
-  			
-  				 <div id="map-fullscreen" style="text-align:center;display:none;"><p>View Map on <a href="javascript:fullscreenMode()" style="color:blue;">full screen</a></p></div> 
-    			 <div id="map-canvas2" style="width: 100%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
-   					
-  				
+
+  				 <!--  div id="map-fullscreen" style="text-align:center;display:none;"><p>View Map on <a href="javascript:fullscreenMode()" style="color:blue;">full screen</a></p></div>--> 
+    			 	<div id="map-canvas2" style="width: 100%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
+
 				</div>
 			
 			
@@ -256,10 +257,12 @@ $( document ).tooltip();
 	<div id="poipar">
 		<label for="Tmin">Tmin</label>
 		<input type="text" id="TminPOI" name="Tmin">
+		<label for="format">[DD:HH:MM:SS]</label>
 	</div>
 	<div id="poipar">
 		<label for="Tmax">Tmax</label>
 		<input type="text" id="TmaxPOI" name="Tmax">
+		<label for="format">[DD:HH:MM:SS]</label>
 	</div>
 	<div id="poipar">
 		<label for="eps">eps</label>
