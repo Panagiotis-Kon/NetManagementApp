@@ -102,7 +102,8 @@ public class BatteryEcoRoute {
 					else {
 						visited.add(alist.get(i).getTimestamp());
 					}
-					for(int j=i+1; j<alist.size()-1;j++){
+					int j=0;
+					for(j=i+1; j<alist.size()-1;j++){
 						
 						//System.out.println("alist time: " + alist.get(i).getTimestamp() + " --- " + alist.get(j).getTimestamp());
 						if(alist.get(i).getTimestamp().equals(alist.get(j).getTimestamp())){
@@ -123,6 +124,9 @@ public class BatteryEcoRoute {
 							}
 							
 						}
+						else {
+							break;
+						}
 					}
 					
 					if(pos > -1){
@@ -134,6 +138,7 @@ public class BatteryEcoRoute {
 						}
 						
 					}
+					i=j-1;
 					//setPos(0);
 					//currentMaxRSSI=0;
 				}
