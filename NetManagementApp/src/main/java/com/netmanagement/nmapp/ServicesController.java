@@ -518,7 +518,7 @@ public class ServicesController {
 		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EconomicRoute(userID, startDate, endDate);
 		 if(!ecoList.isEmpty()){
 			 	String json = new Gson().toJson(ecoList);
-				System.out.println("json string: " + json);
+				//System.out.println("json string: " + json);
 				System.out.println("Eco Route length: " + ecoList.size());
 			    return json;
 		 }

@@ -86,37 +86,61 @@ public class BatteryEcoRoute {
 				System.out.println("AccessPointsCalculations: alist is empty!!!");
 			}
 			else {
+				
 				Collections.sort(alist);
+				System.out.println("alist size: " + alist.size());
 				System.out.println(alist.get(0).getUser()+" | "+alist.get(0).getTimestamp()+" ||| "+alist.get(alist.size()-1).getUser()+" | "+alist.get(alist.size()-1).getTimestamp());
 				
 				ArrayList<String> visited = new ArrayList<String>();
 				
 				for(int i=0; i<alist.size();i++){
 					setCurrentMaxRSSI(alist.get(i).getRssi());
-					if(visited.contains(alist.get(i).getTimestamp()) && visited.isEmpty() == false){
+					if(visited.contains(alist.get(i).getTimestamp())){
 						continue;
 					}
+					else {
+						visited.add(alist.get(i).getTimestamp());
+					}
 					for(int j=i+1; j<alist.size()-1;j++){
-	
+						
+						//System.out.println("alist time: " + alist.get(i).getTimestamp() + " --- " + alist.get(j).getTimestamp());
 						if(alist.get(i).getTimestamp().equals(alist.get(j).getTimestamp())){
-							System.out.println("Hii" + i);
-							visited.add(alist.get(j).getTimestamp()); // mark as visited
+							
+							//System.out.println("Hii" + i);
+							if(!visited.contains(alist.get(j).getTimestamp())){
+								visited.add(alist.get(j).getTimestamp()); // mark as visited
+							}
+							
 							if(alist.get(j).getRssi() > currentMaxRSSI ){
 								currentMaxRSSI = alist.get(j).getRssi();
 								setPos(j);
-								System.out.println("Found bigger RSSI in pos: " + pos);
+								System.out.println("Found bigger RSSI in pos: " + pos+ " for time: " + alist.get(j).getTimestamp());
 							}
+							else{
+								
+								System.out.println("Current RSSI is bigger");
+							}
+							
 						}
 					}
+					
 					if(pos > -1){
 						AccessPoints ap = alist.get(pos);
-						ecoList.add(ap);
+						if(ecoList.contains(alist.get(pos).getTimestamp())){
+							continue;
+						}else {
+							ecoList.add(ap);
+						}
+						
 					}
-					
+					//setPos(0);
+					//currentMaxRSSI=0;
 				}
 			}
-			
-			
+			Collections.sort(ecoList);
+			for(int i=0; i<ecoList.size();i++){
+				System.out.println("Time: " + ecoList.get(i).getTimestamp() + " RSSI: " + ecoList.get(i).getRssi() + " SSID: " + ecoList.get(i).getSsid());
+			}
 			return ecoList;
 		}
 

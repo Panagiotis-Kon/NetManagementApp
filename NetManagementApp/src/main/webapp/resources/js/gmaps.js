@@ -2,7 +2,7 @@ map = null;
 var view = -1; // 0-> markers, 1->polyline, 2->cells
 var flightPath;
 
-
+var markers = [];
 
 //mapSP = null;
 function Markers(data) {
@@ -32,9 +32,11 @@ function Markers(data) {
 		               title: item.ssid,
 		                animation: google.maps.Animation.DROP,
 		            });
+	 			markers.push(marker);
 			 		
 			 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' Mean RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
-			 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + "</p>";     
+			 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + 
+			 		"<br />" + 'Timestamp: ' + item.timestamp + "</p>";     
 
 		 			var infowindow = new google.maps.InfoWindow();
 
@@ -50,6 +52,23 @@ function Markers(data) {
 			console.log('ending scipt');
 
 }
+
+//Sets the map on all markers in the array.
+function setAllMap(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+function clearMarkers() {
+	  setAllMap(null);
+	}
+//Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
+}
+
 
 
 function CenterControl(controlDiv, map) {
@@ -124,43 +143,49 @@ function Polyline(){
 
 function BatEcoRoute(data) {
 	  flightPath.setMap(null);
+	  deleteMarkers();
 	  var latlng = null;
-	  var flightPlanCoordinates = [];	
+	  	
 		
 		$.each(data,function(i,item){
 		
-			
+			latlgn = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
 			var marker = new google.maps.Marker({
 	                position: latlng,
 	                map: map,
 	               title: item.ssid,
 	                animation: google.maps.Animation.DROP,
 	            });
+			markers.push(marker);
+			var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
+	 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + "<br />"+'Timestamp: ' + item.timestamp + "</p>";     
+
+			var infowindow = new google.maps.InfoWindow();
+
+			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+			        return function() {
+			           infowindow.setContent(content);
+			           infowindow.open(map,marker);
+			        };
+			    })(marker,content,infowindow)); 
+		});
+		var flightPlanCoordinates = [];
+		$.each(data,function(i,item){
 			flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
 				
-		 		var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
-		 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + "</p>";     
-
-	 			var infowindow = new google.maps.InfoWindow();
-
-	 			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
-	 			        return function() {
-	 			           infowindow.setContent(content);
-	 			           infowindow.open(map,marker);
-	 			        };
-	 			    })(marker,content,infowindow)); 
+		});	
 	 			
 	 			var flightPath1 = new google.maps.Polyline({
 					path: flightPlanCoordinates,
 					geodesic: true,
-					strokeColor: '#FF0000',
+					strokeColor: '#0000FF',
 					strokeOpacity: 1.0,
 					strokeWeight: 2
 					});
 				flightPath1.setMap(map);
 			
 			
-		});
+		
 		console.log('Ending economy route');
 	  
 	}
