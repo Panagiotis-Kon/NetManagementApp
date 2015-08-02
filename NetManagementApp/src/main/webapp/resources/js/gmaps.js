@@ -149,7 +149,19 @@ function BatEcoRoute(data) {
 		
 		$.each(data,function(i,item){
 		
-			latlgn = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
+			latlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
+ 			if(i==0){
+ 				
+ 				
+ 		      	var mapOptions = {
+ 		    		zoom: 8,
+ 		    		center: latlng,
+ 		    		mapTypeId: google.maps.MapTypeId.TERRAIN
+ 		 		 };
+ 		      	
+ 		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+ 	
+ 			}
 			var marker = new google.maps.Marker({
 	                position: latlng,
 	                map: map,
