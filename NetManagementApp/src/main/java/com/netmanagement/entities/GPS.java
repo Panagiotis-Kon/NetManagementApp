@@ -2,7 +2,7 @@ package com.netmanagement.entities;
 
 
 
-public class GPS {
+public class GPS implements Comparable<GPS>{
 
 	private String id;
 	private String user;
@@ -47,5 +47,12 @@ public class GPS {
 	}
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	@Override
+	public int compareTo(GPS arg0) {
+		if (getTimestamp() == null || arg0.getTimestamp() == null)
+		      return 0;
+		    return getTimestamp().compareTo(arg0.getTimestamp());
 	}
 }

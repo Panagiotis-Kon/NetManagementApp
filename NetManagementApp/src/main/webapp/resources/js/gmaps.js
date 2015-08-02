@@ -343,10 +343,10 @@ function DrawPOI(data) {
 	}
 	else {
 		
-		
+		var cluster = 0;
 		$.each(data,function(i,item){
 			
-			
+			cluster++;
 			if(i==0)
 			{
 				var latlng = new google.maps.LatLng(item.startlat, item.startlon);
@@ -376,6 +376,19 @@ function DrawPOI(data) {
 			      new google.maps.LatLng(item.startlat, item.startlon),
 			      new google.maps.LatLng(item.endlat, item.endlon))
 			  });
+			
+			var ne = rectangle.getBounds().getNorthEast();
+			var content = "<p>" + "Cluster: " + cluster + "</p>";  
+
+ 			var infowindow = new google.maps.InfoWindow();
+
+ 			google.maps.event.addListener(rectangle,'click', (function(rectangle,content,infowindow){ 
+ 			        return function() {
+ 			           infowindow.setContent(content);
+ 			           infowindow.setPosition(ne);
+ 			           infowindow.open(map,rectangle);
+ 			        };
+ 			    })(rectangle,content,infowindow)); 
 		
 		
 		});

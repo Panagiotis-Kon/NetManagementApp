@@ -1,6 +1,7 @@
 package com.netmanagement.entities;
 
-import java.util.Date;
+import java.util.Comparator;
+
 
 
 
@@ -86,11 +87,37 @@ public class AccessPoints implements Comparable<AccessPoints>{
 		this.timestamp = timestamp;
 	}
 
-	 @Override
-	  public int compareTo(AccessPoints o) {
-	    if (getTimestamp() == null || o.getTimestamp() == null)
-	      return 0;
-	    return getTimestamp().compareTo(o.getTimestamp());
-	  }
+	 
+	/* 
+	 public static Comparator<AccessPoints> compareRssi() {
+	        return new Comparator<AccessPoints>() {
+
+				@Override
+				public int compare(AccessPoints arg0, AccessPoints arg1) {
+					return Integer.compare(arg0.getRssi(), arg1.getRssi());
+				}
+	            
+	        };
+	    }
+	 
+	 public static Comparator<AccessPoints> compareTimeStamp() {
+	        return new Comparator<AccessPoints>() {
+
+				@Override
+				public int compare(AccessPoints arg0, AccessPoints arg1) {
+					 if (arg0.getTimestamp() == null || arg1.getTimestamp() == null)
+					      return 0;
+					    return arg0.getTimestamp().compareTo(arg1.getTimestamp());
+				}
+	            
+	        };
+	    }
+	 */
+	@Override
+	public int compareTo(AccessPoints o) {
+		if (getTimestamp() == null || o.getTimestamp() == null)
+		      return 0;
+		    return getTimestamp().compareTo(o.getTimestamp());
+	}
 	
 }

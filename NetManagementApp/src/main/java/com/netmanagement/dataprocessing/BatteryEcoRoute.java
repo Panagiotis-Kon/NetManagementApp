@@ -12,6 +12,7 @@ import java.util.Set;
 
 import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.entities.AccessPoints;
+import com.netmanagement.entities.GPS;
 
 public class BatteryEcoRoute {
 	 private static BatteryEcoRoute BatteryEcoRouteinstance = null;
@@ -144,10 +145,138 @@ public class BatteryEcoRoute {
 				}
 			}
 			Collections.sort(ecoList);
+			
 			for(int i=0; i<ecoList.size();i++){
 				System.out.println("Time: " + ecoList.get(i).getTimestamp() + " RSSI: " + ecoList.get(i).getRssi() + " SSID: " + ecoList.get(i).getSsid());
 			}
 			return ecoList;
+		}
+		
+		/*
+		public ArrayList<AccessPoints> EcoMinRoute(String userID, String startDate, String endDate ){
+			
+			ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
+			ArrayList<AccessPoints> alist = AccessPointsCalculations.getInstance().searchUser(userID, startDate, endDate); 
+			ArrayList<GPS> GPSList = GPSCalculations.getInstance().searchUser(userID, startDate, endDate);
+			Collections.sort(GPSList);
+			ArrayList<String> visited = new ArrayList<String>();
+			
+			
+			for(int i=0; i<alist.size(); i++)
+			{
+				ArrayList<AccessPoints> rbList = new ArrayList<AccessPoints>();
+				ArrayList<BSSIDDist> BDList = new ArrayList<BSSIDDist>();
+				int j=0;
+				for(j=i+1; j<alist.size()-1;j++){
+					if(alist.get(i).getTimestamp().equals(alist.get(j).getTimestamp())){
+						AccessPoints apObj  = new AccessPoints();
+						apObj = alist.get(i);
+						if(!rbList.contains(apObj)){
+							rbList.add(apObj);
+						}
+						
+					}
+				}
+
+				for(int k=0; k<GPSList.size();k++){
+					
+					if(alist.get(i).getTimestamp().equals(GPSList.get(k).getTimestamp())){
+						BSSIDDist bsd = new BSSIDDist();
+						bsd.bssid = alist.get(i).getBssid();
+						double distance = SpaceDistance(GPSList.get(k), alist.get(i));
+						bsd.dist = distance;
+						BDList.add(bsd);
+						
+					}
+				}
+				int minSum=0;
+				int posIndex=-1;
+				Collections.sort(BDList);
+				Collections.sort(rbList,AccessPoints.compareRssi());
+				
+				for(int k=0; k<BDList.size(); k++){
+					for(int m=0;m<rbList.size();m++){
+						if(BDList.get(k).bssid.equals(rbList.get(m).getBssid())){
+							if(minSum > k+m)
+							{
+								minSum = k+m;
+								posIndex = m;
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+				ecoList.add(rbList.get(posIndex));
+				
+			}
+			Collections.sort(ecoList);
+			System.out.println("Eco Route size: " + ecoList.size());
+			for(int i=0; i<ecoList.size();i++){
+				System.out.println("Time: " + ecoList.get(i).getTimestamp() + " RSSI: " + ecoList.get(i).getRssi() + " BSSID: " + ecoList.get(i).getBssid());
+			}
+			return ecoList;
+			
+		}
+		*/
+		
+		class BSSIDDist implements Comparable<BSSIDDist>{
+			double dist;
+			String bssid;
+			
+			public double getDist() {
+				return dist;
+			}
+
+			public void setDist(double dist) {
+				this.dist = dist;
+			}
+
+			public String getBssid() {
+				return bssid;
+			}
+
+			public void setBssid(String bssid) {
+				this.bssid = bssid;
+			}
+
+			@Override
+			public int compareTo(BSSIDDist o) {
+				return Double.compare(getDist(), o.getDist());
+				
+			}
+			
+			
+
+			
+		}
+		
+		
+		
+	
+		
+		
+		double SpaceDistance(GPS gps, AccessPoints ap){
+			//Find Pythagorean distance calculation between given variables
+			double distance=0,lat=0,lon=0;
+			if (gps.getUlatitude()>ap.getAPlatitude()){
+				lat=gps.getUlatitude()-ap.getAPlatitude();
+			}
+			else {
+				lat=ap.getAPlatitude()-gps.getUlatitude();
+			}
+			lat=lat*lat;
+			if (gps.getUlongtitude()>ap.getAPlongtitude()){
+				lon=gps.getUlongtitude()-ap.getAPlongtitude();
+			}
+			else {
+				lon=ap.getAPlongtitude()-gps.getUlongtitude();
+			}
+			lon=lon*lon;
+			distance=Math.sqrt(lat+lon);
+			return distance;
 		}
 
 		
