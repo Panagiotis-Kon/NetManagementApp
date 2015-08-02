@@ -95,6 +95,7 @@ public class BatteryEcoRoute {
 				
 				for(int i=0; i<alist.size();i++){
 					setCurrentMaxRSSI(alist.get(i).getRssi());
+					pos = i;
 					if(visited.contains(alist.get(i).getTimestamp())){
 						continue;
 					}
