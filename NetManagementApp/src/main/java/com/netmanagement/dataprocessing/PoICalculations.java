@@ -118,6 +118,7 @@ public class PoICalculations {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public ArrayList<PointsofInterest> CalculatePoI(){
 		HashMap<String, ArrayList<GPS>> hgps = ParseGPS.getInstance().getHap();
 		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();
@@ -281,7 +282,7 @@ public class PoICalculations {
 			}
 		}
 		DATE=MIN+"#"+MAX;
-		System.out.println("MIN-MAX DATES: " + DATE);
+		//System.out.println("MIN-MAX DATES: " + DATE);
 		return DATE;
 	}
 	
