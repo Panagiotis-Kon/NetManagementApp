@@ -309,7 +309,7 @@ public class GPSCalculations {
 		return TimeDiff;
 	}
 	
-	double SpaceDistance(GPS gps1, GPS gps2){
+	/*double SpaceDistance(GPS gps1, GPS gps2){
 		//Find Pythagorean distance calculation between given variables
 		double distance=0,lat=0,lon=0;
 		if (gps1.getUlatitude()>gps2.getUlatitude()){
@@ -328,6 +328,21 @@ public class GPSCalculations {
 		lon=lon*lon;
 		distance=Math.sqrt(lat+lon);
 		return distance;
+	}*/
+	
+	double SpaceDistance(GPS gps1, GPS gps2){
+		//Find distance calculation between given variables from http://www.movable-type.co.uk/scripts/latlong.html
+		double glat=gps1.getUlatitude()*Math.PI/180;
+		double alat=gps2.getUlatitude()*Math.PI/180;
+		double glon=gps1.getUlongtitude()*Math.PI/180;
+		double alon=gps2.getUlongtitude()*Math.PI/180;
+		double R = 6371000;
+		double df = alat - glat;
+		double dl = alon - glon;
+		double a = Math.sin(df/2)*Math.sin(df/2)+Math.cos(glat)*Math.cos(alat)*Math.sin(dl/2)*Math.sin(dl/2);
+		double c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		double d=R*c;
+		return Math.abs(d);
 	}
 	
 	double[] estimateCentroid(ArrayList<GPS> points,int start, int end){

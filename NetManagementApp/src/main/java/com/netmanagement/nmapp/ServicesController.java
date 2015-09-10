@@ -515,7 +515,7 @@ public class ServicesController {
 		
 	   public @ResponseBody String EcoRoute(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate){
 	
-		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EconomicRoute(userID, startDate, endDate);
+		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoUserRoute(userID, startDate, endDate);
 		 //ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMinRoute(userID, startDate, endDate);
 		 if(!ecoList.isEmpty()){
 			 	String json = new Gson().toJson(ecoList);
