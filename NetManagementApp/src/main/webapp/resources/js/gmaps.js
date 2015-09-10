@@ -145,31 +145,62 @@ function BatEcoRoute(data) {
 	  flightPath.setMap(null);
 	  deleteMarkers();
 	  var latlng = null;
-	  	
+	  //var pinColor = "FE6256";
+	  //console.log(data);	
+		//var split=data.split('#');
+		var gpsRoute = data[0];
+		var ecoMarkers = data[1];
+		console.log('after split');
+
+			
+			var flightPlanCoordinates = [];
+			$.each(gpsRoute,function(i,item){
+				/*if(i==0) {
+					
+					var mapOptions = {
+		 		    		zoom: 8,
+		 		    		center: new google.maps.LatLng(item.Ulatitude, item.Ulongtitude),
+		 		    		mapTypeId: google.maps.MapTypeId.TERRAIN
+		 		 		 };
+		 		      	
+		 		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+					
+					
+				}*/
+				
+				flightPlanCoordinates.push(new google.maps.LatLng(item.Ulatitude, item.Ulongtitude));
+					
+			});	
+		 			
+		 			var flightPath1 = new google.maps.Polyline({
+						path: flightPlanCoordinates,
+						geodesic: true,
+						strokeColor: '#0000FF',
+						strokeOpacity: 1.0,
+						strokeWeight: 2
+						});
+					flightPath1.setMap(map);
+			
 		
-		$.each(data,function(i,item){
+			
 		
+		$.each(ecoMarkers,function(i,item){
+		
+			var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="+(i+1)+"|FF0000|000FFF",
+			        new google.maps.Size(21, 40),
+			        new google.maps.Point(0,0),
+			        new google.maps.Point(10, 34));
 			latlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
- 			if(i==0){
- 				
- 				
- 		      	var mapOptions = {
- 		    		zoom: 8,
- 		    		center: latlng,
- 		    		mapTypeId: google.maps.MapTypeId.TERRAIN
- 		 		 };
- 		      	
- 		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
- 	
- 			}
+ 			
 			var marker = new google.maps.Marker({
 	                position: latlng,
 	                map: map,
-	               title: item.ssid,
+	                icon: pinImage,
+	                title: item.ssid,
 	                animation: google.maps.Animation.DROP,
 	            });
 			markers.push(marker);
-			var content = "<p>" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
+			var content = "<p>" + 'Number: ' + (i+1) + "<br />" + 'SSID: ' + item.ssid + "<br />" + 'BSSID: ' + item.bssid + "<br />" + ' RSSI: ' + item.rssi + '<br />' + ' frequency: ' + item.frequency + 
 	 		 "<br />" + "latitude:  " + item.APlatitude + "<br />" + "longtitude:  " + item.APlongtitude + "<br />"+'Timestamp: ' + item.timestamp + "</p>";     
 
 			var infowindow = new google.maps.InfoWindow();
@@ -181,20 +212,7 @@ function BatEcoRoute(data) {
 			        };
 			    })(marker,content,infowindow)); 
 		});
-		var flightPlanCoordinates = [];
-		$.each(data,function(i,item){
-			flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude, item.APlongtitude));
-				
-		});	
-	 			
-	 			var flightPath1 = new google.maps.Polyline({
-					path: flightPlanCoordinates,
-					geodesic: true,
-					strokeColor: '#0000FF',
-					strokeOpacity: 1.0,
-					strokeWeight: 2
-					});
-				flightPath1.setMap(map);
+		
 			
 			
 		

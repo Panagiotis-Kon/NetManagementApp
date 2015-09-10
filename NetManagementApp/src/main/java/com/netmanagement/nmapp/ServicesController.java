@@ -4,7 +4,9 @@ package com.netmanagement.nmapp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.StringJoiner;
 
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -514,14 +516,19 @@ public class ServicesController {
 	 @RequestMapping(value = "/Battery-Economic-Route", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String EcoRoute(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate){
-	
-		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoUserRoute(userID, startDate, endDate);
+		 
+	     ArrayList<GPS> gpsList = BatteryEcoRoute.getInstance().UserRoute(userID, startDate, endDate);
+		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMarkers(userID, startDate, endDate);
 		 //ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMinRoute(userID, startDate, endDate);
 		 if(!ecoList.isEmpty()){
-			 	String json = new Gson().toJson(ecoList);
-				//System.out.println("json string: " + json);
+			
+			 	String json1 = new Gson().toJson(gpsList);
+			 	
+			 	String json2 = new Gson().toJson(ecoList);
+			 	String bothjson = "["+json1+","+json2+"]";
+				System.out.println("json string: " + bothjson);
 				System.out.println("Eco Route length: " + ecoList.size());
-			    return json;
+			    return bothjson;
 		 }
 		 else
 		 {

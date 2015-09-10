@@ -43,13 +43,10 @@ public class BatteryEcoRoute {
 		public void setPos(int pos) {
 			this.pos = pos;
 		}
-	
+		
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public ArrayList<AccessPoints> EcoUserRoute(String userID, String startDate, String endDate){
+		public ArrayList<GPS> UserRoute(String userID, String startDate, String endDate){
 			HashMap<String, ArrayList<GPS>> hgps = ParseGPS.getInstance().getHap();
-			HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
-			ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
-			ArrayList<AccessPoints> APList = new ArrayList<AccessPoints>();
 			ArrayList<GPS> gpsList = new ArrayList<GPS>();
 			if (!hgps.isEmpty()){
 				Set<?> set = hgps.entrySet();
@@ -83,6 +80,15 @@ public class BatteryEcoRoute {
 					}
 				}
 			}
+			return gpsList;
+		}
+	
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		public ArrayList<AccessPoints> EcoMarkers(String userID, String startDate, String endDate){
+			HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+			ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
+			ArrayList<AccessPoints> APList = new ArrayList<AccessPoints>();
+			ArrayList<GPS> gpsList = UserRoute(userID, startDate, endDate);
 			
 			if (!hap.isEmpty()){
 				Set<?> set = hap.entrySet();
@@ -126,8 +132,12 @@ public class BatteryEcoRoute {
 				    tempap = null;
 				    for (int j=0;j<APList.size();j++){
 					   Date apdate = sdf.parse(APList.get(j).getTimestamp());
+					   System.out.println("Time Diff: "+Math.abs(apdate.getTime()-gpsdate.getTime()));
+					   System.out.println("Space Dist: "+SpaceDistance(gpsList.get(i), APList.get(j)));
                        if (Math.abs(apdate.getTime()-gpsdate.getTime()) <= time_slack*1000){
+                    	   
                     	   if (SpaceDistance(gpsList.get(i), APList.get(j)) <= radius){
+                    		   
                     		   if (tempap==null){
                     			   tempap = new AccessPoints();
                     			   tempap.setBssid(APList.get(j).getBssid());
@@ -161,7 +171,7 @@ public class BatteryEcoRoute {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				ecoList.add(tempap);
+				if (tempap!=null) ecoList.add(tempap);
 			}
 			System.out.println(ecoList.size());
 			return ecoList;
