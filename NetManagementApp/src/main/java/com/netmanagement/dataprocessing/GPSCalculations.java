@@ -144,7 +144,7 @@ public class GPSCalculations {
 					datet=sdf.parse(t);
 					dateTmax=sdf.parse(Tmax);
 					dateTmin=sdf.parse(Tmin);
-					System.out.println(datet+" | "+dateTmin+" | "+dateTmax);
+					System.out.println("GPSCalc line 147: "+datet+" | "+dateTmin+" | "+dateTmax);
 				    if (datet.after(dateTmax)){
 				      t=TimeDifference(GPSPoints.get(i).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
 				      datet=sdf.parse(t);
@@ -155,6 +155,8 @@ public class GPSCalculations {
         			  break;
         		    }
 				    else if (SpaceDistance(GPSPoints.get(i),GPSPoints.get(j))>Dmax){
+				    	t=TimeDifference(GPSPoints.get(i).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
+					    datet=sdf.parse(t);
 				    	if (datet.after(dateTmin)){
 				    		Lsp.add(estimateStayPoint(GPSPoints, i, j-1));
 				    		i=j;
@@ -190,7 +192,8 @@ public class GPSCalculations {
 	
 	StayPoints estimateStayPoint(ArrayList<GPS> list, int start, int end){
 		StayPoints sp = new StayPoints();
-		double lat=list.get(start).getUlatitude(),lon=list.get(start).getUlatitude();
+		double lat=list.get(start).getUlatitude();
+		double lon=list.get(start).getUlongtitude();
 		String Tstart = list.get(start).getTimestamp(), Tend = list.get(end).getTimestamp();
 		/*for (int i=start+1;i<=end;i++){
 			lat=estimateCentroid(lat, list.get(i).getUlatitude());
@@ -297,10 +300,10 @@ public class GPSCalculations {
 			long diffDays = diff / (24 * 60 * 60 * 1000);
 			//TimeDiff=System.out.format("%02d", diffDays)+":"+System.out.format("%02d", diffHours)+":"+System.out.format("%02d", diffMinutes)+":"+System.out.format("%02d", diffSeconds);
 			TimeDiff=diffDays+":"+diffHours+":"+diffMinutes+":"+diffSeconds;
-			System.out.print(diffDays + " days, ");
-			System.out.print(diffHours + " hours, ");
-			System.out.print(diffMinutes + " minutes, ");
-			System.out.print(diffSeconds + " seconds.");
+			//System.out.print(diffDays + " days, ");
+			//System.out.print(diffHours + " hours, ");
+			//System.out.print(diffMinutes + " minutes, ");
+			//System.out.print(diffSeconds + " seconds.");
  
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -346,14 +349,16 @@ public class GPSCalculations {
 	}
 	
 	double[] estimateCentroid(ArrayList<GPS> points,int start, int end){
-		double center=0,center1=0;
+		double centerx=0,centery=0;
+		int counter=0;
 		for (int i=start;i<=end;i++){
-			center=center+points.get(i).getUlatitude();
-			center1=center1+points.get(i).getUlongtitude();
+			centerx=centerx+points.get(i).getUlatitude();
+			centery=centery+points.get(i).getUlongtitude();
+			counter++;
 		}
-        center = center/(end-start+1);
-        center1 = center1/(end-start+1);
-        double a[] = {center,center1};
+        centerx = centerx/counter;
+        centery = centery/counter;
+        double a[] = {centerx,centery};
 		return a;
 	}
 

@@ -312,7 +312,7 @@ function DrawStayPoints(data) {
 		//console.log('mapSP: ', mapSP);
 		
 
-		 		var content = "<p>" + "Tstart: " + item.Tstart + "<br />" + " Tend: " + item.Tend + "</p>";  
+		 		var content = "<p>" + "Lat: " + item.lat + "<br />" + " Lon: " + item.lon + "<br />" + " Tstart: " + item.Tstart + "<br />" + " Tend: " + item.Tend + "</p>";  
 
 	 			var infowindow = new google.maps.InfoWindow();
 
