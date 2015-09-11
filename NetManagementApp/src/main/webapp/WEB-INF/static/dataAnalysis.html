@@ -66,7 +66,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  <script type="text/javascript"> 
 $(function(){
 $( "#tabs" ).tabs();
-$( document ).tooltip();
  });
 </script>
 
@@ -131,7 +130,7 @@ $( document ).tooltip();
 					<div class="mini-menu">
 						<ul>
 							<li><a href="javascript:getUsers(1);" id="userLink">Choose User/Parameters</a></li>
-							<li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li>
+							<!-- <li><a href="javascript:void(0);" id="StayPointsLink">Load Stay Points</a></li> -->
 							
 						</ul>
 				
@@ -204,7 +203,7 @@ $( document ).tooltip();
 				<div class="mini-menu">
 				<ul>
 					<li><a href="javascript:POIParameters();" id="POIParamLink">POI Parameters</a></li>	
-					<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>				
+					<!--<li><a href="javascript:void(0);" id="PoiLink">Load POI</a></li>	  -->			
 				</ul>
 				
 			</div>
@@ -282,10 +281,9 @@ $( document ).tooltip();
 					<div class="col-md-2 col-xs-6 col-sm-4">
 						<ul class="footerMenu">
 						<li class="title">Services</li>
-							<li><a href="#">Data Processing</a></li>
-							<li><a href="#">Data Visualization</a></li>
-							<li><a href="#">Data Analysis</a></li>
-							<li><a href="#">Bar Diagrams</a></li>
+							<li><a href="javascript:toDataVisualization();">Data Visualization</a></li>
+							<li><a href="javascript:toDataAnalysis();">Data Analysis</a></li>
+							<li><a href="javascript:toBarDiagrams();">Bar Diagrams</a></li>
 							<li><a href="#">Conclusions</a></li>
 						</ul>
 							
@@ -295,8 +293,8 @@ $( document ).tooltip();
 					<div class="col-md-2 col-xs-6 col-sm-4">
 						<ul class="footerAddress">
 							<li class="title">About Us</li>
-							<li>Κοντόπουλος Παναγιώτης - sdi1100124</li>
-							<li>Τσακριλής Αλέξανδρος-Παναγιώτης - sdi1100092</li>
+							<li>Kontopoulos Panagiotis - sdi1100124</li>
+							<li>Tsakrilis Alexandros-Panagiotis - sdi1100092</li>
 							<li><strong>University : DIT</strong></li>
 							
 						</ul>

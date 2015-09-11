@@ -78,13 +78,6 @@ window.onload = function(){
     
 
 
-<script type="text/javascript">
-  $(function() {
-    $( document ).tooltip();
-  });
-  </script>
-
-
 <!-- end-smoth-scrolling -->
 </head>
 <body>
@@ -137,7 +130,7 @@ window.onload = function(){
 			<div class="mini-menu">
 				<ul>
 					<li><a href="javascript:getUsers(0);" id="userLink">Choose User/Timeline</a></li>
-					<li><a href="javascript:void(0);" id="markersLink">Load Markers</a></li>					
+					<li><a href="javascript:void(0);" id="Markers">Markers</a></li>					
 					<li><a href="javascript:void(0);" id="polyLink">Polyline</a></li>
 					<li><a href="javascript:void(0);" id="graphLink">Level/Time Graph</a></li>
 					<li><a href="javascript:void(0);" id="cellsLink">Cells</a></li>
@@ -174,7 +167,7 @@ window.onload = function(){
 							
 							<label for="from">From</label>
 							<input type="text" id="from" name="from" title="format: yyyy-mm-dd">
-							<label for="to">to</label>
+							<label for="to">To</label>
 							<input type="text" id="to" name="to" title="format: yyyy-mm-dd">
 						</div>
 						<div id="closer"></div>
@@ -199,10 +192,9 @@ window.onload = function(){
 					<div class="col-md-2 col-xs-6 col-sm-4">
 						<ul class="footerMenu">
 						<li class="title">Services</li>
-							<li><a href="#">Data Processing</a></li>
-							<li><a href="#">Data Visualization</a></li>
-							<li><a href="#">Data Analysis</a></li>
-							<li><a href="#">Bar Diagrams</a></li>
+							<li><a href="javascript:toDataVisualization();">Data Visualization</a></li>
+							<li><a href="javascript:toDataAnalysis();">Data Analysis</a></li>
+							<li><a href="javascript:toBarDiagrams();">Bar Diagrams</a></li>
 							<li><a href="#">Conclusions</a></li>
 						</ul>
 							
@@ -212,8 +204,8 @@ window.onload = function(){
 					<div class="col-md-2 col-xs-6 col-sm-4">
 						<ul class="footerAddress">
 							<li class="title">About Us</li>
-							<li>Κοντόπουλος Παναγιώτης - sdi1100124</li>
-							<li>Τσακριλής Αλέξανδρος-Παναγιώτης - sdi1100092</li>
+							<li>Kontopoulos Panagiotis - sdi1100124</li>
+							<li>Tsakrilis Alexandros-Panagiotis - sdi1100092</li>
 							<li><strong>University : DIT</strong></li>
 							
 						</ul>

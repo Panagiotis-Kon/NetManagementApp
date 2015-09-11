@@ -14,6 +14,8 @@
         var MinMaxD = [];
         //var dataArray = [];
         
+        
+  /* Sort Alphanumeric */      
 function sortAlphaNum(a,b) {
 	
       	  var tempA = a.replace(matcherA, "");
@@ -29,7 +31,9 @@ function sortAlphaNum(a,b) {
       	  		return tempA > tempB ? 1 : -1;
       	  }
 }        
-        
+ 
+	/* Create the Rigth column of the page */
+
 function options(data) {
    	
 	
@@ -46,7 +50,7 @@ function options(data) {
         	arr.push(item);  
           })
       
-          arr.sort(sortAlphaNum);
+          arr.sort(sortAlphaNum); /* Sort Users correctly */
 		     
 		     $.each(arr,function(i,item) {
 		    	 
@@ -111,6 +115,8 @@ function options(data) {
                      
 }
 
+/* Creates a date range for the given data (startDate - endDate) */
+
 function createRange(data) {
 	
 	if(dateRange.length > 0) {
@@ -134,6 +140,7 @@ function createRange(data) {
 }
 
 
+/* Enables specific dates for the DatePicker */
 
 function enableSpecificDates(date) {
 
@@ -268,7 +275,7 @@ function Pickerdate(data) {
   					
   					}
   				});
-  		 clickableMenuAnalysis(1, 2);
+  		 //clickableMenuAnalysis(1, 2);
   		 //clickableMenuAnalysis(1, 3);
   		 
  		 }
@@ -283,10 +290,8 @@ function Pickerdate(data) {
  					OK: 
  						function(){
  						$(this).dialog('close');
- 						
- 						/*$("#timeline").hide();
- 		        		$("#btnIdSub").hide();
- 		        		$("#btnId").hide();*/
+ 						getApInfo();
+ 					
  						}
  					
  					}
@@ -333,15 +338,16 @@ function Pickerdate(data) {
 	   clickableMenuVisual(0, 3);  
 	   clickableMenuVisual(0, 4);
 	   clickableMenuVisual(0, 5);
+	   
 	   clickableMenuAnalysis(1, 1);
-	   clickableMenuAnalysis(0, 2);
-	   clickableMenuAnalysis(0, 4);
+	   //clickableMenuAnalysis(0, 2);
+	   //clickableMenuAnalysis(0, 4);
    });
 	
 }
 
 
-
+/* Manager of the Analysis Menu */
 function clickableMenuAnalysis(option, menuitem) {
 	
 	if(menuitem == 1){
@@ -359,20 +365,7 @@ function clickableMenuAnalysis(option, menuitem) {
 				link.onmouseout = function(){this.style.color="#000";}	
 		}
 	}
-	else if(menuitem == 2) {
-		if(option == 0){
-			var link = document.getElementById('StayPointsLink');
-			link.href="javascript:void(0);"
-			link.style.color="grey";
-		}
-		else {
-			var link = document.getElementById('StayPointsLink');
-			link.href="javascript:StayPoints();"
-				link.style.color="#000";
-				link.onmouseover= function(){this.style.color="red";}
-				link.onmouseout = function(){this.style.color="#000";}	
-		}
-	}
+
 	else if(menuitem == 3) {
 		if(option == 0){
 			var link = document.getElementById('POIParamLink');
@@ -387,20 +380,7 @@ function clickableMenuAnalysis(option, menuitem) {
 				link.onmouseout = function(){this.style.color="#000";}	
 		}
 	}
-	else if(menuitem == 4) {
-		if(option == 0){
-			var link = document.getElementById('PoiLink');
-			link.href="javascript:void(0);"
-			link.style.color="grey";
-		}
-		else {
-			var link = document.getElementById('PoiLink');
-			link.href="javascript:POI();"
-				link.style.color="#000";
-				link.onmouseover= function(){this.style.color="red";}
-				link.onmouseout = function(){this.style.color="#000";}	
-		}
-	}
+
 	
 }
 
@@ -427,20 +407,20 @@ function clickableMenuVisual(option, menuitem){
 	}
 	else if(menuitem == 2) {
 		if(option == 0){
-			var link = document.getElementById('markersLink');
+			var link = document.getElementById('Markers');
 			link.href="javascript:void(0);"
 			link.style.color="grey";
 		}
 		else {
-			var link = document.getElementById('markersLink');
+			var link = document.getElementById('Markers');
 			link.href="javascript:getApInfo();"
 				link.style.color="#000";
 				link.onmouseover= function(){this.style.color="red";}
 				link.onmouseout = function(){this.style.color="#000";}
 				
 		}
-	
 	}
+	
 	else if(menuitem == 3) {
 		if(option == 0){
 			var link = document.getElementById('polyLink');
@@ -486,6 +466,7 @@ function clickableMenuVisual(option, menuitem){
 				
 		}
 	}
+	
 	
 }
 
@@ -686,6 +667,8 @@ function DrawDiagram1(data){
 	
 }
 
+
+/* Diagram for the Operators and the Users */
 
 function DrawDiagram2(data){
 	

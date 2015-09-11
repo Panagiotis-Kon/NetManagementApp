@@ -24,7 +24,7 @@ function requestsHandler(arg)
 		createTableEP();
 	}
 	*/ 
-	if(arg == "all")
+	if(arg == "All")
 	{
 		csvRequest(0);
 		
