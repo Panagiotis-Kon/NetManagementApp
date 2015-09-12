@@ -30,7 +30,33 @@ function sortAlphaNum(a,b) {
       	  {
       	  		return tempA > tempB ? 1 : -1;
       	  }
-}        
+}
+
+
+
+function TimeValidator(time) {
+	var regEx = /^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/;
+	if(!regEx.test(time)){
+	
+		return false;
+	}
+	else {
+		/* the format is ok, but check if it's time correct */
+		time.split(":");
+		var hours = parseInt(time[1]);
+		var mins = parseInt(time[2]);
+		var secs = parseInt(time[3]);
+		if((mins < 60 && mins > 0) && (secs < 60 && secs > 0) && (hours < 24 && hours > 0)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+}
+
  
 	/* Create the Rigth column of the page */
 
@@ -257,8 +283,29 @@ function Pickerdate(data) {
  			Dmax = document.getElementById('Dmax').value;
  			Tmin = document.getElementById('Tmin').value;
  			Tmax = document.getElementById('Tmax').value;
+ 			if(!TimeValidator(Tmin) && !TimeValidator(Tmax)) {
+ 				$("#popupText").text("Wrong Format of Tmin and Tmax. Please try again");
+ 	 			
+ 	  		   $("#divpopup").dialog({
+ 	  				title: "Wrong Format",
+ 	  				width: 430,
+ 	  				height: 200,
+ 	  				modal:true,
+ 	  				buttons: {
+ 	  					OK: 
+ 	  						function(){
+ 	  						$(this).dialog('close');
+ 	  						
+ 	  						}
+ 	  					
+ 	  					}
+ 	  				});
+ 			}
+ 			else {
+ 				StayPoints();
+ 			}
  			
- 			$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate + "\n" +
+ 			/*$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate + "\n" +
  					"Dmax: " + Dmax + "\n" + "Tmin: " + Tmin + "\n" + "Tmax: " + Tmax);
  			
   		   $("#divpopup").dialog({
@@ -274,13 +321,15 @@ function Pickerdate(data) {
   						}
   					
   					}
-  				});
+  				});*/
   		 //clickableMenuAnalysis(1, 2);
   		 //clickableMenuAnalysis(1, 3);
   		 
  		 }
  		 else {
- 			$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
+ 			getApInfo();
+ 			
+ 			/*$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
  		   $("#divpopup").dialog({
  				title: "Choice Submission",
  				width: 430,
@@ -295,7 +344,7 @@ function Pickerdate(data) {
  						}
  					
  					}
- 				});
+ 				});*/
  		  clickableMenuVisual(0, 1);
  		  clickableMenuVisual(1, 2);
  		  clickableMenuVisual(1, 3);
@@ -303,7 +352,7 @@ function Pickerdate(data) {
  		  clickableMenuVisual(1, 5);
  		 }
  		
- 		 //getApInfo();
+ 		
  	 }
  	
  	 
@@ -548,6 +597,8 @@ function POIParameters() {
 	        //console.log(' endDate: ' + selectedDate);
 	      }
 	    });
+	    
+	    
 	   $("#divpopupParam").dialog({
 			title: "POI PARAMETERS",
 			width: 500,
@@ -556,18 +607,26 @@ function POIParameters() {
 			buttons: {
 				Submit: function(){
 					
+					var timeTmin = document.getElementById('TminPOI').value;
+					var timeTmax = document.getElementById('TmaxPOI').value;
+				    if(!TimeValidator(timeTmin) && !TimeValidator(timeTmax) ) {
+				    	alert("Wrong Format for Time")
+				    	$(this).dialog('close');
+				    }
+				    else {
+				    	var dataArray = [];
+						dataArray.push(document.getElementById('fromPOI').value);
+						dataArray.push(document.getElementById('toPOI').value);
+						dataArray.push(document.getElementById('DmaxPOI').value);
+						dataArray.push(document.getElementById('TminPOI').value);
+						dataArray.push(document.getElementById('TmaxPOI').value);
+						dataArray.push(document.getElementById('epsPOI').value);
+						dataArray.push(document.getElementById('minPtsPOI').value);
+						
+						$(this).dialog('close');
+						CalculatePOI(dataArray);
+				    }
 					
-					var dataArray = [];
-					dataArray.push(document.getElementById('fromPOI').value);
-					dataArray.push(document.getElementById('toPOI').value);
-					dataArray.push(document.getElementById('DmaxPOI').value);
-					dataArray.push(document.getElementById('TminPOI').value);
-					dataArray.push(document.getElementById('TmaxPOI').value);
-					dataArray.push(document.getElementById('epsPOI').value);
-					dataArray.push(document.getElementById('minPtsPOI').value);
-					
-					$(this).dialog('close');
-					CalculatePOI(dataArray);
 					
 				},
 
