@@ -12,6 +12,9 @@
         var dateRange = [];
         var firstTimeClicked = 0;
         var MinMaxD = [];
+        var chart;
+        var chartData = [];
+        var chartExists = 0;
         //var dataArray = [];
         
         
@@ -57,7 +60,86 @@ function TimeValidator(time) {
 	
 }
 
- 
+
+function SelectUser(data) {
+	
+	
+		var usersMenu = document.createElement('select');
+		usersMenu.setAttribute("id","usersMenu");
+		usersMenu.style.width = '500px';
+		usersMenu.style.overflow = 'auto';
+	
+		
+		
+	  clickableMenuVisual(0, 1);
+	  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
+	  $('#headerTag').append(header);
+	  var UsersArray = [];
+	  $.each(data,function(i,item){ 
+		  UsersArray.push(item);  
+        })
+        UsersArray.sort(sortAlphaNum);
+	  
+	  $.each(UsersArray,function(i,item){ 
+		 var option = document.createElement('option'); 
+		 option.innerHTML = item;
+		 usersMenu.appendChild(option);
+        })
+        
+        $('#usersTable').append(usersMenu);
+        
+       
+	  
+	  $("#userSel").show();
+	  
+	  var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
+      $('#userSel').append(addUserBtn);
+
+      var submitUser = document.getElementById("addUserBtn");
+      submitUser.addEventListener('click',function(e){
+      	firstTimeClicked++;
+      	var time = document.getElementById('timeline');
+      	var submit = document.getElementById("btnIdSub");
+      	var close = document.getElementById("btnId");
+      	if(firstTimeClicked > 1 && time != null && submit != null && close!=null){
+      		
+      		document.getElementById('from').value = '';
+      		document.getElementById('to').value = '';
+      		$("#timeline").hide();
+      		submit.parentNode.removeChild(submit);
+      		close.parentNode.removeChild(close);
+      	}
+      	 if(document.getElementById('UserText').value == '') {
+      		 alert("Please fill user field");
+           }
+      	 else {
+      		 userID = document.getElementById('UserText').value;
+      		 if(analysisPage == 1) {
+      			 getAvUserDates(userID,1);
+      	    }
+      		else{
+      			 getAvUserDates(userID,0);
+      		 }
+      		 
+      	 }        	
+      })
+      
+      $( "#usersMenu" ).selectmenu({
+          change: function( event, data ) {
+          	
+            userID = data.item.value;
+            console.log('userID: ' + userID);
+            $( "#UserText" ).val(data.item.value);
+           
+            
+          }
+        });
+	  
+	
+}
+
+
+
 	/* Create the Rigth column of the page */
 
 function options(data) {
@@ -241,7 +323,7 @@ function Pickerdate(data) {
 	
 	var submit = document.getElementById("btnIdSub");
     submit.addEventListener('click',function(e){
- 	 if(document.getElementById('User').value == '' || document.getElementById('from').value=='' || document.getElementById('to').value=='')
+ 	 if(document.getElementById('UserText').value == '' || document.getElementById('from').value=='' || document.getElementById('to').value=='')
      {
  		 	alert("Please fill all the fields");
  		 	
@@ -249,8 +331,8 @@ function Pickerdate(data) {
  	 else
  	 {
  		//after choice enable other menu items
- 		 console.log('user: ' + document.getElementById('User').value + ' startDate: ' + document.getElementById('from').value + ' endDate: ' + document.getElementById('to').value);
- 		 userID = document.getElementById('User').value;
+ 		 console.log('user: ' + document.getElementById('UserText').value + ' startDate: ' + document.getElementById('from').value + ' endDate: ' + document.getElementById('to').value);
+ 		 userID = document.getElementById('UserText').value;
  		 startDate = document.getElementById('from').value;
  		 endDate = document.getElementById('to').value;
  		 
@@ -305,46 +387,13 @@ function Pickerdate(data) {
  				StayPoints();
  			}
  			
- 			/*$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate + "\n" +
- 					"Dmax: " + Dmax + "\n" + "Tmin: " + Tmin + "\n" + "Tmax: " + Tmax);
  			
-  		   $("#divpopup").dialog({
-  				title: "Choice Submission",
-  				width: 430,
-  				height: 200,
-  				modal:true,
-  				buttons: {
-  					OK: 
-  						function(){
-  						$(this).dialog('close');
-  						StayPoints();
-  						}
-  					
-  					}
-  				});*/
-  		 //clickableMenuAnalysis(1, 2);
-  		 //clickableMenuAnalysis(1, 3);
-  		 
  		 }
  		 else {
  			getApInfo();
  			
- 			/*$("#popupText").text("Your choices: " + userID + " , " + startDate + " , " + endDate);
- 		   $("#divpopup").dialog({
- 				title: "Choice Submission",
- 				width: 430,
- 				height: 200,
- 				modal:true,
- 				buttons: {
- 					OK: 
- 						function(){
- 						$(this).dialog('close');
- 						getApInfo();
- 					
- 						}
- 					
- 					}
- 				});*/
+ 			//getBatteryInfo();
+ 			
  		  clickableMenuVisual(0, 1);
  		  clickableMenuVisual(1, 2);
  		  clickableMenuVisual(1, 3);
@@ -361,16 +410,17 @@ function Pickerdate(data) {
    
     var closer = document.querySelector('#btnId');
     closer.addEventListener('click',function(e){
-	   var tab = document.querySelector('#tableID');
+	  var usermenu = document.querySelector('#usersMenu');
        var hTag = document.querySelector('#headerTagId');
        var showDate =  document.querySelector('#addUserBtn');
-	   tab.parentNode.removeChild(tab); 
+       $('#usersMenu').selectmenu('destroy'); 
+      usermenu.parentNode.removeChild(usermenu); 
 	   hTag.parentNode.removeChild(hTag);
 	   closer.parentNode.removeChild(closer);
 	   showDate.parentNode.removeChild(showDate);
 	   submit.parentNode.removeChild(submit);
 	   
-	   var elem = document.getElementById("User");
+	   var elem = document.getElementById("UserText");
 	   elem.value = '';
 	   elem = document.getElementById("from");
 	   elem.value = '';
@@ -643,14 +693,271 @@ function POIParameters() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------- Battery-User Diagram -------------------------------------------- */
+
+
+function BatteryUserChart(data) {
+	console.log('Making graph now');
+	//var chart;
+	//var chartData = [];
+	      
+	            	
+	        
+	                for (var i = 0; i < data.length; i++) {
+	                   
+	                	//var temp = (data[i].timestamp).split(' ');
+	                	//console.log('data[i].timestamp: ',data[i].timestamp);
+	                	var replacer = (data[i].timestamp).replace(/-/g , "/");
+	                	var Ddate =	new Date(replacer);
+	                	var DTime = Ddate.getHours() + ':'+ Ddate.getMinutes() + ':' + Ddate.getSeconds();
+	                	//console.log('date bat: ', dateTime[0]);
+	                	var level = data[i].level;
+	                	
+	                   
+	                    chartData.push({
+	                        date: Ddate,
+	                        time: DTime,
+	                        level: level,
+	                    });
+	                }
+	         
+	            
+	            
+	         
+	                // XY CHART
+
+	                chart = new AmCharts.AmXYChart();
+	                chart.dataDateFormat = "YYYY-MM-DD";
+
+	                chart.dataProvider = chartData;
+	                chart.startDuration = 1;
+
+	                // AXES
+	                // X
+	                var xAxis = new AmCharts.ValueAxis();
+	                xAxis.title = "Time";
+	                xAxis.duration = "ss",
+	                xAxis.position = "bottom";
+	                xAxis.dashLength = 1;
+	                xAxis.axisAlpha = 0;
+	                xAxis.type = "date";
+	               // xAxis.totalText = "[[total]]";
+	                xAxis.autoGridCount = true;
+	                chart.addValueAxis(xAxis);
+
+	                // Y
+	                var yAxis = new AmCharts.ValueAxis();
+	                yAxis.position = "left";
+	                yAxis.title = "Level";
+	                yAxis.dashLength = 1;
+	                yAxis.axisAlpha = 0;
+	                yAxis.autoGridCount = true;
+	                chart.addValueAxis(yAxis);
+
+	                // GRAPHS
+	                // triangles up
+	                var graph1 = new AmCharts.AmGraph();
+	                graph1.lineColor = "#FF6600";
+	                graph1.valueField = "time";
+	                graph1.balloonText = "Date:<b>[[x]]</b><br> Time:<b>[[time]]</b><br>Level:<b>[[level]]</b>";
+	                graph1.xField = "date";
+	                graph1.yField = "level";
+	                graph1.lineAlpha = 1;
+	                graph1.type = "smoothedLine";
+	                graph1.bullet = "round";
+	                graph1.bulletColor="#C0C0C0";
+	                graph1.bulletBorderColor="#000000";
+	                graph1.bulletBorderThickness = 2;
+	                chart.addGraph(graph1);
+
+	              
+
+	                // first trend line
+	                var trendLine = new AmCharts.TrendLine();
+	                trendLine.lineColor = "#FF6600";
+	                trendLine.initialXValue = 1;
+	                trendLine.initialValue = 2;
+	                trendLine.finalXValue = 12;
+	                trendLine.finalValue = 11;
+	                chart.addTrendLine(trendLine);
+
+	             
+
+	                // CURSOR
+	                var chartCursor = new AmCharts.ChartCursor();
+	                chart.addChartCursor(chartCursor);
+
+	                // SCROLLBAR
+
+	                var chartScrollbar = new AmCharts.ChartScrollbar();
+	                chart.addChartScrollbar(chartScrollbar);
+	                
+	                chart.mouseWheelZoomEnabled = true;
+	                
+	                //chart.addListener("dataUpdated", zoomChart);
+	               chart.maxZoomFactor = 40;
+
+	                // WRITE
+	                chart.write("chartdiv");
+	         
+
+
+	                console.log("ending graph");
+	
+	
+}
+
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+function graph(data) {
+	
+	if(chartData.length != 0) {
+		chart.removeChartCursor();
+		chart.removeChartScrollbar();
+		chart.removeListener(chart,"dataUpdated", zoomChart);
+		chart.clear();
+	}
+	var prevDate = null;
+	
+	for (var i = 0; i < data.length; i++) {
+        
+    	
+    	var replacer = (data[i].timestamp).replace(/-/g , "/");
+    	var Ddate =	new Date(replacer);
+    	var color;
+    	if(i==0){
+    		prevDate = new Date(Ddate);
+    		color = getRandomColor();
+    	}
+    	if(Ddate.getDate() != prevDate.getDate()) {
+    		color = getRandomColor();
+    		
+    	}
+    	var DTime = Ddate.getHours() + ':'+ Ddate.getMinutes() + ':' + Ddate.getSeconds();
+    	var level = data[i].level;
+    	
+       
+        chartData.push({
+            date: Ddate,
+            time: DTime,
+            level: level,
+            color: color,
+        });
+        prevDate = Ddate;
+    }
+	
+	
+	chart = new AmCharts.AmSerialChart();
+    chart.dataProvider = chartData;
+    chart.categoryField = "date";
+    chart.dataDateFormat = "YYYY-MM-DD";
+    chart.startDuration = 1;
+    chart.columnWidth = 0.3;
+    // AXES
+    // category
+    var categoryAxis = chart.categoryAxis;
+    categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
+    categoryAxis.minPeriod = "ss"; // our data is daily, so we set minPeriod to DD
+    categoryAxis.dashLength = 1;
+    categoryAxis.labelRotation = 90;
+    categoryAxis.gridPosition = "start";
+    categoryAxis.title = "Time";
+    
+    categoryAxis.position = "bottom";
+  
+    categoryAxis.axisAlpha = 0;
+    categoryAxis.type = "date";
+
+    // value
+    // in case you don't want to change default settings of value axis,
+    // you don't need to create it, as one value axis is created automatically.
+    var valueAxis = new AmCharts.ValueAxis();
+    valueAxis.axisAlpha = 0;
+    valueAxis.dashLength = 1;
+    valueAxis.title = "Level";
+    chart.addValueAxis(valueAxis);
+    // GRAPH
+    var graph = new AmCharts.AmGraph();
+    graph.valueField = "level";
+    graph.colorField = "color";
+    graph.balloonText = "Date:<b>[[date]]</b><br> Time:<b>[[time]]</b><br>Level:<b>[[level]]</b>";
+    graph.type = "column";
+    graph.lineAlpha = 0;
+    graph.fillAlphas = 0.8;
+    chart.addGraph(graph);
+
+    
+    
+    chart.addListener("dataUpdated", zoomChart);
+    
+    // CURSOR
+    var chartCursor = new AmCharts.ChartCursor();
+    chartCursor.cursorAlpha = 0;
+    chartCursor.zoomable = true;
+    chartCursor.fullWidth = true;
+    chartCursor.categoryBalloonDateFormat = "YYYY-MM-DD";
+    chartCursor.categoryBalloonEnabled = true;
+    chart.addChartCursor(chartCursor);
+	chart.mouseWheelZoomEnabled = true;
+    chart.creditsPosition = "top-right";
+    
+    var chartScrollbar = new AmCharts.ChartScrollbar();
+    chart.addChartScrollbar(chartScrollbar);
+    
+    if(document.getElementById('chartdiv')) {
+    	chart.write("chartdiv");
+    }
+    else {
+    	var iDiv = document.createElement('div');
+    	iDiv.setAttribute('id','chartdiv');
+    	iDiv.style.width = "100%";
+    	iDiv.style.height = "500px";
+    	document.getElementById('BatteryChart').appendChild(iDiv);
+    	chart.write("chartdiv");
+    }
+	
+	
+	
+}
+
+
+function zoomChart() {
+    // different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
+    chart.zoomToIndexes(chartData.length - 50, chartData.length - 1);
+}
+
+
+
+
 /*------------------------------------- Bar Diagrams ---------------------------------------------------- */
 function DrawDiagram1(data){
 	
-	var chart;
-	var chartData = [];
+	var chartBat;
+	var chartDataBat = [];
 	for(var i=0; i<data.length; i++){
 		var splitter = data[i].split('#');
-		chartData.push({
+		chartDataBat.push({
             time: splitter[0],
             Nusers: splitter[1],
             
@@ -660,12 +967,12 @@ function DrawDiagram1(data){
 	
 	 
 	 // SERIAL CHART
-    chart = new AmCharts.AmSerialChart();
-    chart.dataProvider = chartData;
-    chart.categoryField = "time";
+    chartBat = new AmCharts.AmSerialChart();
+    chartBat.dataProvider = chartDataBat;
+    chartBat.categoryField = "time";
     // the following two lines makes chart 3D
-    chart.depth3D = 20;
-    chart.angle = 30;
+    chartBat.depth3D = 20;
+    chartBat.angle = 30;
 
     // AXES
     // category
@@ -679,7 +986,7 @@ function DrawDiagram1(data){
     valueAxis.title = "Users battery <= 15%";
     valueAxis.gridAlpha = 1;
     valueAxis.dashLength = 5;
-    chart.addValueAxis(valueAxis);
+    chartBat.addValueAxis(valueAxis);
 
     // GRAPH
     var graph = new AmCharts.AmGraph();
@@ -690,16 +997,16 @@ function DrawDiagram1(data){
     graph.lineAlpha = 0;
     
     graph.fillAlphas = 1;
-    chart.addGraph(graph);
+    chartBat.addGraph(graph);
 
     // CURSOR
     var chartCursor = new AmCharts.ChartCursor();
     chartCursor.cursorAlpha = 0;
     chartCursor.zoomable = true;
     chartCursor.categoryBalloonEnabled = false;
-    chart.addChartCursor(chartCursor);
+    chartBat.addChartCursor(chartCursor);
 
-    chart.creditsPosition = "top-right";
+    chartBat.creditsPosition = "top-right";
 
     // CURSOR
     //var chartCursor = new AmCharts.ChartCursor();
@@ -708,10 +1015,10 @@ function DrawDiagram1(data){
     // SCROLLBAR
 
     var chartScrollbar = new AmCharts.ChartScrollbar();
-    chart.addChartScrollbar(chartScrollbar);
+    chartBat.addChartScrollbar(chartScrollbar);
     // WRITE
     if(document.getElementById('chartdiv')) {
-    	chart.write("chartdiv");
+    	chartBat.write("chartdiv");
     }
     else {
     	var iDiv = document.createElement('div');
@@ -719,7 +1026,7 @@ function DrawDiagram1(data){
     	iDiv.style.width = "100%";
     	iDiv.style.height = "500px";
     	document.getElementById('bar-diagram1').appendChild(iDiv);
-    	chart.write("chartdiv");
+    	chartBat.write("chartdiv");
     }
     
 
@@ -731,9 +1038,9 @@ function DrawDiagram1(data){
 
 function DrawDiagram2(data){
 	
-	var chart;
+	var chartOP;
 	var colorVal;
-    var chartData = [];
+    var chartDataOP = [];
 	for(var i=0; i<data.length; i++){
 		var splitter = data[i].split('#');
 		if(splitter[0] == "GR COSMOTE" || splitter[0] == "COSMOT" || splitter[0] == "COSMOTE")
@@ -753,7 +1060,7 @@ function DrawDiagram2(data){
 			colorVal = "#FF9933";
 			
 		}
-		chartData.push({
+		chartDataOP.push({
             operator: splitter[0],
             Nusers: splitter[1],
             color: colorVal,
@@ -761,23 +1068,23 @@ function DrawDiagram2(data){
 		
 	}
 	
-	chartData.sort(function(a, b){
+	chartDataOP.sort(function(a, b){
 		 return b.Nusers - a.Nusers})
 	
          // SERIAL CHART
-         chart = new AmCharts.AmSerialChart();
-         chart.dataProvider = chartData;
-         chart.categoryField = "operator";
+         chartOP = new AmCharts.AmSerialChart();
+		 chartOP.dataProvider = chartDataOP;
+         chartOP.categoryField = "operator";
          // this single line makes the chart a bar chart,
          // try to set it to false - your bars will turn to columns
-         chart.rotate = true;
+         chartOP.rotate = true;
          // the following two lines makes chart 3D
-         chart.depth3D = 20;
-         chart.angle = 30;
+         chartOP.depth3D = 20;
+         chartOP.angle = 30;
 
          // AXES
          // Category
-         var categoryAxis = chart.categoryAxis;
+         var categoryAxis = chartOP.categoryAxis;
          categoryAxis.gridPosition = "start";
          categoryAxis.axisColor = "#DADADA";
          categoryAxis.title = "Operators";
@@ -790,7 +1097,7 @@ function DrawDiagram2(data){
          valueAxis.axisColor = "#DADADA";
          valueAxis.title = "Number of Users";
          valueAxis.gridAlpha = 1;
-         chart.addValueAxis(valueAxis);
+         chartOP.addValueAxis(valueAxis);
 
          // GRAPH
          var graph = new AmCharts.AmGraph();
@@ -801,13 +1108,13 @@ function DrawDiagram2(data){
          graph.lineAlpha = 0;
          graph.colorField = "color";
          graph.fillAlphas = 1;
-         chart.addGraph(graph);
+         chartOP.addGraph(graph);
 
-         chart.creditsPosition = "top-right";
+         chartOP.creditsPosition = "top-right";
 
       // WRITE
          if(document.getElementById('chartdiv')) {
-         	chart.write("chartdiv");
+         	chartOP.write("chartdiv");
          }
          else {
          	var iDiv = document.createElement('div');
@@ -815,7 +1122,7 @@ function DrawDiagram2(data){
          	iDiv.style.width = "100%";
          	iDiv.style.height = "500px";
          	document.getElementById('bar-diagram1').appendChild(iDiv);
-         	chart.write("chartdiv");
+         	chartOP.write("chartdiv");
          	//$("#chartdiv").show();
          	//console.log('hiiiii');
          }

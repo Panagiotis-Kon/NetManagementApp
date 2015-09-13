@@ -11,7 +11,7 @@ function Markers(data) {
 			
 			view = 0;
 			var latlng = null;
-			sessionStorage.setItem('apdata',JSON.stringify(data));
+			//sessionStorage.setItem('apdata',JSON.stringify(data));
 	 		if(mapCreated == 1) {
 	 			if(flightPath!=null){
 	 				
@@ -22,8 +22,14 @@ function Markers(data) {
 	 						  }
 	 				}
 	 			}
-	 			
+	 			if(markersAP.length != 0) {
+		 			deleteMarkers(0);
+		 		}
+	 			//if(MarkersCells.length !=0 ) {
+	 				//deleteMarkers(1);
+	 			//}
 	 		}
+	 		
 	 		$.each(data,function(i,item){
 	 			latlng = new google.maps.LatLng(item.APlatitude, item.APlongtitude);
 	 			if (mapCreated == 1) {
@@ -62,7 +68,7 @@ function Markers(data) {
 	 			
 	 		});
 			console.log('ending scipt Markers');
-
+			
 }
 
 //Sets the map on all markers in the array.
@@ -159,7 +165,7 @@ function CenterControl(controlDiv, map) {
 function Polyline(){
 	
 		
-	var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
+	//var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
 	view = 1;
 		if(markersAP.length != 0) {
 			
@@ -289,7 +295,10 @@ function DrawCells(bsdata) {
 					    markersEco[i].setMap(null);
 					  }
 			}
-		}	
+		}
+		if(MarkersCells.length !=0 ) {
+				deleteMarkers(1);
+		}
 	}
 	var pinColor = "52bdb0";
 	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
@@ -476,11 +485,11 @@ function DrawPOI(data) {
 
 
 
-
+/*
 function fullscreenMode(){
 	
 		window.open('fullscreenMap', '_blank');
 	
 }
-
+*/
 

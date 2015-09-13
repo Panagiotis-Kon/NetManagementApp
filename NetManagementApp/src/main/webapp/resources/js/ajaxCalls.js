@@ -450,7 +450,8 @@ function getUsers(arg) {
 			   else {
 				   clickableMenuAnalysis(0, 1);
 				   clickableMenuVisual(0, 1);
-				   options(data);
+				   //options(data);
+				   SelectUser(data);
 			   }
 			   
 		   },
@@ -526,6 +527,11 @@ function getAvUserDates(userID,arg) {
 }
 
 
+
+
+
+
+
 function getApInfo() {
 	
 		
@@ -566,6 +572,7 @@ function getApInfo() {
 									$(this).dialog('close');
 									 $("#map-fullscreen").show();
 									 Markers(data);
+									 getBatteryInfo();
 									},
 								NO:
 									function(){
@@ -592,7 +599,7 @@ function getApInfo() {
 
 function getBatteryInfo() {
 	
-		
+		console.log("getBatteryInfo Ajax");
 		$.ajax({ 
 			   type: "GET",
 			   dataType: "json",
@@ -619,7 +626,9 @@ function getBatteryInfo() {
 					   
 				   }
 				   else {
-					   $("#popupText").text("Battery Info gathering comleted. Load Graph ?");
+					  graph(data);
+					  // BatteryUserChart(data);
+					   /*$("#popupText").text("Battery Info gathering comleted. Load Graph ?");
 					   $("#divpopup").dialog({
 							title: "BATTERY",
 							width: 430,
@@ -632,7 +641,8 @@ function getBatteryInfo() {
 									// call for new popup window with graph
 										sessionStorage.setItem('battery',JSON.stringify(data));
 										window.open('BatteryGraph',"width=400, height=400");
-										
+										//BatteryChart(data);
+										//BatteryUserChart(data);
 									},
 								NO:
 									function(){
@@ -640,7 +650,7 @@ function getBatteryInfo() {
 									
 									}
 							}
-							}); 
+							}); */
 				   }
 				   
 			   
