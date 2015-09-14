@@ -38,21 +38,42 @@ function sortAlphaNum(a,b) {
 
 
 function TimeValidator(time) {
+	
 	var regEx = /^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]:[0-9][0-9]/;
 	if(!regEx.test(time)){
-	
+		console.log("problem in RegEx: " + time);
+		
 		return false;
 	}
 	else {
 		/* the format is ok, but check if it's time correct */
-		time.split(":");
-		var hours = parseInt(time[1]);
-		var mins = parseInt(time[2]);
-		var secs = parseInt(time[3]);
-		if((mins < 60 && mins > 0) && (secs < 60 && secs > 0) && (hours < 24 && hours > 0)) {
+		
+		
+		var cur_time = time.split(':');
+		var hours = cur_time[1];
+		var mins = cur_time[2];
+		var secs = cur_time[3];
+		console.log(cur_time[0] + " - " + hours + " - " +mins + " - " + secs);
+		
+		var h = hours.indexOf('0');
+		var m = mins.indexOf('0');
+		var s = secs.indexOf('0');
+		if(h == 0) {
+			hours =hours.replace('0','');	
+		}
+		if(m==0) {
+			mins = mins.replace('0','');
+		}
+		if(s==0) {
+			secs = secs.replace('0','');
+		}
+
+		if((parseInt(mins) < 60 && parseInt(mins) >= 0) && (parseInt(secs) < 60 && parseInt(secs) >= 0) && (parseInt(hours) < 24 && parseInt(hours) >= 0)) {
+			console.log("Time is ok");
 			return true;
 		}
 		else {
+			console.log("Problem in min,sec etc: " + hours + " - " + mins + " - " + secs);
 			return false;
 		}
 		
