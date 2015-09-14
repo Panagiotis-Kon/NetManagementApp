@@ -11,7 +11,7 @@ function Markers(data) {
 			
 			view = 0;
 			var latlng = null;
-			//sessionStorage.setItem('apdata',JSON.stringify(data));
+			sessionStorage.setItem('apdata',JSON.stringify(data));
 	 		if(mapCreated == 1) {
 	 			if(flightPath!=null){
 	 				
@@ -165,7 +165,7 @@ function CenterControl(controlDiv, map) {
 function Polyline(){
 	
 		
-	//var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
+	var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
 	view = 1;
 		if(markersAP.length != 0) {
 			
@@ -296,9 +296,9 @@ function DrawCells(bsdata) {
 					  }
 			}
 		}
-		if(MarkersCells.length !=0 ) {
-				deleteMarkers(1);
-		}
+		//if(MarkersCells.length !=0 ) {
+			//	deleteMarkers(1);
+		//}
 	}
 	var pinColor = "52bdb0";
 	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,

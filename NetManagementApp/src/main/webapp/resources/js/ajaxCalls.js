@@ -513,7 +513,7 @@ function getAvUserDates(userID,arg) {
 			   Pickerdate(data);
 		   }
 		   
-		   //console.log(data);
+		  
 	   },
 	   
 	   error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -626,31 +626,8 @@ function getBatteryInfo() {
 					   
 				   }
 				   else {
-					  graph(data);
-					  // BatteryUserChart(data);
-					   /*$("#popupText").text("Battery Info gathering comleted. Load Graph ?");
-					   $("#divpopup").dialog({
-							title: "BATTERY",
-							width: 430,
-							height: 200,
-							modal:true,
-							buttons: {
-								YES: 
-									function(){
-										$(this).dialog('close');
-									// call for new popup window with graph
-										sessionStorage.setItem('battery',JSON.stringify(data));
-										window.open('BatteryGraph',"width=400, height=400");
-										//BatteryChart(data);
-										//BatteryUserChart(data);
-									},
-								NO:
-									function(){
-									$(this).dialog('close');
-									
-									}
-							}
-							}); */
+					  BatteryGraph(data);
+					 
 				   }
 				   
 			   

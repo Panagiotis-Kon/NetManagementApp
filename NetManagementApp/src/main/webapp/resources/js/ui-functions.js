@@ -92,11 +92,13 @@ function SelectUser(data) {
 	  
 	  $("#userSel").show();
 	  
-	  var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
-      $('#userSel').append(addUserBtn);
+	  var timeline = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
+	  
+      $('#userSel').append(timeline);
 
       var submitUser = document.getElementById("addUserBtn");
       submitUser.addEventListener('click',function(e){
+    	e.preventDefault();
       	firstTimeClicked++;
       	var time = document.getElementById('timeline');
       	var submit = document.getElementById("btnIdSub");
@@ -114,6 +116,7 @@ function SelectUser(data) {
            }
       	 else {
       		 userID = document.getElementById('UserText').value;
+      		console.log('userID 118: ' + userID);
       		 if(analysisPage == 1) {
       			 getAvUserDates(userID,1);
       	    }
@@ -140,88 +143,10 @@ function SelectUser(data) {
 
 
 
-	/* Create the Rigth column of the page */
 
-function options(data) {
-   	
+
+
 	
-		  var arr = [];
-
-		  clickableMenuVisual(0, 1);
-		  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
-		  $('#headerTag').append(header);
-		  
-          var table = $('<table id="tableID"></table>');
-         
-		
-          $.each(data,function(i,item){ 
-        	arr.push(item);  
-          })
-      
-          arr.sort(sortAlphaNum); /* Sort Users correctly */
-		     
-		     $.each(arr,function(i,item) {
-		    	 
-        	  row = $('<tr></tr>');
-              var rowData = $('<td></td>').text(item);
-              row.append(rowData);
-              table.append(row);
-        	  
-          });
-          
- 		
-        if ($('#tableID').length) {
-             $("#usersTable tr:first").after(row);
-             console.log("Table created (if)");
-        }
-        else {
-            $('#usersTable').append(table);
-            console.log("Table created (else)");
-        }
-
-		var parent = document.querySelector('#usersTable');
-		
-		$("#userSel").show();
-        
-        parent.addEventListener('click', function(e){
-        	var elem = document.getElementById("User");
-			elem.value = e.target.innerHTML.toLowerCase();
-			userID = e.target.innerHTML.toLowerCase();
-        });
-   
-    	var addUserBtn = $('<button id="addUserBtn" type="submit" class="btn btn-default"></button>').text('Show TimeLine');
-        $('#userSel').append(addUserBtn);
-
-        var submitUser = document.getElementById("addUserBtn");
-        submitUser.addEventListener('click',function(e){
-        	firstTimeClicked++;
-        	var time = document.getElementById('timeline');
-        	var submit = document.getElementById("btnIdSub");
-        	var close = document.getElementById("btnId");
-        	if(firstTimeClicked > 1 && time != null && submit != null && close!=null){
-        		
-        		document.getElementById('from').value = '';
-        		document.getElementById('to').value = '';
-        		$("#timeline").hide();
-        		submit.parentNode.removeChild(submit);
-        		close.parentNode.removeChild(close);
-        	}
-        	 if(document.getElementById('User').value == '') {
-        		 alert("Please fill user field");
-             }
-        	 else {
-        		 userID = document.getElementById('User').value;
-        		 if(analysisPage == 1) {
-        			 getAvUserDates(userID,1);
-        	    }
-        		else{
-        			 getAvUserDates(userID,0);
-        		 }
-        		 
-        	 }        	
-        })
-                     
-}
 
 /* Creates a date range for the given data (startDate - endDate) */
 
@@ -276,7 +201,7 @@ function enableSpecificDates(date) {
 
 function Pickerdate(data) {
 
-
+	console.log("Pickerdate");
 	createRange(data);
 	
 	
@@ -652,7 +577,7 @@ function POIParameters() {
 	   $("#divpopupParam").dialog({
 			title: "POI PARAMETERS",
 			width: 500,
-			height: 500,
+			height: 600,
 			modal:true,
 			buttons: {
 				Submit: function(){
@@ -830,7 +755,7 @@ function getRandomColor() {
 }
 
 
-function graph(data) {
+function BatteryGraph(data) {
 	
 	if(chartData.length != 0) {
 		chart.removeChartCursor();
@@ -955,13 +880,26 @@ function DrawDiagram1(data){
 	
 	var chartBat;
 	var chartDataBat = [];
+	var prevDate = null;
 	for(var i=0; i<data.length; i++){
 		var splitter = data[i].split('#');
+    	var Ddate =	new Date(splitter[0]);
+		
+		var color;
+    	if(i==0){
+    		prevDate = new Date(Ddate);
+    		color = getRandomColor();
+    	}
+    	if(Ddate.getDate() != prevDate.getDate()) {
+    		color = getRandomColor();
+    		
+    	}
 		chartDataBat.push({
             time: splitter[0],
             Nusers: splitter[1],
-            
+            color: color,
         });
+		prevDate = Ddate;
 		
 	}
 	
@@ -976,22 +914,25 @@ function DrawDiagram1(data){
 
     // AXES
     // category
-    var categoryAxis = chart.categoryAxis;
+    var categoryAxis = chartBat.categoryAxis;
+    categoryAxis.title = "Time";
+    categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
+    categoryAxis.minPeriod = "hh"; // our data is daily, so we set minPeriod to DD
     categoryAxis.labelRotation = 90;
-    categoryAxis.dashLength = 5;
+    categoryAxis.dashLength = 1;
     categoryAxis.gridPosition = "start";
 
     // value
     var valueAxis = new AmCharts.ValueAxis();
     valueAxis.title = "Users battery <= 15%";
     valueAxis.gridAlpha = 1;
-    valueAxis.dashLength = 5;
+    valueAxis.dashLength =1;
     chartBat.addValueAxis(valueAxis);
 
     // GRAPH
     var graph = new AmCharts.AmGraph();
     graph.valueField = "Nusers";
-    //graph.colorField = "color";
+    graph.colorField = "color";
     graph.balloonText = "<span style='font-size:14px'>[[time]]: <b>[[value]]</b></span>";
     graph.type = "column";
     graph.lineAlpha = 0;
@@ -1005,7 +946,7 @@ function DrawDiagram1(data){
     chartCursor.zoomable = true;
     chartCursor.categoryBalloonEnabled = false;
     chartBat.addChartCursor(chartCursor);
-
+    chartBat.mouseWheelZoomEnabled = true
     chartBat.creditsPosition = "top-right";
 
     // CURSOR

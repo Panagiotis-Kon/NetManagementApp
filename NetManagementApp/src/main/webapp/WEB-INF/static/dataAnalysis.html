@@ -153,47 +153,40 @@ $( "#tabs" ).tabs();
     				<div id="graph" style="float:right; width: 50%; height:800px;margin-bottom:2em; margin-top:1em;">
 						<div id="headerTag"></div>
 						<div id="usersTable"></div>
-						<div id="userSel">
-							<label for="user">User</label>
-							<input type="text" id="UserText" name="user">
-						</div>
+						<form role="form" id="userSel">
+							<div class="form-group">
+								<label  class="control-label col-sm-2 col-xs-2" for="user">User:</label>
+    							<div class="col-xs-6 col-sm-6">
+    								<input type="text" class="form-control" id="UserText" name="user">
+    							</div>
+  							</div>
+						</form>
 						<div id="timeline">
 							
-							<div id="poipar">
-								<label for="from">From</label>
-								<input type="text" id="from" name="from" title="format: yyyy-mm-dd">
-								<label for="format">[YYYY-MM-DD]</label>
-							</div>
-							<div id="poipar">
-								<label for="to">To</label>
-								<input type="text" id="to" name="to" title="format: yyyy-mm-dd">
-								<label for="format">[YYYY-MM-DD]</label>
-							</div>
+							<form>
+								<fieldset>
+									<legend>Timeline Parameters</legend>
+									<p><label class="field" for="from">From:</label><input type="text" id="from" name="from" title="format: yyyy-mm-dd"></p>
+									<p><label class="field" for="to">To:</label><input type="text" id="to" name="to" title="format: yyyy-mm-dd"></p>
+								
+								</fieldset>
+							
+							
+							</form>
 						</div>
 						<div id=parameters>
-						<!--  <div id="accordion"> -->
+					
+							<form>
+								<fieldset>
+									<legend>Stay Points Parameters</legend>
+									<p><label class="field" for="Dmax">Dmax:</label><input type="text" id="Dmax" name="Dmax"></p>
+									<p><label class="field" for="Tmin">From:</label><input type="text" id="Tmin" name="Tmin" placeholder="format: [DD:hh:mm:ss]"></p>
+									<p><label class="field" for="Tmax">To:</label><input type="text" id="Tmax" name="Tmax" placeholder="format: [DD:hh:mm:ss]"></p>
+								</fieldset>
 							
-							<div id="poipar">
-								<label for="Dmax">Dmax</label>
-								<input type="text" id="Dmax" name="Dmax">
-								<label for="format">[METERS]</label>
-								
-							</div>
 							
+							</form>
 							
-							<div id="poipar">
-						
-								<label for="Tmin">Tmin</label>
-								<input type="text" id="Tmin" name="Tmin">
-								<label for="format">[DD:HH:MM:SS]</label>
-							</div>
-							
-							<div id="poipar">
-							
-								<label for="Tmax">Tmax</label>
-								<input type="text" id="Tmax" name="Tmax">
-								<label for="format">[DD:HH:MM:SS]</label>
-							</div>
 						</div>
 						
 						<div id="closer"></div>
@@ -221,7 +214,7 @@ $( "#tabs" ).tabs();
 			<div class="container" id="view-area-poi">
 				<div class="row" id="view-area-row-poi">
 
-  				 <!--  div id="map-fullscreen" style="text-align:center;display:none;"><p>View Map on <a href="javascript:fullscreenMode()" style="color:blue;">full screen</a></p></div>--> 
+  				  
     			 	<div id="map-canvas2" style="width: 100%; height: 600px; margin-bottom:2em; margin-top:1em;"></div>
 
 				</div>
@@ -245,40 +238,25 @@ $( "#tabs" ).tabs();
 
 <div id="divpopupParam" style="display:none">
 
-	<div id="poipar">
-		<label for="from">From: </label>
-		<input type="text" id="fromPOI" name="from">
-	</div>
-	<div id="poipar">
-		<label for="to">To: </label>
-		<input type="text" id="toPOI" name="to">
+	<form>
+		<fieldset>
+			<legend>Timeline Parameters</legend>
+				<p><label class="field" for="from">From:</label><input type="text" id="from" name="from" title="format: yyyy-mm-dd"></p>
+				<p><label class="field" for="to">To:</label><input type="text" id="to" name="to" title="format: yyyy-mm-dd"></p>
+		</fieldset>
+	</form>
+	<form>
+		<fieldset>
+			<legend>POI Parameters</legend>
+				<p><label class="field" for="Dmax">Dmax:</label><input type="text" id="DmaxPOI" name="Dmax"></p>
+				<p><label class="field" for="Tmin">From:</label><input type="text" id="TminPOI" name="Tmin" placeholder="format: [DD:hh:mm:ss]"></p>
+				<p><label class="field" for="Tmax">To:</label><input type="text" id="TmaxPOI" name="Tmax" placeholder="format: [DD:hh:mm:ss]"></p>
+				<p><label class="field" for="eps">eps:</label><input type="text" id="epsPOI" name="eps"></p>
+				<p><label class="field" for="minPts">minPts:</label><input type="text" id="minPtsPOI" name="minPts"></p>
+				
+		</fieldset>
+	</form>
 	
-	</div>
-	<div id="poipar">
-		<label for="Dmax">Dmax</label>
-		<input type="text" id="DmaxPOI" name="Dmax">
-								
-	</div>
-							
-	<div id="poipar">
-		<label for="Tmin">Tmin</label>
-		<input type="text" id="TminPOI" name="Tmin">
-		<label for="format">[DD:HH:MM:SS]</label>
-	</div>
-	<div id="poipar">
-		<label for="Tmax">Tmax</label>
-		<input type="text" id="TmaxPOI" name="Tmax">
-		<label for="format">[DD:HH:MM:SS]</label>
-	</div>
-	<div id="poipar">
-		<label for="eps">eps</label>
-		<input type="text" id="epsPOI" name="eps">
-	</div>
-	<div id="poipar">
-		<label for="minPts">minPts</label>
-		<input type="text" id="minPtsPOI" name="minPts">
-	</div>
-							
 </div>
 
 <!-- #Footer -->

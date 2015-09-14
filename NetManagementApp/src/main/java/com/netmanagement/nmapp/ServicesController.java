@@ -98,7 +98,19 @@ public class ServicesController {
 						e.printStackTrace();
 					}
 				 	if(suc == 0) {
-				 		retstr = "All-import";
+				 		 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+						 if (!hap.isEmpty())
+						 {
+								if(AccessPointsCalculations.getInstance().EstimatedPointPosition() == 1){
+									retstr = "All-import"; 
+								}
+								
+						 }
+						else 
+						{
+							retstr = "ep-problem"; 
+						}
+				 		
 				 	}
 				 	else {
 				 		retstr = "error-import";
@@ -252,27 +264,7 @@ public class ServicesController {
 		 
 	 }
 	 
-	 /*@RequestMapping(value = "/AccessPointEstimation", method = RequestMethod.GET,consumes="application/json",produces="application/json")
-		
-	   public @ResponseBody String getEstimation() {
-		 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
-		 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
-		 if(pcsv.getLoaded() == 0){ // access points dataset is not imported
-				return new Gson().toJson("ap-not-loaded");
-		 }
-		 else {
-				if (!hap.isEmpty()){
-					ArrayList<APResults> retList = AccessPointsCalculations.getInstance().EstimatedPointPosition();
-					String json = new Gson().toJson(retList);
-					
-					return json;
-				}
-				else {
-					return "hashMap is empty";
-				}
-		 }
-		
-	   }*/
+	
 	 
 	 @RequestMapping(value = "/getDates", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
@@ -285,6 +277,7 @@ public class ServicesController {
 				 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
 				 ArrayList<String> dates = apc.allTimestamps(userID);
 				 String json = new Gson().toJson(dates);
+				 System.out.println("0 json Dates: " + json);
 				 return json;
 			 }
 		 }
@@ -296,6 +289,7 @@ public class ServicesController {
 				 	
 				 ArrayList<String> dates = GPSCalculations.getInstance().allTimestamps(userID);
 				 String json = new Gson().toJson(dates);
+				 System.out.println("1 json Dates: " + json);
 				 return json;
 			 }
 		 }
