@@ -275,17 +275,18 @@ background:#f2f2f2;
 }
 
 #usersTable{
-	
-	/*height:400px;*/
+
 	width:500px;
 	
-	overflow-x:hidden;
-	overflow-y:auto;
+	/*overflow:auto;*/
 	
 	margin-left:auto;
 	margin-right:auto;
 	
 }
+
+select { width: 500px; }
+.overflow { height: 200px; }
 
 #poipar{
 	margin-left:20px;

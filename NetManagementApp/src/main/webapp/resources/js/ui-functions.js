@@ -88,7 +88,7 @@ function SelectUser(data) {
 		var usersMenu = document.createElement('select');
 		usersMenu.setAttribute("id","usersMenu");
 		usersMenu.style.width = '500px';
-		usersMenu.style.overflow = 'auto';
+		
 	
 		
 		
@@ -109,7 +109,7 @@ function SelectUser(data) {
         
         $('#usersTable').append(usersMenu);
         
-       
+	  $( "#usersMenu" ).selectmenu().selectmenu( "menuWidget" ).addClass( "overflow" );
 	  
 	  $("#userSel").show();
 	  

@@ -78,11 +78,214 @@ public class ServicesController {
 	   }
 	 
 	 
+	 public String csvWifi() {
+		 String str = "";
+		 int suc = -1;
+		 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
+		 if(pcsv.getLoaded() == 0) {
+			 
+			 try {
+					suc = pcsv.LoadAccessPoints();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(suc == 0) {
+					 
+					 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
+					 if (!hap.isEmpty())
+					 {
+							if(AccessPointsCalculations.getInstance().EstimatedPointPosition() == 1){
+								str = "wifi-import-ep-ok"; 
+							}
+							
+					 }
+					else 
+					{
+						str = "ep-problem"; 
+					}
+					 
+				 }
+				else {
+				
+					str = "wifi-not-imported";
+					
+				}
+				
+		 }
+		 else {
+			str = "ap-already-imported";
+		 }
+		return str; 
+	 }
+	 
+	 
+	 public String csvBattery() {
+		 String str = "";
+		 int suc = -1;
+		 ParseBattery pb = ParseBattery.getInstance();
+		 if(pb.getLoaded() == 1){
+			 str = "bat-already-imported";
+		 }
+		 else {
+			 try {
+					suc = pb.LoadBattery();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 if(suc == 0){
+					 
+					 str = "battery-import";
+				 }
+				 else {
+					 str = "bat-not-imported";
+				 }
+		 }
+			 
+		 
+		 return str;
+	 }
+	 
+	 public String csvGPS() {
+		 String str = "";
+		 int suc = -1;
+		 ParseGPS GPS = ParseGPS.getInstance();
+		 if(GPS.getLoaded() == 1){
+			 str = "gps-already-imported";	 
+		 }
+		 else {
+			 try {
+					suc = GPS.LoadGPS();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 if(suc == 0){
+					 //System.out.println("battery: " + suc);
+					 str = "gps-import";
+				 }
+				 else {
+					 str = "gps-not-imported";
+				 }
+		 }
+		 
+		 return str;
+	 }
+	 
+	 public String csvBS() {
+		 String str = "";
+		 int suc = -1;
+		 
+		 ParseBaseStations pbs = ParseBaseStations.getInstance();
+		 if(pbs.getLoaded() == 1) {
+			 str = "bs-already-imported";
+			 
+		 }
+		 else 
+		 {
+			 try {
+					suc = pbs.LoadBaseStations();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 if(suc == 0){
+					// System.out.println("battery: " + suc);
+					str = "bs-import";
+				 }
+				 else {
+					 str = "bs-not-imported";
+				 }
+				 
+		 }
+		 
+		 return str;
+	 }
+	 
+	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
+	 public @ResponseBody String csvRequest(@RequestParam int option) {
+		
+		 String retstr = "";
+		 String strWifi = "";
+		 String strBat = "";
+		 String strGPS="";	
+		 String strBS="";
+		 
+		 if(option == 0) {
+			 strWifi = csvWifi();
+			 strBat = csvBattery();
+			 strGPS = csvGPS();
+			 strBS = csvBS();
+			 int res = 0;
+			 if(!strWifi.equals("wifi-not-imported") || !strWifi.equals("ap-already-imported") || !strWifi.equals("ep-problem")) {
+				res++;
+			 }
+			 if(!strBat.equals("bat-not-imported") || !strBat.equals("bat-already-imported") ) {
+				 res++;
+			 }
+			 if(!strGPS.equals("gps-not-imported") || !strGPS.equals("gps-already-imported") ) {
+				 res++;
+			 }
+			 if(!strBS.equals("bs-not-imported") || !strBS.equals("bs-already-imported") ) {
+				 res++;
+			 }
+			 
+			 if(res == 4) {
+				 retstr = "All-import";
+			 }
+			 else if(res == 3) {
+				 if(strBS.contains("already")){
+					 retstr = "alreadyBS";
+				 }
+				 else {
+					 System.out.println("Problem Occured in BS");
+				 }
+			 }
+			 else if(res == 2) {
+				 
+			 }
+			 else if(res == 1) {
+				 
+			 }
+			 else if(res == 0){
+				 retstr = "all-already-imported";
+			 }
+			 else {
+				 System.out.println("Problem Occured!");
+			 }
+			 
+		 }
+		 else if(option == 1) {
+			 retstr = csvWifi();
+			 
+		 }
+		 else if(option == 2) {
+			 retstr = csvBattery();
+			 
+		 }
+		 else if(option == 3) {
+			 retstr = csvGPS();
+			 
+		 }
+		 else if(option == 4) {
+			retstr = csvBS();
+			
+		 }
+		 else {
+			 
+			 System.out.println("Option Problem");
+		 }
+		 return retstr;
+	 }
+	 
+	 /*
 	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
 	 public @ResponseBody String csvRequest(@RequestParam int option) {
 		 int suc = -1; // suc = 0 for success
 		 String retstr = "";
 		 if(option == 0) {
+			
 			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
 			 ParseBattery pb = ParseBattery.getInstance();
 			 ParseGPS GPS = ParseGPS.getInstance();
@@ -228,7 +431,7 @@ public class ServicesController {
 		 }
 		 return retstr;
 	 }
-	 
+	 */
 	 
 	 @RequestMapping(value = "/getUsers", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
