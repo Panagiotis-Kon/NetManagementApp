@@ -151,7 +151,7 @@ public class PoICalculations {
 	
 	public ArrayList<PointsofInterest> DBSCAN(ArrayList<StayPoints> Lsp){
 		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>(); //cluster
-		ArrayList<PointsofInterest> noiselist = new ArrayList<PointsofInterest>();
+		//ArrayList<PointsofInterest> noiselist = new ArrayList<PointsofInterest>();
 		ArrayList<StayPoints> visited = new ArrayList<StayPoints>();
 		final int size = Lsp.size();
 		neighborsInit(size);
