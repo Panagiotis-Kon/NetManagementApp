@@ -111,7 +111,7 @@ function csvRequest(option)
 				   case 0: 
 					   if(resp == 'All-import'){
 						   //all = 1;
-						   $("#popupText").text("All dataSets imported correctly");
+						   $("#popupText").text("All dataSets imported correctly and Estimation Point calculated");
 						   $("#divpopup").dialog({
 								title: "DATASET IMPORT",
 								width: 430,

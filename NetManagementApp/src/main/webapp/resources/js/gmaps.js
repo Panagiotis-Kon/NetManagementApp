@@ -300,11 +300,16 @@ function DrawCells(bsdata) {
 			//	deleteMarkers(1);
 		//}
 	}
-	var pinColor = "52bdb0";
+	/*var pinColor = "52bdb0";
 	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
 	        new google.maps.Size(21, 40),
 	        new google.maps.Point(0,0),
-	        new google.maps.Point(10, 34));
+	        new google.maps.Point(10, 34)); */
+	var pinImage = new google.maps.MarkerImage("resources/images/bs.png",
+	        new google.maps.Size(35, 40),
+	        new google.maps.Point(0,0),
+	        null);
+	
 	$.each(bsdata,function(i,item){
 		var latlng = new google.maps.LatLng(item.BSlatitude, item.BSlongtitude);
 		
