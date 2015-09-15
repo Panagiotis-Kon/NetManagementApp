@@ -205,7 +205,7 @@ public class PoICalculations {
 		return poilist;
 	}
 	
-	/*double Distance(StayPoints sp1, StayPoints sp2){
+	double Distance(StayPoints sp1, StayPoints sp2){
 		//Find Pythagorean distance calculation between given variables
 		double distance=0,lat=0,lon=0;
 		if (sp1.getLat()>sp2.getLat()){
@@ -224,9 +224,9 @@ public class PoICalculations {
 		lon=lon*lon;
 		distance=Math.sqrt(lat+lon);
 		return distance;
-	}*/
+	}
 	
-	double Distance(StayPoints sp1, StayPoints sp2){
+	/*double Distance(StayPoints sp1, StayPoints sp2){
 		//Find distance calculation between given variables from http://www.movable-type.co.uk/scripts/latlong.html
 		double glat=sp1.getLat()*Math.PI/180;
 		double alat=sp2.getLat()*Math.PI/180;
@@ -239,7 +239,7 @@ public class PoICalculations {
 		double c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		double d=R*c;
 		return Math.abs(d);
-	}
+	}*/
 	
 	ArrayList<StayPoints> regionQuery(ArrayList<StayPoints> Lsp, int pos){
 		ArrayList<StayPoints> list = new ArrayList<StayPoints>();
