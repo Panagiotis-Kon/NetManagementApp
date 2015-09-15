@@ -11,7 +11,7 @@ public class ParseAll {
 	}
 	
 	int Loaded(){
-		int all=0;
+		int all=1;
 		all=all+ParseAccessPoints.getInstance().getLoaded();
 		all=all+ParseBaseStations.getInstance().getLoaded();
 		all=all+ParseBattery.getInstance().getLoaded();
