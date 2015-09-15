@@ -37,7 +37,7 @@ function Markers(data) {
 	 				var marker = new google.maps.Marker({
 		                position: latlng,
 		                map: map,
-		               title: item.ssid,
+		                title: item.ssid,
 		                animation: google.maps.Animation.DROP,
 		            });
 	 				markersAP.push(marker);
@@ -156,10 +156,54 @@ function CenterControl(controlDiv, map) {
 	  // Setup the click event listeners: simply set the map to
 	  // Chicago
 	  google.maps.event.addDomListener(controlUI, 'click', function() {
-		  EconomicRoute();
-	  });
+		 
+		  $("#divpopupParam").dialog({
+				title: "Economic Route Parameters",
+				width: 450,
+				height: 480,
+				modal:true,
+				buttons: {
+					Submit: function(){
+						
+							
+							if(document.getElementById('timeSlack').value == '' || document.getElementById('radius').value == '') {
+								
+								alert("Please fill the values or set it to Default")
+							}
+							else {
+								
+								var time_slack = parseFloat(document.getElementById('timeSlack').value);
+								var radius = parseInt(document.getElementById('radius').value);
+								console.log("time_slack: " + time_slack + " radius: " + radius);
+								if(time_slack > 0 || radius > 0) {
+									EconomicRoute(time_slack, radius);
+								}
+								else {
+									alert("Negative values are not accepted")
+								}
+								
+							}
+							$(this).dialog('close');
+							document.getElementById('timeSlack').value = '';
+							document.getElementById('radius').value = '';
+							
+					    }
+						
+						
+					,
+					Default:
+						function(){
+						
+						EconomicRoute(-1,-1);
+						$(this).dialog('close');
+					
+					}
+				}
+			});
+	  })
+		   
 
-	}
+}
 
 
 function Polyline(){
@@ -167,6 +211,18 @@ function Polyline(){
 		
 	var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
 	view = 1;
+		if(mapCreated == 1) {
+			if(flightPath!=null){
+				
+				flightPath.setMap(null);
+				if(markersEco.length != 0) {
+					 for (var i = 0; i < markersEco.length; i++) {
+						    markersEco[i].setMap(null);
+				     }
+				}
+			}
+ 		}
+
 		if(markersAP.length != 0) {
 			
 			var flightPlanCoordinates = [];
@@ -197,7 +253,10 @@ function Polyline(){
 			flightPath.setMap(map);
 	
 			
-		}	
+		}
+		else {
+			alert("There are no markers to create a path!!!");
+		}
 			
 			
 	
@@ -206,7 +265,17 @@ function Polyline(){
 function BatEcoRoute(data) {
 	  flightPath.setMap(null);
 	  deleteMarkers(2);
-	  
+	  if(mapCreated == 1) {
+			if(flightPath!=null){
+				
+				flightPath.setMap(null);
+				if(markersEco.length != 0) {
+					 for (var i = 0; i < markersEco.length; i++) {
+						    markersEco[i].setMap(null);
+				     }
+				}
+			}
+		}
 	  var latlng = null;
 	  //var pinColor = "FE6256";
 	  //console.log(data);	
@@ -300,11 +369,7 @@ function DrawCells(bsdata) {
 			//	deleteMarkers(1);
 		//}
 	}
-	/*var pinColor = "52bdb0";
-	var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-	        new google.maps.Size(21, 40),
-	        new google.maps.Point(0,0),
-	        new google.maps.Point(10, 34)); */
+	
 	var pinImage = new google.maps.MarkerImage("resources/images/bs.png",
 	        new google.maps.Size(35, 40),
 	        new google.maps.Point(0,0),
@@ -371,12 +436,16 @@ function DrawStayPoints(data) {
 	}
 	else {
 		
-		var pinColor = "0000FF";
+		/*var pinColor = "0000FF";
 		var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
 		        new google.maps.Size(21, 40),
 		        new google.maps.Point(0,0),
-		        new google.maps.Point(10, 34));
+		        new google.maps.Point(10, 34));*/
 		
+		var pinImage = new google.maps.MarkerImage("resources/images/sp1.png",
+ 		        new google.maps.Size(35, 40),
+ 		        new google.maps.Point(0,0),
+ 		        null);
 		$.each(data,function(i,item){
 			
 			var latlng = new google.maps.LatLng(item.lat, item.lon);
@@ -395,8 +464,8 @@ function DrawStayPoints(data) {
 			    var marker = new google.maps.Marker({
                 position: latlng,
                 map: map,
-               icon: pinImage,
-               title: 'Stay Point',
+                icon: pinImage,
+                title: 'Stay Point',
                 animation: google.maps.Animation.DROP,
             });
 		//console.log('mapSP: ', mapSP);

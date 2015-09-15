@@ -391,6 +391,10 @@ fieldset p{
 	cursor:pointer;
 }
 
+.hidden-users {
+	display:none;
+}
+
 
 /***************** ProgressBar *****************/
 

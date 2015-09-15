@@ -218,7 +218,17 @@ $( document ).ready(function() {
 <div id="divpopup" style="display:none">
 <div id="popupText"></div>
 </div>
+<div id="divpopupParam" style="display:none">
+	<form>
+		<fieldset>
+			<legend>Economic Route Parameters/Thresholds</legend>
+				<p><label class="field" for="timeSlack">Time Slack:</label><input type="text" id="timeSlack" name="timeSlack" placeholder="[seconds]"></p>
+				<p><label class="field" for="radius">Radius:</label><input type="text" id="radius" name="radius"></p>
+				<p><b>Default values are: Time Slack = 5 / Radius = 39</b></p>
+		</fieldset>
+	</form>
 
+</div>
 <!-- #Footer -->
 		<footer>
 			<div class="container">

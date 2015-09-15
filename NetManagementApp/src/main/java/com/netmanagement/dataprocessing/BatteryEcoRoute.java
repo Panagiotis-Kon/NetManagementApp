@@ -19,6 +19,7 @@ public class BatteryEcoRoute {
 	 private static BatteryEcoRoute BatteryEcoRouteinstance = null;
 	 private int currentMaxRSSI;
 	 private int pos=-1;
+	
 		private BatteryEcoRoute(){}
 		
 		public static BatteryEcoRoute getInstance(){
@@ -84,7 +85,8 @@ public class BatteryEcoRoute {
 		}
 	
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		public ArrayList<AccessPoints> EcoMarkers(String userID, String startDate, String endDate){
+		public ArrayList<AccessPoints> EcoMarkers(String userID, String startDate, String endDate, float time_slack, int radius){
+			
 			HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 			ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
 			ArrayList<AccessPoints> APList = new ArrayList<AccessPoints>();
@@ -122,8 +124,13 @@ public class BatteryEcoRoute {
 					}
 				}
 			}
-			int time_slack=5;
-			int radius=39;
+			if(time_slack == -1) {
+				time_slack=5;
+			}
+			if(radius == -1) {
+				radius=39;
+			}
+			
 			AccessPoints tempap =null;
 			for (int i=0;i<gpsList.size();i++){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

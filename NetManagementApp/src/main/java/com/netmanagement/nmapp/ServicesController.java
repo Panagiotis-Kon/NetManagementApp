@@ -37,28 +37,13 @@ import com.netmanagement.entities.StayPoints;
 @Controller
 public class ServicesController {
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	
 	@RequestMapping({"/","/index"})
 	   public String index() {
 		   return "forward:static/index.html";
 	   }
-	
-	 
-	 @RequestMapping(value = "/fullscreenMap", method = RequestMethod.GET)
-	   public String fullscreenMap() {
-	     
-	      return "static/fullscreenMap.html";
-	   }
-	 
-	 @RequestMapping(value = "/BatteryGraph", method = RequestMethod.GET)
-	   public String BatteryGraph() {
-	     
-	      return "static/BatteryGraph.html";
-	   }
-	
-	 
+
+
 	 @RequestMapping(value = "/dataAnalysis", method = RequestMethod.GET)
 	   public String dataAnalysis() {
 	     
@@ -227,238 +212,7 @@ public class ServicesController {
 		 }
 		 return retstr;
 	 }
-	 
-	 
-	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
-	 public @ResponseBody String csvRequest(@RequestParam int option) {
-		
-		 String retstr = "";
-		 String strWifi = "";
-		 String strBat = "";
-		 String strGPS="";	
-		 String strBS="";
-		 
-		 if(option == 0) {
-			 strWifi = csvWifi();
-			 strBat = csvBattery();
-			 strGPS = csvGPS();
-			 strBS = csvBS();
-			 int res = 0;
-			 if(!strWifi.equals("wifi-not-imported") || !strWifi.equals("ap-already-imported") || !strWifi.equals("ep-problem")) {
-				res++;
-			 }
-			 if(!strBat.equals("bat-not-imported") || !strBat.equals("bat-already-imported") ) {
-				 res++;
-			 }
-			 if(!strGPS.equals("gps-not-imported") || !strGPS.equals("gps-already-imported") ) {
-				 res++;
-			 }
-			 if(!strBS.equals("bs-not-imported") || !strBS.equals("bs-already-imported") ) {
-				 res++;
-			 }
-			 
-			 if(res == 4) {
-				 retstr = "All-import";
-			 }
-			 else if(res == 3) {
-				 if(strBS.contains("already")){
-					 retstr = "alreadyBS";
-				 }
-				 else {
-					 System.out.println("Problem Occured in BS");
-				 }
-			 }
-			 else if(res == 2) {
-				 
-			 }
-			 else if(res == 1) {
-				 
-			 }
-			 else if(res == 0){
-				 retstr = "all-already-imported";
-			 }
-			 else {
-				 System.out.println("Problem Occured!");
-			 }
-			 
-		 }
-		 else if(option == 1) {
-			 retstr = csvWifi();
-			 
-		 }
-		 else if(option == 2) {
-			 retstr = csvBattery();
-			 
-		 }
-		 else if(option == 3) {
-			 retstr = csvGPS();
-			 
-		 }
-		 else if(option == 4) {
-			retstr = csvBS();
-			
-		 }
-		 else {
-			 
-			 System.out.println("Option Problem");
-		 }
-		 return retstr;
-	 }
-	 
-	 /*
-	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
-	 public @ResponseBody String csvRequest(@RequestParam int option) {
-		 int suc = -1; // suc = 0 for success
-		 String retstr = "";
-		 if(option == 0) {
-			
-			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
-			 ParseBattery pb = ParseBattery.getInstance();
-			 ParseGPS GPS = ParseGPS.getInstance();
-			 ParseBaseStations pbs = ParseBaseStations.getInstance();
-			 if(pcsv.getLoaded() == 0 && pb.getLoaded() == 0 && GPS.getLoaded() == 0 && pbs.getLoaded() == 0) {
-				 
-				 try {
-						if((pcsv.LoadAccessPoints() == 0) && (pb.LoadBattery() == 0 ) && (GPS.LoadGPS() == 0) && (pbs.LoadBaseStations() == 0)){
-							suc = 0;
-						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				 	if(suc == 0) {
-				 		 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
-						 if (!hap.isEmpty())
-						 {
-								if(AccessPointsCalculations.getInstance().EstimatedPointPosition() == 1){
-									retstr = "All-import"; 
-								}
-								
-						 }
-						else 
-						{
-							retstr = "ep-problem"; 
-						}
-				 		
-				 	}
-				 	else {
-				 		retstr = "error-import";
-				 	}
-				
-					
-			 }
-			 else {
-				 retstr = "all-already-imported";
-			 }
-		 }
-		 else if(option == 1){
-			 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
-			 if(pcsv.getLoaded() == 0) {
-				 
-				 try {
-						suc = pcsv.LoadAccessPoints();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					 if(suc == 0) {
-						 
-						 HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
-						 if (!hap.isEmpty())
-						 {
-								if(AccessPointsCalculations.getInstance().EstimatedPointPosition() == 1){
-									retstr = "wifi-import-ep-ok"; 
-								}
-								
-						 }
-						else 
-						{
-							retstr = "ep-problem"; 
-						}
-						 
-					 }
-					
-			 }
-			 else {
-				 retstr = "ap-already-imported";
-			 }
-			 
-		 }
-		 else if(option == 2){
-			 
-			 ParseBattery pb = ParseBattery.getInstance();
-			 if(pb.getLoaded() == 1){
-				 retstr = "bat-already-imported";
-			 }
-			 else {
-				 try {
-						suc = pb.LoadBattery();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					 if(suc == 0){
-						 System.out.println("battery: " + suc);
-						 retstr = "battery-import";
-					 }
-			 }
-				 
-			 
-			 
-			 
-		 } else if(option == 3){
-			 
-			 ParseGPS GPS = ParseGPS.getInstance();
-			 if(GPS.getLoaded() == 1){
-				 retstr = "gps-already-imported";	 
-			 }
-			 else {
-				 try {
-						suc = GPS.LoadGPS();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					 if(suc == 0){
-						 //System.out.println("battery: " + suc);
-						 retstr = "gps-import";
-					 }
-			 }
-			 
-			 
-			 
-		 }
-		 else if(option == 4){
-			 
-			 ParseBaseStations pbs = ParseBaseStations.getInstance();
-			 if(pbs.getLoaded() == 1) {
-				 retstr = "bs-already-imported";
-				 
-			 }
-			 else 
-			 {
-				 try {
-						suc = pbs.LoadBaseStations();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					 if(suc == 0){
-						// System.out.println("battery: " + suc);
-						 retstr = "bs-import";
-					 }
-					 
-			 }
-			
-			 
-		 } 
-		 else {
-			 retstr =  "problem";
-		 }
-		 return retstr;
-	 }
-	 */
-	 
+
 	 @RequestMapping(value = "/getUsers", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String RetrieveUsers(@RequestParam int arg) {
@@ -499,14 +253,19 @@ public class ServicesController {
 		
 	   public @ResponseBody String getDates(@RequestParam String userID,@RequestParam int arg) {
 		 if(arg == 0) {
-			 if(ParseAccessPoints.getInstance().getLoaded() == 0){
-				 return new Gson().toJson("ap-not-loaded");
+			 if(ParseAccessPoints.getInstance().getLoaded() == 0 && ParseGPS.getInstance().getLoaded() == 0){
+				 return new Gson().toJson("ap-not-loaded and gps-not-loaded");
 			 }
 			 else {
+				 
 				 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
-				 ArrayList<String> dates = apc.allTimestamps(userID);
-				 String json = new Gson().toJson(dates);
-				 System.out.println("0 json Dates: " + json);
+				 ArrayList<String> datesGPS = GPSCalculations.getInstance().allTimestamps(userID);
+				 ArrayList<String> datesAP = apc.allTimestamps(userID);
+				 ArrayList<String> AllDates = new ArrayList<String>();
+				 AllDates.addAll(datesAP);
+				 AllDates.addAll(datesGPS);
+				 String json = new Gson().toJson(AllDates);
+				 System.out.println("0-1 json Dates: " + json);
 				 return json;
 			 }
 		 }
@@ -738,11 +497,14 @@ public class ServicesController {
 	 /*--------------------------------------------- Battery Economic Route ---------------------------------------*/
 	 @RequestMapping(value = "/Battery-Economic-Route", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
-	   public @ResponseBody String EcoRoute(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate){
+	   public @ResponseBody String EcoRoute(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate, 
+			   @RequestParam float time_slack, @RequestParam int radius){
+		 
 		 
 	     ArrayList<GPS> gpsList = BatteryEcoRoute.getInstance().UserRoute(userID, startDate, endDate);
-		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMarkers(userID, startDate, endDate);
+		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMarkers(userID, startDate, endDate, time_slack, radius);
 		 //ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMinRoute(userID, startDate, endDate);
+		// System.out.println("time_slack: " + time_slack + " radius: " + radius);
 		 if(!ecoList.isEmpty()){
 			
 			 	String json1 = new Gson().toJson(gpsList);

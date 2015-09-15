@@ -15,7 +15,7 @@
         var chart;
         var chartData = [];
         var chartExists = 0;
-        //var dataArray = [];
+        
         
         
   /* Sort Alphanumeric */      
@@ -72,7 +72,7 @@ function TimeValidator(time) {
 			console.log("Time is ok");
 			return true;
 		}
-		else {
+		else if((parseInt(mins) > 60 || parseInt(mins) < 0) || (parseInt(secs) > 60 && parseInt(secs) < 0) || (parseInt(hours) > 24 || parseInt(hours) < 0)){
 			console.log("Problem in min,sec etc: " + hours + " - " + mins + " - " + secs);
 			return false;
 		}
@@ -85,13 +85,10 @@ function TimeValidator(time) {
 function SelectUser(data) {
 	
 	
-		var usersMenu = document.createElement('select');
-		usersMenu.setAttribute("id","usersMenu");
-		usersMenu.style.width = '500px';
-		
-	
-		
-		
+	  var usersMenu = document.createElement('select');
+	  usersMenu.setAttribute("id","usersMenu");
+	  usersMenu.style.width = '500px';
+
 	  clickableMenuVisual(0, 1);
 	  var header = $('<h2 id="headerTagId"></h2>').text('Available Users');
 	  $('#headerTag').append(header);
@@ -100,14 +97,17 @@ function SelectUser(data) {
 		  UsersArray.push(item);  
         })
         UsersArray.sort(sortAlphaNum);
-	  
+	  	var dummyoption = document.createElement('option');
+	  	dummyoption.innerHTML = '';
+	  	usersMenu.appendChild(dummyoption);
+	  	
 	  $.each(UsersArray,function(i,item){ 
-		 var option = document.createElement('option'); 
+		 var option = document.createElement('option');
 		 option.innerHTML = item;
 		 usersMenu.appendChild(option);
         })
         
-        $('#usersTable').append(usersMenu);
+      $('#usersTable').append(usersMenu);
         
 	  $( "#usersMenu" ).selectmenu().selectmenu( "menuWidget" ).addClass( "overflow" );
 	  
@@ -120,6 +120,9 @@ function SelectUser(data) {
       var submitUser = document.getElementById("addUserBtn");
       submitUser.addEventListener('click',function(e){
     	e.preventDefault();
+    	if(dateRange.length > 0) {
+    		dateRange.length = 0;
+    	}
       	firstTimeClicked++;
       	var time = document.getElementById('timeline');
       	var submit = document.getElementById("btnIdSub");
@@ -137,7 +140,7 @@ function SelectUser(data) {
            }
       	 else {
       		 userID = document.getElementById('UserText').value;
-      		console.log('userID 118: ' + userID);
+      		
       		 if(analysisPage == 1) {
       			 getAvUserDates(userID,1);
       	    }
@@ -147,15 +150,38 @@ function SelectUser(data) {
       		 
       	 }        	
       })
-      
+      var first = 0;
       $( "#usersMenu" ).selectmenu({
           change: function( event, data ) {
-          	
+        	  first++;
+          	if(data.item.value != userID && first>1) {
+          		
+          	   if(analysisPage == 1) {
+          		 var elem = document.getElementById("Dmax");
+          		 elem.value = '';
+          		 elem = document.getElementById("Tmin");
+          		 elem.value='';
+          		 elem = document.getElementById("Tmax");
+         		 elem.value='';
+          		 $("#parameters").hide();
+   
+         	   }
+          		
+          		
+          	   var closeBtn = document.getElementById("btnId");
+          	   var submitBtn = document.getElementById("btnIdSub");
+          	   closeBtn.parentNode.removeChild(closeBtn);
+          	   submitBtn.parentNode.removeChild(submitBtn);
+          	   var elem = document.getElementById("from");
+          	   elem.value = '';
+          	   elem = document.getElementById("to");
+          	   elem.value = '';
+          	   $("#timeline").hide();
+          	}
             userID = data.item.value;
             console.log('userID: ' + userID);
-            $( "#UserText" ).val(data.item.value);
-           
-            
+            $("#UserText").val(data.item.value);
+
           }
         });
 	  
@@ -264,8 +290,6 @@ function Pickerdate(data) {
 	    var closeBtn = $('<button id="btnId" class="btn btn-default"></button>').text('Close');
 	    $('#closer').append(closeBtn);
 	    
-		//var tooltipDate = "[ " + splitter1[0] + " - " + splitter2[0] + " ]" ;
-	   // document.getElementById('User').title=tooltipDate;	
 	
 	var submit = document.getElementById("btnIdSub");
     submit.addEventListener('click',function(e){
@@ -311,7 +335,7 @@ function Pickerdate(data) {
  			Dmax = document.getElementById('Dmax').value;
  			Tmin = document.getElementById('Tmin').value;
  			Tmax = document.getElementById('Tmax').value;
- 			if(!TimeValidator(Tmin) && !TimeValidator(Tmax)) {
+ 			if(!TimeValidator(Tmin) || !TimeValidator(Tmax)) {
  				$("#popupText").text("Wrong Format of Tmin and Tmax. Please try again");
  	 			
  	  		   $("#divpopup").dialog({
@@ -338,13 +362,11 @@ function Pickerdate(data) {
  		 else {
  			getApInfo();
  			
- 			//getBatteryInfo();
- 			
- 		  clickableMenuVisual(0, 1);
- 		  clickableMenuVisual(1, 2);
- 		  clickableMenuVisual(1, 3);
- 		  clickableMenuVisual(1, 4);
- 		  clickableMenuVisual(1, 5);
+ 		    clickableMenuVisual(0, 1);
+ 		    clickableMenuVisual(1, 2);
+ 		    clickableMenuVisual(1, 3);
+ 		    clickableMenuVisual(1, 4);
+ 		    clickableMenuVisual(1, 5);
  		 }
  		
  		
@@ -383,10 +405,8 @@ function Pickerdate(data) {
 	   clickableMenuVisual(0, 3);  
 	   clickableMenuVisual(0, 4);
 	   clickableMenuVisual(0, 5);
-	   
 	   clickableMenuAnalysis(1, 1);
-	   //clickableMenuAnalysis(0, 2);
-	   //clickableMenuAnalysis(0, 4);
+	   
    });
 	
 }
@@ -517,23 +537,6 @@ function clickableMenuVisual(option, menuitem){
 
 
 
-function getMINMAXDates() {
-
-	    var s = new Date(2015,2,27);
-	    var e = new Date(2015,4,6);
-	    
-
-	    while(s < e) {
-	    	MinMaxD.push(s);
-	        s = new Date(s.setDate(
-	            s.getDate() + 1
-	        ));
-	    }
-
-	  
-	
-}
-
 function allowDatesPOI(date) {
 	var m = date.getMonth();
 	var d = date.getDate();
@@ -559,10 +562,7 @@ function allowDatesPOI(date) {
 
 function POIParameters() {
 	
-	 //$("#popupText").text("Stay Points created. Load on Map?");
-	//if(MinMaxD.length == 0){
-		//getMINMAXDates();
-	//}
+	
 	
 	//console.log('after dates');
 	
@@ -605,7 +605,7 @@ function POIParameters() {
 					
 					var timeTmin = document.getElementById('TminPOI').value;
 					var timeTmax = document.getElementById('TmaxPOI').value;
-				    if(!TimeValidator(timeTmin) && !TimeValidator(timeTmax) ) {
+				    if(!TimeValidator(timeTmin) || !TimeValidator(timeTmax) ) {
 				    	alert("Wrong Format for Time")
 				    	$(this).dialog('close');
 				    }
