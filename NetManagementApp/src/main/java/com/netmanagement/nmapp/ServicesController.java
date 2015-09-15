@@ -203,6 +203,32 @@ public class ServicesController {
 		 return str;
 	 }
 	 
+	 @RequestMapping(value = "/importCSVs", method = RequestMethod.GET)
+	 public @ResponseBody String importCSVs() {
+		 String retstr = "";
+		 String strWifi = "";
+		 String strBat = "";
+		 String strGPS="";	
+		 String strBS="";
+		 strWifi = csvWifi();
+		 strBat = csvBattery();
+		 strGPS = csvGPS();
+		 strBS = csvBS();
+		 
+		 if(strWifi.equals("wifi-import-ep-ok") && strBat.equals("battery-import") && strGPS.equals("gps-import") && strBS.equals("bs-import")) {
+			 retstr = "All-import";
+		 }
+		 else if(strWifi.equals("ap-already-imported") && strBat.equals("bat-already-imported") && strGPS.equals("gps-already-imported") && strBS.equals("bs-already-imported"))
+		 {
+			 retstr = "all-already-imported";
+		 }
+		 else {
+			 retstr = "PROBLEM";
+		 }
+		 return retstr;
+	 }
+	 
+	 
 	 @RequestMapping(value = "/csvRequest", method = RequestMethod.GET)
 	 public @ResponseBody String csvRequest(@RequestParam int option) {
 		

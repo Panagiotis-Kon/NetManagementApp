@@ -1,10 +1,4 @@
 
-/*varaibles to determine if the datasets ara imported */
-/*var bat = 0;
-var ap = 0;
-var all = 0;
-var gps = 0;
-var bs = 0;*/
 var analysisPage = 0;
 
 var output = '';
@@ -48,43 +42,78 @@ function requestsHandler(arg)
 
 }
 
-/*
-function estimationProcess() {
+
+function importCSV(){
+	var resp = '';
 	
-	$.ajax({ 
+	$.ajax({
+		 
 		   type: "GET",
-		   dataType: "json",
-		  contentType: "application/json",
-		   url: "/NetManagementApp/AccessPointEstimation",
-		   success: function(data){
-			   completedEP = 1;
-			   sessionStorage.setItem('ep',JSON.stringify(data));
-			   
-			   $("#popupText").text("BSSID estimation process completed successfully");
-			   $("#divpopup").dialog({
-					title: "ESTIMATION PROCESS",
+		   dataType: "text",
+		   url: "/NetManagementApp/importCSVs",
+
+		   success: function(data){ 
+			  
+			   resp = data;
+			  
+			   if(resp == 'All-import') {
+					  
+				    $("#popupText").html("All dataSets imported correctly and <b>Estimation Point</b> calculated");
+				    $("#divpopup").dialog({
+					title: "DATASET IMPORT",
 					width: 430,
 					height: 200,
 					modal:true,
 					buttons: {
 						OK: 
 							function(){
-							$(this).dialog('close');
-							$("#showEP").show();
-					        $("#removalEP").show();
-							},
-						
+							  $(this).dialog('close');
+									
+							}
 						}
 					}); 
-		   
-		   },
-		   error: function(){
- 			   alert('error loading response');
- 		   }
- 		});
+				   }
+				   else if(resp == "all-already-imported") {
+					   $("#popupText").text("All dataSets already imported");
+					   $("#divpopup").dialog({
+							title: "DATASET IMPORT",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									//callback();
+									}
+							}
+						});  
+				   }
+				   else {
+					   $("#popupText").html("A Problem Occurred in Datasets.</br><b>Please Check the Server</b>");
+					   $("#divpopup").dialog({
+							title: "DATASET IMPORT",
+							width: 430,
+							height: 200,
+							modal:true,
+							buttons: {
+								OK: 
+									function(){
+									$(this).dialog('close');
+									}
+							}
+						});  
+				   }
+				   
+		   		},
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+					   console.log('error',textStatus + " " + errorThrown);
+		 			   alert('csv Datasets error loading response');
+		 		   }
+		 		});
+
 }
 
-*/
 
 
 
