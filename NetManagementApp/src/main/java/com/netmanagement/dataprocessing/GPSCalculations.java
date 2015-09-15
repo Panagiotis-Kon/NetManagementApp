@@ -79,7 +79,7 @@ public class GPSCalculations {
 							//System.out.println(date1+" | "+date2+" | "+dateu);
 							if (date1.equals(dateu) || date1.before(dateu)){
 								if (date2.equals(dateu) || date2.after(dateu)){
-									System.out.println(date1+" | "+date2+" | "+dateu);
+									//System.out.println(date1+" | "+date2+" | "+dateu);
 									alist.add(tempap);
 								}
 							}
@@ -126,8 +126,7 @@ public class GPSCalculations {
 	public ArrayList<StayPoints> findStayPoints(ArrayList<GPS> GPSPoints, String Tmin,
 			String Tmax, Double Dmax) { // List of specific gps points
 		// For given variables find stay points, Tmin and Tmax are in format dd:HH:mm:ss
-		System.out.println("uTmin: " + Tmin + " Tmax: " + Tmax + " Dmax: "
-				+ Dmax);
+		//System.out.println("uTmin: " + Tmin + " Tmax: " + Tmax + " Dmax: " + Dmax);
 		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();
         int i=0, j=0, numofStayPoints=0;
         String t=null;
@@ -144,7 +143,7 @@ public class GPSCalculations {
 					datet=sdf.parse(t);
 					dateTmax=sdf.parse(Tmax);
 					dateTmin=sdf.parse(Tmin);
-					System.out.println("GPSCalc line 147: "+datet+" | "+dateTmin+" | "+dateTmax);
+					//System.out.println("GPSCalc line 147: "+datet+" | "+dateTmin+" | "+dateTmax);
 				    if (datet.after(dateTmax)){
 				      t=TimeDifference(GPSPoints.get(i).getTimestamp(),GPSPoints.get(j-1).getTimestamp());
 				      datet=sdf.parse(t);
@@ -308,11 +307,11 @@ public class GPSCalculations {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Time Difference :"+TimeDiff);
+		//System.out.println("Time Difference :"+TimeDiff);
 		return TimeDiff;
 	}
 	
-	double SpaceDistance(GPS gps1, GPS gps2){
+	/*double SpaceDistance(GPS gps1, GPS gps2){
 		//Find Pythagorean distance calculation between given variables
 		double distance=0,lat=0,lon=0;
 		if (gps1.getUlatitude()>gps2.getUlatitude()){
@@ -331,9 +330,9 @@ public class GPSCalculations {
 		lon=lon*lon;
 		distance=Math.sqrt(lat+lon);
 		return distance;
-	}
+	}*/
 	
-	/*double SpaceDistance(GPS gps1, GPS gps2){
+	double SpaceDistance(GPS gps1, GPS gps2){
 		//Find distance calculation between given variables from http://www.movable-type.co.uk/scripts/latlong.html
 		double glat=gps1.getUlatitude()*Math.PI/180;
 		double alat=gps2.getUlatitude()*Math.PI/180;
@@ -346,7 +345,7 @@ public class GPSCalculations {
 		double c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		double d=R*c;
 		return Math.abs(d);
-	}*/
+	}
 	
 	double[] estimateCentroid(ArrayList<GPS> points,int start, int end){
 		double centerx=0,centery=0;

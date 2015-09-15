@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.math3.ml.clustering.Cluster;
+import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
 
 import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.csvdatasets.ParseGPS;
@@ -148,6 +152,34 @@ public class PoICalculations {
 		}
 		setMatrix(matrix);
 	}
+	
+	/*public ArrayList<PointsofInterest> DBSCAN(ArrayList<StayPoints> Lsp){
+		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>(); //cluster
+		DBSCANClusterer<StayPoints> clusterer = new DBSCANClusterer<StayPoints>(esp, minPts);
+		List<Cluster<StayPoints>> clusteredPoints = clusterer.cluster(Lsp);
+		
+		for (Cluster<StayPoints> iter : clusteredPoints) {
+			List<StayPoints> points = iter.getPoints();
+			double minLat, minLon, maxLat, maxLon;
+			
+			minLat = maxLat = points.get(0).getLat();
+			minLon = maxLon = points.get(0).getLon();
+			for (StayPoints iter2 : points) {
+				if (iter2.getLat() < minLat)
+					minLat = iter2.getLat();
+				if (iter2.getLat() > maxLat)
+					maxLat = iter2.getLat();
+				if (iter2.getLon() < minLon)
+					minLon = iter2.getLon();
+				if (iter2.getLon() > maxLon)
+					maxLon = iter2.getLon();
+			}
+			PointsofInterest poi = new PointsofInterest();
+			poi.setAll(minLat, minLon, maxLat, maxLon, 0, 0);
+			poilist.add(poi);
+		}
+		return poilist;
+	}*/
 	
 	public ArrayList<PointsofInterest> DBSCAN(ArrayList<StayPoints> Lsp){
 		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>(); //cluster

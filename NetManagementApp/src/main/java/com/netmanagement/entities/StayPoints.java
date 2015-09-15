@@ -1,6 +1,8 @@
 package com.netmanagement.entities;
 
-public class StayPoints {
+import org.apache.commons.math3.ml.clustering.Clusterable;
+
+public class StayPoints implements Clusterable{
 	
 	private double lat;
 	private double lon;
@@ -53,6 +55,14 @@ public class StayPoints {
 
 	public void setVisited(int visited) {
 		this.visited = visited;
+	}
+	
+	@Override
+	public double[] getPoint(){
+		double point[] = new double[2];
+		point[0]=this.getLat();
+		point[1]=this.getLon();
+		return point;
 	}
 
 }
