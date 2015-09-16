@@ -51,7 +51,7 @@ public class ServicesController {
 	      return "static/dataVisualization.html";
 	   }
 	 
-	 @RequestMapping(value = "/Bar-Diagrams", method = RequestMethod.GET)
+	 @RequestMapping(value = "/BarDiagrams", method = RequestMethod.GET)
 	   public String BarDiagrams() {
 	     
 	      return "static/BarDiagrams.html";

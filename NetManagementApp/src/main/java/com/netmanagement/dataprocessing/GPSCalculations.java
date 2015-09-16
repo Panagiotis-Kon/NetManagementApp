@@ -58,8 +58,8 @@ public class GPSCalculations {
 			String endDate) {
 		// For given variables find gps points (Specific user between startDate
 		// and endDate)
-		System.out.println("userID: " + userID + " startDate: " + startDate
-				+ " endDate: " + endDate);
+		//System.out.println("userID: " + userID + " startDate: " + startDate
+				//+ " endDate: " + endDate);
 		HashMap<String, ArrayList<GPS>> hap = ParseGPS.getInstance().getHap();
 		ArrayList<GPS> alist = new ArrayList<GPS>();
 		if (!hap.isEmpty()) {
@@ -189,8 +189,7 @@ public class GPSCalculations {
 		if (Lsp.isEmpty()) {
 			System.out.println("Stay Points Calculations: Lsp is empty!!!");
 		} else {
-			System.out
-					.println("Stay Points Calculations: Lsp has something!!!");
+			System.out.println("Stay Points Calculations: Lsp has something!!!");
 		}
 		return Lsp;
 	}

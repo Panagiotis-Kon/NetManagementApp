@@ -102,8 +102,7 @@ public class BatteryEcoRoute {
 	public ArrayList<AccessPoints> EcoRoute(String userID, String startDate,
 			String endDate, float time_slack, int radius) {
 
-		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints
-				.getInstance().getHap();
+		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 		ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
 		ArrayList<AccessPoints> APList = new ArrayList<AccessPoints>();
 
@@ -116,8 +115,7 @@ public class BatteryEcoRoute {
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
 				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
-						.getValue();
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					AccessPoints tempap = array.get(i);
 					if (tempap.getUser().equals(userID)) {
@@ -157,10 +155,10 @@ public class BatteryEcoRoute {
 				tempap = null;
 				for (int j = 0; j < APList.size(); j++) {
 					Date apdate = sdf.parse(APList.get(j).getTimestamp());
-					System.out.println("Time Diff: "
-							+ Math.abs(apdate.getTime() - gpsdate.getTime()));
-					System.out.println("Space Dist: "
-							+ SpaceDistance(gpsList.get(i), APList.get(j)));
+					//System.out.println("Time Diff: "
+							//+ Math.abs(apdate.getTime() - gpsdate.getTime()));
+					//System.out.println("Space Dist: "
+							//+ SpaceDistance(gpsList.get(i), APList.get(j)));
 					if (Math.abs(apdate.getTime() - gpsdate.getTime()) <= time_slack * 1000) {
 
 						if (SpaceDistance(gpsList.get(i), APList.get(j)) <= radius) {
@@ -211,7 +209,7 @@ public class BatteryEcoRoute {
 			if (tempap != null)
 				ecoList.add(tempap);
 		}
-		System.out.println(ecoList.size());
+		//System.out.println(ecoList.size());
 		return ecoList;
 	}
 

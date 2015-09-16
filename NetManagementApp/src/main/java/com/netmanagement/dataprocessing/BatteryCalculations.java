@@ -34,8 +34,8 @@ public class BatteryCalculations {
 			String endDate) {
 		// Search data for a specific user with the date contained between
 		// startDate and endDate. Then return a list with these data.
-		System.out.println(" Battery!! userID: " + userID + " startDate: "
-				+ startDate + " endDate: " + endDate);
+		//System.out.println(" Battery!! userID: " + userID + " startDate: "
+			//	+ startDate + " endDate: " + endDate);
 		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance()
 				.getHap();
 		ArrayList<Battery> alist = new ArrayList<Battery>();
@@ -58,8 +58,8 @@ public class BatteryCalculations {
 							// System.out.println(date1+" | "+date2+" | "+dateu);
 							if (date1.equals(dateu) || date1.before(dateu)) {
 								if (date2.equals(dateu) || date2.after(dateu)) {
-									System.out.println(date1 + " | " + date2
-											+ " | " + dateu);
+									//System.out.println(date1 + " | " + date2
+									//		+ " | " + dateu);
 									alist.add(tempap);
 								}
 							}
@@ -102,7 +102,7 @@ public class BatteryCalculations {
 					long diff = pdate.getTime() - StringtoDate(min).getTime();
 					long totalSecs = diff / 1000;
 					int diffHours = (int) (totalSecs / 3600);
-					System.out.println(diffHours);
+					//System.out.println(diffHours);
 					if (!blist.get(diffHours).users.contains(array.get(i)
 							.getUser()) && array.get(i).getLevel() <= percent) {
 						blist.get(diffHours).numofUsers++;
@@ -175,7 +175,7 @@ public class BatteryCalculations {
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			d2 = calendar.getTime();
-			System.out.println(d1 + " | " + d2);
+			//System.out.println(d1 + " | " + d2);
 
 			// in milliseconds
 			long diff = 0;
@@ -184,8 +184,8 @@ public class BatteryCalculations {
 			else
 				diff = d1.getTime() - d2.getTime();
 
-			long diffSeconds = diff / 1000 % 60;
-			long diffMinutes = diff / (60 * 1000) % 60;
+			//long diffSeconds = diff / 1000 % 60;
+			//long diffMinutes = diff / (60 * 1000) % 60;
 			long diffHours = diff / (60 * 60 * 1000) % 24;
 			long diffDays = diff / (24 * 60 * 60 * 1000);
 			// TimeDiff=System.out.format("%02d",
@@ -193,14 +193,14 @@ public class BatteryCalculations {
 			// diffHours)+":"+System.out.format("%02d",
 			// diffMinutes)+":"+System.out.format("%02d", diffSeconds);
 			// TimeDiff=diffDays+":"+diffHours+":"+diffMinutes+":"+diffSeconds;
-			System.out.print(diffDays + " days, ");
+			/*System.out.print(diffDays + " days, ");
 			System.out.print(diffHours + " hours, ");
 			System.out.print(diffMinutes + " minutes, ");
-			System.out.print(diffSeconds + " seconds.");
+			System.out.print(diffSeconds + " seconds.");*/
 			@SuppressWarnings("unused")
 			int counter = 0;
 			diff = diffHours + 24 * diffDays;
-			System.out.println("Hours :" + diff);
+			//System.out.println("Hours :" + diff);
 			for (long i = 0; i < diff; i++) {
 				BatteryInfo temp = new BatteryInfo();
 				calendar.setTime(d1);
@@ -215,9 +215,8 @@ public class BatteryCalculations {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Size :" + list.size());
-		// for (int k=0;k<list.size();k++)
-		// System.out.println("List :"+list.get(k).hour);
+		//System.out.println("Size :" + list.size());
+		
 		return list;
 	}
 
@@ -257,7 +256,7 @@ public class BatteryCalculations {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("Time Difference :" + TimeDiff);
+		//System.out.println("Time Difference :" + TimeDiff);
 		return TimeDiff;
 	}
 
