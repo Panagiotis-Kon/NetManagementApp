@@ -2,6 +2,13 @@ package com.netmanagement.entities;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 
+/**
+ * 
+ * Entity for the Stay Points
+ * 
+ */
+
+
 public class StayPoints implements Clusterable{
 	
 	private double lat;

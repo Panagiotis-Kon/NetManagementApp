@@ -1,6 +1,10 @@
 package com.netmanagement.entities;
 
-
+/**
+ * 
+ * Entity for the Battery
+ * 
+ */
 
 public class Battery {
 

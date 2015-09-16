@@ -1,6 +1,10 @@
 package com.netmanagement.entities;
 
-
+/**
+ * 
+ * Entity for the GPS
+ * 
+ */
 
 public class GPS implements Comparable<GPS>{
 

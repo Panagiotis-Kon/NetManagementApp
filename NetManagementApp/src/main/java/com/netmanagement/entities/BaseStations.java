@@ -1,6 +1,10 @@
 package com.netmanagement.entities;
 
-
+/**
+ * 
+ * Entity for Base Stations
+ * 
+ */
 
 public class BaseStations {
 	

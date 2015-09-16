@@ -2,6 +2,13 @@ package com.netmanagement.entities;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * Entity Points of Interest
+ * 
+ */
+
+
 public class PointsofInterest {
 	private double startlat;
 	private double startlon;
