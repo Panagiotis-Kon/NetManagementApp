@@ -27,7 +27,7 @@ import com.netmanagement.entities.PointsofInterest;
 import com.netmanagement.entities.StayPoints;
 
 /**
- * Handles requests for the application home page. Works as a Mapping
+ * Handles requests for the application. Works as a Mapping
  */
 @Controller
 public class ServicesController {
