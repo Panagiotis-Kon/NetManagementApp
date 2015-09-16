@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.netmanagement.entities.GPS;
 
+/**
+ * 
+ * Parsing gps data from from gps.csv
+ * A hashMap is used for storing the data( key: user, value: ArrayList<GPS> )
+ *
+ */
+
+
 public class ParseGPS {
 
 	private HashMap<String, ArrayList<GPS>> hap = null;
@@ -55,7 +63,7 @@ public class ParseGPS {
 		   	  String parts[] = line.split("\t");
 		   	  GPS point = new GPS();
 			  point.setAll(parts);
-			  System.out.println(point.getId()+" "+point.getUser()+" "+point.getUlatitude()+" "+point.getUlongtitude()+" "+point.getTimestamp());
+			  //System.out.println(point.getId()+" "+point.getUser()+" "+point.getUlatitude()+" "+point.getUlongtitude()+" "+point.getTimestamp());
 			  if (hap.containsKey(parts[1])){
 			  	 hap.get(parts[1]).add(point);
 			  }
@@ -65,7 +73,7 @@ public class ParseGPS {
 			  	 hap.put(parts[1], ap);
 			  }
 		}
-		System.out.println("Parse Completed...");
+		//System.out.println("Parse Completed...");
 		loaded=1;
 		return 0;
 	}

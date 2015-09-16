@@ -124,7 +124,9 @@ public class GPSCalculations {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ArrayList<StayPoints> findStayPoints(ArrayList<GPS> GPSPoints, String Tmin,
-			String Tmax, Double Dmax) { // List of specific gps points
+			String Tmax, Double Dmax) { 
+		
+		// List of specific gps points
 		// For given variables find stay points, Tmin and Tmax are in format dd:HH:mm:ss
 		//System.out.println("uTmin: " + Tmin + " Tmax: " + Tmax + " Dmax: " + Dmax);
 		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();

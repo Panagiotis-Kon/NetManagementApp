@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.netmanagement.entities.BaseStations;
 
+/**
+ * 
+ * Parsing base stations data from from base_station.csv
+ * A hashMap is used for storing the data( key: Cellid, value: ArrayList<BaseStations> )
+ *
+ */
+
+
 public class ParseBaseStations {
 	private HashMap<String, ArrayList<BaseStations>> hap = null;
 	private static ParseBaseStations ParseBaseStationsinstance = null;
@@ -54,7 +62,7 @@ public class ParseBaseStations {
 		   	  String parts[] = line.split("\t");
 		   	  BaseStations point = new BaseStations();
 			  point.setAll(parts);
-			  System.out.println(point.getId()+" "+point.getUser()+" "+point.getOperator()+" "+point.getMcc()+" "+point.getMnc()+" "+point.getCid()+" "+point.getLac()+" "+point.getBSlatitude()+" "+point.getBSlongtitude()+" "+point.getTimestamp());
+			 // System.out.println(point.getId()+" "+point.getUser()+" "+point.getOperator()+" "+point.getMcc()+" "+point.getMnc()+" "+point.getCid()+" "+point.getLac()+" "+point.getBSlatitude()+" "+point.getBSlongtitude()+" "+point.getTimestamp());
 			  if (hap.containsKey(parts[5])){
 			  	 hap.get(parts[5]).add(point);
 			  }
@@ -64,7 +72,7 @@ public class ParseBaseStations {
 			  	 hap.put(parts[5], ap);
 			  }
 		}
-		System.out.println("Parse Completed...");
+		//System.out.println("Parse Completed...");
 		loaded=1;
 		return 0;
 	}

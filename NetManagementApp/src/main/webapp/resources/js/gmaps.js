@@ -153,8 +153,7 @@ function CenterControl(controlDiv, map) {
 	  controlText.innerHTML = 'Battery Economic Route';
 	  controlUI.appendChild(controlText);
 
-	  // Setup the click event listeners: simply set the map to
-	  // Chicago
+	 
 	  google.maps.event.addDomListener(controlUI, 'click', function() {
 		 
 		  $("#divpopupParam").dialog({
@@ -287,18 +286,6 @@ function BatEcoRoute(data) {
 			
 			var flightPlanCoordinates = [];
 			$.each(gpsRoute,function(i,item){
-				/*if(i==0) {
-					
-					var mapOptions = {
-		 		    		zoom: 8,
-		 		    		center: new google.maps.LatLng(item.Ulatitude, item.Ulongtitude),
-		 		    		mapTypeId: google.maps.MapTypeId.TERRAIN
-		 		 		 };
-		 		      	
-		 		 		 map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
-					
-					
-				}*/
 				
 				flightPlanCoordinates.push(new google.maps.LatLng(item.Ulatitude, item.Ulongtitude));
 					
@@ -431,8 +418,7 @@ function DrawStayPoints(data) {
 	//var marker = null;
 	view = 3;
 	if(data == null){
-		console.log('Data is null');
-		 data = JSON.parse(sessionStorage.getItem('stay-points'));
+		console.log('Data in Stay Points is null');
 	}
 	else {
 		
@@ -468,7 +454,7 @@ function DrawStayPoints(data) {
                 title: 'Stay Point',
                 animation: google.maps.Animation.DROP,
             });
-		//console.log('mapSP: ', mapSP);
+	
 		
 
 		 		var content = "<p>" + "Lat: " + item.lat + "<br />" + " Lon: " + item.lon + "<br />" + " Tstart: " + item.Tstart + "<br />" + " Tend: " + item.Tend + "</p>";  
@@ -557,13 +543,4 @@ function DrawPOI(data) {
 	
 }
 
-
-
-/*
-function fullscreenMode(){
-	
-		window.open('fullscreenMap', '_blank');
-	
-}
-*/
 

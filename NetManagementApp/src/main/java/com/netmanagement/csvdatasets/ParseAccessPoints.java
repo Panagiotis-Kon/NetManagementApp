@@ -8,6 +8,13 @@ import java.util.HashMap;
 
 import com.netmanagement.entities.AccessPoints;
 
+/**
+ * 
+ * Parsing wifi data from from wifi.csv
+ * A hashMap is used for storing the data( key: bssid, value: ArrayList<AccessPoints> )
+ *
+ */
+
 public class ParseAccessPoints {
 	
 	private HashMap<String, ArrayList<AccessPoints>> hap = null;
@@ -56,7 +63,7 @@ public class ParseAccessPoints {
 		   	  String parts[] = line.split("\t");
 		  	  AccessPoints point = new AccessPoints();
 			  point.setAll(parts);
-			  System.out.println(point.getId()+" "+point.getUser()+" "+point.getSsid()+" "+point.getBssid()+" "+point.getRssi()+" "+point.getFrequency()+" "+point.getAPlatitude()+" "+point.getAPlongtitude()+" "+point.getTimestamp());
+			 // System.out.println(point.getId()+" "+point.getUser()+" "+point.getSsid()+" "+point.getBssid()+" "+point.getRssi()+" "+point.getFrequency()+" "+point.getAPlatitude()+" "+point.getAPlongtitude()+" "+point.getTimestamp());
 			  if (hap.containsKey(parts[3])){
 			  	 hap.get(parts[3]).add(point);
 			  }
@@ -66,7 +73,7 @@ public class ParseAccessPoints {
 			  	 hap.put(parts[3], ap);
 			  }
 		}
-		System.out.println("Parse Completed...");
+		//System.out.println("Parse Completed...");
 		loaded=1;
 		return 0;
 	}

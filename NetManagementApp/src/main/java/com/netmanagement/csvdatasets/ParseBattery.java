@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import com.netmanagement.entities.Battery;
 
+/**
+ * 
+ * Parsing battery data from from battery.csv
+ * A hashMap is used for storing the data( key: user, value: ArrayList<Battery> )
+ *
+ */
+
 public class ParseBattery {
 	
 	private HashMap<String, ArrayList<Battery>> hap = null;
@@ -55,7 +62,7 @@ public class ParseBattery {
 		   	  String parts[] = line.split("\t");
 		   	  Battery point = new Battery();
 			  point.setAll(parts);
-			  System.out.println(point.getId()+" "+point.getUser()+" "+point.getLevel()+" "+point.getPlugged()+" "+point.getTemperature()+" "+point.getVoltage()+" "+point.getTimestamp());
+			  //System.out.println(point.getId()+" "+point.getUser()+" "+point.getLevel()+" "+point.getPlugged()+" "+point.getTemperature()+" "+point.getVoltage()+" "+point.getTimestamp());
 			  if (hap.containsKey(parts[1])){
 			  	 hap.get(parts[1]).add(point);
 			  }
@@ -65,7 +72,7 @@ public class ParseBattery {
 			  	 hap.put(parts[1], ap);
 			  }
 		}
-		System.out.println("Parse Completed...");
+		//System.out.println("Parse Completed...");
 		loaded=1;
 		return 0;
 	}

@@ -443,14 +443,14 @@ function StayPoints() {
 								YES: 
 									function(){
 										$(this).dialog('close');
-										 $("#map-fullscreen").show();
+										
 										 DrawStayPoints(data);
 										
 									},
 								NO:
 									function(){
 									$(this).dialog('close');
-									sessionStorage.setItem('stay-points',JSON.stringify(data));
+									//sessionStorage.setItem('stay-points',JSON.stringify(data));
 									}
 							}
 							}); 
