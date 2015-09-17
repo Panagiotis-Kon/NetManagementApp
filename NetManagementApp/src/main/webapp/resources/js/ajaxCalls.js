@@ -502,7 +502,7 @@ function StayPoints() {
 
 function CalculatePOI(dataArray) {
 
-	
+	console.log("dataArray[7]: " + dataArray[7]);
 	$.ajax({
 		type : "GET",
 		dataType : "json",
@@ -521,7 +521,7 @@ function CalculatePOI(dataArray) {
 		success : function(data) {
 			if (data == "poi-problem") {
 
-				$("#popupText").text("POI problem detected. Check the server");
+				$("#popupText").text("POI NOT FOUND! Try again with other parameters.");
 				$("#divpopup").dialog({
 					title : "POI'S",
 					width : 430,
