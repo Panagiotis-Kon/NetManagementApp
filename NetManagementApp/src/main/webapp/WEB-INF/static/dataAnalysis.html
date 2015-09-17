@@ -43,7 +43,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="resources/js/ui-functions.js"></script>
 <script type="text/javascript" src="resources/js/ajaxCalls.js"></script>
 <script type="text/javascript" src="resources/js/gmaps.js"></script>
-<script type="text/javascript" src="resources/js/redirections.js"></script>
+
 
 
 
@@ -162,9 +162,8 @@ $( "#tabs" ).tabs();
 									<p><label class="field" for="to">To:</label><input type="text" id="to" name="to" title="format: yyyy-mm-dd"></p>
 								
 								</fieldset>
-							
-							
 							</form>
+							
 						</div>
 						<div id=parameters>
 					
@@ -228,7 +227,7 @@ $( "#tabs" ).tabs();
 <div id="popupText"></div>
 </div>
 
-<div id="divpopupParam" style="display:none">
+<div id="divpopupParam" class="ui-helper-hidden">
 
 	<form>
 		<fieldset>
@@ -248,6 +247,25 @@ $( "#tabs" ).tabs();
 				
 		</fieldset>
 	</form>
+	
+	
+	<form id="select-algorithm">
+		<fieldset>
+			<legend>Select POI Algorithm</legend>
+			 <select id="dbscanSelect">
+        		<option value="DBSCAN-Authors">DBSCAN-Authors</option> 
+       			<option value="DBSCAN-Apache">DBSCAN-Apache</option> 
+        
+    		</select>
+			
+			<p><label class="fieldExtra" for="Default">*Default is DBSCAN-Authors</label></p> 
+					
+		</fieldset>
+	</form>
+		
+				
+					
+		
 	
 </div>
 

@@ -219,6 +219,7 @@ background:#f2f2f2;
 		
 }
 
+/*
 #tableID{
 	width:600px;
 	
@@ -242,6 +243,7 @@ background:#f2f2f2;
 	border: 1px solid black;
 	
 }
+*/
 
 #userLink.test {
 	
@@ -285,6 +287,20 @@ background:#f2f2f2;
 	
 }
 
+#dbscanSelect{
+
+	width:300px;
+
+
+}
+
+
+#select-algorithm {
+	width: 500px;
+	text-align:center;
+	
+} 
+
 select { width: 500px; }
 .overflow { height: 200px; }
 
@@ -309,7 +325,7 @@ select { width: 500px; }
 #closer btnIdSub{
 	padding-left:10px;
 }
-
+/*
 table{
 	width:500px;
 	overflow:auto;
@@ -333,7 +349,7 @@ td:hover {
 	
 	cursor:pointer;
 	background:#e9eff4;
-}
+}*/
 
 #userSel{
 	
@@ -362,6 +378,15 @@ label.field {
 	
 	text-align:center;
 	width:100px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-right:2px;
+	font-weight: bold;
+}
+
+label.fieldExtra {
+	text-align:center;
+	width:300px;
 	margin-left:auto;
 	margin-right:auto;
 	padding-right:2px;

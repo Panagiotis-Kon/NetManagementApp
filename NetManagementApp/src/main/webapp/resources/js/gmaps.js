@@ -1,15 +1,24 @@
+/**
+ * 
+ * This script is responsible for the google maps
+ * 
+ */
+
+/**************************************** VARIABLES *********************************/
+
 map = null;
-var view = -1; // 0-> markers, 1->polyline, 2->cells
+
 var flightPath = null;
-var mapCreated = 0;
+var mapCreated = 0; // shows if map is already created
 var markersAP = [];
 var markersCells = [];
 var markersEco = [];
 
-//mapSP = null;
+/*************************************** FUNCTIONS *********************************/
+
 function Markers(data) {
 
-	view = 0;
+	
 	var latlng = null;
 	sessionStorage.setItem('apdata', JSON.stringify(data));
 	if (mapCreated == 1) {
@@ -71,7 +80,7 @@ function Markers(data) {
 		}
 
 	});
-	console.log('ending scipt Markers');
+	
 
 }
 
@@ -124,6 +133,10 @@ function deleteMarkers(option) {
 	markersCells = [];
 
 }
+
+/**
+ *  CenterControl is responsivle for the button in gmap for the Battery Economic Route
+ */
 
 function CenterControl(controlDiv, map) {
 
@@ -203,7 +216,7 @@ function CenterControl(controlDiv, map) {
 
 												,
 												Default : function() {
-
+													/* Setting the default settings */
 													EconomicRoute(-1, -1);
 													$(this).dialog('close');
 
@@ -214,10 +227,16 @@ function CenterControl(controlDiv, map) {
 
 }
 
+/* 
+ * Polyline creates the a line between the markers
+ * if there are no wifi markers in the map an alert is showed
+ * 
+ * */
+
 function Polyline() {
 
 	var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
-	view = 1;
+	
 	if (mapCreated == 1) {
 		if (flightPath != null) {
 
@@ -264,6 +283,11 @@ function Polyline() {
 
 }
 
+/**
+ * BatEcoRoute is responsible for making the economic route across the wifi markers
+ * 
+ */
+
 function BatEcoRoute(data) {
 	flightPath.setMap(null);
 	deleteMarkers(2);
@@ -279,12 +303,10 @@ function BatEcoRoute(data) {
 		}
 	}
 	var latlng = null;
-	//var pinColor = "FE6256";
-	//console.log(data);	
-	//var split=data.split('#');
+	
 	var gpsRoute = data[0];
 	var ecoMarkers = data[1];
-	console.log('after split');
+	
 
 	var flightPlanCoordinates = [];
 	$.each(gpsRoute, function(i, item) {
@@ -338,12 +360,19 @@ function BatEcoRoute(data) {
 		})(marker, content, infowindow));
 	});
 
-	console.log('Ending economy route');
+
 
 }
 
+/**
+ * DrawCells creates the base station markers
+ * if there is already the battery economic route it delete's it
+ * 
+ * 
+ * */
+
 function DrawCells(bsdata) {
-	view = 2;
+	
 	if (mapCreated == 1) {
 		if (flightPath != null) {
 			flightPath.setMap(null);
@@ -353,9 +382,6 @@ function DrawCells(bsdata) {
 				}
 			}
 		}
-		//if(MarkersCells.length !=0 ) {
-		//	deleteMarkers(1);
-		//}
 	}
 
 	var pinImage = new google.maps.MarkerImage("resources/images/bs.png",
@@ -406,24 +432,23 @@ function DrawCells(bsdata) {
 				}
 
 			});
-	console.log('Ending DrawCells');
+	
 
 }
 
+/**
+ * 
+ * Creates the stay points in the map
+ * 
+ */
+
 function DrawStayPoints(data) {
-	//var spdata = null;
-	//var latlng = null;
-	//var marker = null;
-	view = 3;
+	
+	
 	if (data == null) {
-		console.log('Data in Stay Points is null');
+		alert('Data in Stay Points is null')
 	} else {
 
-		/*var pinColor = "0000FF";
-		var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-		        new google.maps.Size(21, 40),
-		        new google.maps.Point(0,0),
-		        new google.maps.Point(10, 34));*/
 
 		var pinImage = new google.maps.MarkerImage("resources/images/sp1.png",
 				new google.maps.Size(35, 40), new google.maps.Point(0, 0), null);
@@ -467,13 +492,19 @@ function DrawStayPoints(data) {
 		});
 
 	}
-	console.log('Ending STAY stay points');
+	
 
 }
 
+/**
+ * 
+ * Creates the POI inside a rectangle
+ * 
+ */
+
 function DrawPOI(data) {
 
-	view = 4;
+	
 	var mapPOI = null;
 	if (data == null) {
 		alert('Null data in POI');

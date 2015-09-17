@@ -1,3 +1,9 @@
+/**
+ * This script is responsible for all the user interface except the google maps
+ * 
+ */
+
+/*********************************** Variables ******************************************/
 var userID = '';
 var startDate = '';
 var endDate = '';
@@ -11,10 +17,11 @@ var matcherN = /[^0-9]/g;
 var submittedChoice = 0;
 var dateRange = [];
 var firstTimeClicked = 0;
-var MinMaxD = [];
 var chart;
 var chartData = [];
 var chartExists = 0;
+
+/*********************************** UI-FUNCTIONS ******************************************/
 
 /* Sort Alphanumeric */
 function sortAlphaNum(a, b) {
@@ -29,6 +36,11 @@ function sortAlphaNum(a, b) {
 		return tempA > tempB ? 1 : -1;
 	}
 }
+
+/* TimeValidator validates some time parameters with regular Expression
+ * if the time value is accepted it returns true
+ * else false
+ * */
 
 function TimeValidator(time) {
 
@@ -62,19 +74,24 @@ function TimeValidator(time) {
 		if ((parseInt(mins) < 60 && parseInt(mins) >= 0)
 				&& (parseInt(secs) < 60 && parseInt(secs) >= 0)
 				&& (parseInt(hours) < 24 && parseInt(hours) >= 0)) {
-			console.log("Time is ok");
+			//console.log("Time is ok");
 			return true;
 		} else if ((parseInt(mins) > 60 || parseInt(mins) < 0)
 				|| (parseInt(secs) > 60 || parseInt(secs) < 0)
 				|| (parseInt(hours) > 24 || parseInt(hours) < 0)) {
-			console.log("Problem in min,sec etc: " + hours + " - " + mins
-					+ " - " + secs);
+			//console.log("Problem in min,sec etc: " + hours + " - " + mins
+				//	+ " - " + secs);
 			return false;
 		}
 
 	}
 
 }
+
+/**
+ * SelectUser is a function that creates a select menu with jquery on the right hand side of the screen
+ * When a user is chosen then an ajax call is made to the server to return the available dates for this user
+ */
 
 function SelectUser(data) {
 
@@ -172,7 +189,7 @@ function SelectUser(data) {
 				$("#timeline").hide();
 			}
 			userID = data.item.value;
-			console.log('userID: ' + userID);
+			//console.log('userID: ' + userID);
 			$("#UserText").val(data.item.value);
 
 		}
@@ -190,19 +207,19 @@ function createRange(data) {
 
 	for (var i = 0; i < data.length; i++) {
 
-		//console.log('data[i]',data[i]);
+		
 		var replacer = data[i].replace(/-/g, "/");
 		var tempDate = new Date(replacer);
-		//console.log('tempDate: ',tempDate);
+	
 		var finalDate = tempDate.getFullYear() + '-'
 				+ (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
-		//console.log('finalDate',finalDate);
+		
 		dateRange.push(finalDate);
 
 	}
-	for (var i = 0; i < dateRange.length; i++) {
+	/*for (var i = 0; i < dateRange.length; i++) {
 		console.log('daterange: ', dateRange[i]);
-	}
+	}*/
 }
 
 /* Enables specific dates for the DatePicker */
@@ -216,7 +233,7 @@ function enableSpecificDates(date) {
 	for (var i = 0; i < dateRange.length; i++) {
 
 		if ($.inArray(currentDate, dateRange) > -1) {
-			console.log('currentdate OK', currentDate);
+			//console.log('currentdate OK', currentDate);
 			return [ true ];
 
 		} else {
@@ -228,9 +245,14 @@ function enableSpecificDates(date) {
 
 }
 
+/**
+ * The function PickerDate takes the choices of the user from the timeline and makes an ajax Call if everything is ok 
+ * 
+ */
+
 function Pickerdate(data) {
 
-	console.log("Pickerdate");
+	
 	createRange(data);
 
 	$("#timeline").show();
@@ -245,7 +267,7 @@ function Pickerdate(data) {
 
 			$("#to").datepicker("option", "minDate", selectedDate);
 			startDate = selectedDate;
-			console.log(' startDate: ' + startDate);
+			//console.log(' startDate: ' + startDate);
 		}
 	});
 	$("#to").datepicker({
@@ -258,7 +280,7 @@ function Pickerdate(data) {
 
 			$("#from").datepicker("option", "maxDate", selectedDate);
 			endDate = selectedDate;
-			console.log(' endDate: ' + selectedDate);
+			//console.log(' endDate: ' + selectedDate);
 		}
 	});
 
@@ -285,12 +307,12 @@ function Pickerdate(data) {
 
 						} else {
 							//after choice enable other menu items
-							console.log('user: '
+							/*console.log('user: '
 									+ document.getElementById('UserText').value
 									+ ' startDate: '
 									+ document.getElementById('from').value
 									+ ' endDate: '
-									+ document.getElementById('to').value);
+									+ document.getElementById('to').value);*/
 							userID = document.getElementById('UserText').value;
 							startDate = document.getElementById('from').value;
 							endDate = document.getElementById('to').value;
@@ -361,6 +383,8 @@ function Pickerdate(data) {
 						}
 
 					});
+	
+	/* Listener for the close button and cleanup */
 
 	var closer = document.querySelector('#btnId');
 	closer.addEventListener('click', function(e) {
@@ -419,7 +443,7 @@ function clickableMenuAnalysis(option, menuitem) {
 		}
 	}
 
-	else if (menuitem == 3) {
+	else if (menuitem == 2) {
 		if (option == 0) {
 			var link = document.getElementById('POIParamLink');
 			link.href = "javascript:void(0);"
@@ -438,6 +462,12 @@ function clickableMenuAnalysis(option, menuitem) {
 	}
 
 }
+
+/**
+ * Manager for the mini menu in data visualization page
+ * @param option
+ * @param menuitem
+ */
 
 function clickableMenuVisual(option, menuitem) {
 	//option 0 for disable, 1 for enable
@@ -534,7 +564,7 @@ function clickableMenuVisual(option, menuitem) {
 	}
 
 }
-
+/*
 function allowDatesPOI(date) {
 	var m = date.getMonth();
 	var d = date.getDate();
@@ -543,7 +573,7 @@ function allowDatesPOI(date) {
 	for (var i = 0; i < MinMaxD.length; i++) {
 
 		if ($.inArray(currentDate, MinMaxD) > -1) {
-			console.log('currentdate OK', currentDate);
+			
 			return [ true ];
 
 		} else {
@@ -554,22 +584,25 @@ function allowDatesPOI(date) {
 	}
 
 }
+*/
 
+/*
+ *	POIParameters creates the popup dialog for the user to set up the parameters for the dbscan 
+ * 
+ */
 function POIParameters() {
 
-	//console.log('after dates');
 
+	var choice = 0; // 0: DBSCAN-Authors, 1: DBSCAN-Apache
 	$("#fromPOI").datepicker({
 		changeMonth : true,
 		numberOfMonths : 1,
 		dateFormat : "yy-mm-dd",
 		changeYear : true,
-		// beforeShowDay: allowDatesPOI,
 		onClose : function(selectedDate) {
 
 			$("#toPOI").datepicker("option", "minDate", selectedDate);
-			//startDate = selectedDate;
-			//console.log(' startDate: ' + startDate);
+			
 		}
 	});
 	$("#toPOI").datepicker({
@@ -577,19 +610,31 @@ function POIParameters() {
 		numberOfMonths : 1,
 		dateFormat : "yy-mm-dd",
 		changeYear : true,
-		//beforeShowDay:allowDatesPOI,
 		onClose : function(selectedDate) {
 
 			$("#fromPOI").datepicker("option", "maxDate", selectedDate);
-			// endDate = selectedDate;
-			//console.log(' endDate: ' + selectedDate);
+			
 		}
 	});
+	
+	/* Listener for picking up the dbscan algorithm */
+	$("#dbscanSelect").change(function() {
+		  
+		  if($( "#dbscanSelect" ).val()== 'DBSCAN-Apache' ){
+			  choice = 1;
+			  
+		  }
+		  else {
+			  choice = 0;
+			  
+		  }
+		});
+
 
 	$("#divpopupParam").dialog({
 		title : "POI PARAMETERS",
-		width : 500,
-		height : 600,
+		width : 600,
+		height : 700,
 		modal : true,
 		buttons : {
 			Submit : function() {
@@ -608,7 +653,7 @@ function POIParameters() {
 					dataArray.push(document.getElementById('TmaxPOI').value);
 					dataArray.push(document.getElementById('epsPOI').value);
 					dataArray.push(document.getElementById('minPtsPOI').value);
-
+					dataArray.push(choice);
 					$(this).dialog('close');
 					CalculatePOI(dataArray);
 				}
@@ -626,103 +671,9 @@ function POIParameters() {
 
 /*------------------------------------- Battery-User Diagram -------------------------------------------- */
 
-function BatteryUserChart(data) {
-	console.log('Making graph now');
-	//var chart;
-	//var chartData = [];
-
-	for (var i = 0; i < data.length; i++) {
-
-		//var temp = (data[i].timestamp).split(' ');
-		//console.log('data[i].timestamp: ',data[i].timestamp);
-		var replacer = (data[i].timestamp).replace(/-/g, "/");
-		var Ddate = new Date(replacer);
-		var DTime = Ddate.getHours() + ':' + Ddate.getMinutes() + ':'
-				+ Ddate.getSeconds();
-		//console.log('date bat: ', dateTime[0]);
-		var level = data[i].level;
-
-		chartData.push({
-			date : Ddate,
-			time : DTime,
-			level : level,
-		});
-	}
-
-	// XY CHART
-
-	chart = new AmCharts.AmXYChart();
-	chart.dataDateFormat = "YYYY-MM-DD";
-
-	chart.dataProvider = chartData;
-	chart.startDuration = 1;
-
-	// AXES
-	// X
-	var xAxis = new AmCharts.ValueAxis();
-	xAxis.title = "Time";
-	xAxis.duration = "ss", xAxis.position = "bottom";
-	xAxis.dashLength = 1;
-	xAxis.axisAlpha = 0;
-	xAxis.type = "date";
-	// xAxis.totalText = "[[total]]";
-	xAxis.autoGridCount = true;
-	chart.addValueAxis(xAxis);
-
-	// Y
-	var yAxis = new AmCharts.ValueAxis();
-	yAxis.position = "left";
-	yAxis.title = "Level";
-	yAxis.dashLength = 1;
-	yAxis.axisAlpha = 0;
-	yAxis.autoGridCount = true;
-	chart.addValueAxis(yAxis);
-
-	// GRAPHS
-	// triangles up
-	var graph1 = new AmCharts.AmGraph();
-	graph1.lineColor = "#FF6600";
-	graph1.valueField = "time";
-	graph1.balloonText = "Date:<b>[[x]]</b><br> Time:<b>[[time]]</b><br>Level:<b>[[level]]</b>";
-	graph1.xField = "date";
-	graph1.yField = "level";
-	graph1.lineAlpha = 1;
-	graph1.type = "smoothedLine";
-	graph1.bullet = "round";
-	graph1.bulletColor = "#C0C0C0";
-	graph1.bulletBorderColor = "#000000";
-	graph1.bulletBorderThickness = 2;
-	chart.addGraph(graph1);
-
-	// first trend line
-	var trendLine = new AmCharts.TrendLine();
-	trendLine.lineColor = "#FF6600";
-	trendLine.initialXValue = 1;
-	trendLine.initialValue = 2;
-	trendLine.finalXValue = 12;
-	trendLine.finalValue = 11;
-	chart.addTrendLine(trendLine);
-
-	// CURSOR
-	var chartCursor = new AmCharts.ChartCursor();
-	chart.addChartCursor(chartCursor);
-
-	// SCROLLBAR
-
-	var chartScrollbar = new AmCharts.ChartScrollbar();
-	chart.addChartScrollbar(chartScrollbar);
-
-	chart.mouseWheelZoomEnabled = true;
-
-	//chart.addListener("dataUpdated", zoomChart);
-	chart.maxZoomFactor = 40;
-
-	// WRITE
-	chart.write("chartdiv");
-
-	console.log("ending graph");
-
-}
+/**
+ * getRandomColor in a rand function for making colors
+ */
 
 function getRandomColor() {
 	var letters = '0123456789ABCDEF'.split('');
@@ -732,6 +683,11 @@ function getRandomColor() {
 	}
 	return color;
 }
+
+/**
+ * 
+ * BatteryGraph is a function that creates an am chart graph for the battery level of the users
+ */
 
 function BatteryGraph(data) {
 
@@ -759,11 +715,12 @@ function BatteryGraph(data) {
 		var DTime = Ddate.getHours() + ':' + Ddate.getMinutes() + ':'
 				+ Ddate.getSeconds();
 		var level = data[i].level;
-
+		var plugged = data[i].plugged;
 		chartData.push({
 			date : Ddate,
 			time : DTime,
 			level : level,
+			plugged: plugged,
 			color : color,
 		});
 		prevDate = Ddate;
@@ -776,10 +733,10 @@ function BatteryGraph(data) {
 	chart.startDuration = 1;
 	chart.columnWidth = 0.3;
 	// AXES
-	// category
+	// category axis is the x axis
 	var categoryAxis = chart.categoryAxis;
 	categoryAxis.parseDates = true; // as our data is date-based, we set parseDates to true
-	categoryAxis.minPeriod = "ss"; // our data is daily, so we set minPeriod to DD
+	categoryAxis.minPeriod = "ss"; // set second based data
 	categoryAxis.dashLength = 1;
 	categoryAxis.labelRotation = 90;
 	categoryAxis.gridPosition = "start";
@@ -790,19 +747,18 @@ function BatteryGraph(data) {
 	categoryAxis.axisAlpha = 0;
 	categoryAxis.type = "date";
 
-	// value
-	// in case you don't want to change default settings of value axis,
-	// you don't need to create it, as one value axis is created automatically.
+	// value axis is the y axis
 	var valueAxis = new AmCharts.ValueAxis();
 	valueAxis.axisAlpha = 0;
 	valueAxis.dashLength = 1;
 	valueAxis.title = "Level";
 	chart.addValueAxis(valueAxis);
+	
 	// GRAPH
 	var graph = new AmCharts.AmGraph();
 	graph.valueField = "level";
 	graph.colorField = "color";
-	graph.balloonText = "Date:<b>[[date]]</b><br> Time:<b>[[time]]</b><br>Level:<b>[[level]]</b>";
+	graph.balloonText = "Date:<b>[[date]]</b><br> Time:<b>[[time]]</b><br>Level:<b>[[level]]</b><br> Plugged:<b>[[plugged]]</b>";
 	graph.type = "column";
 	graph.lineAlpha = 0;
 	graph.fillAlphas = 0.8;
@@ -838,11 +794,17 @@ function BatteryGraph(data) {
 }
 
 function zoomChart() {
-	// different zoom methods can be used - zoomToIndexes, zoomToDates, zoomToCategoryValues
+	
 	chart.zoomToIndexes(chartData.length - 50, chartData.length - 1);
 }
 
 /*------------------------------------- Bar Diagrams ---------------------------------------------------- */
+
+/**
+ * DrawDiagram1 creates the graph that shows the amount of users who had battery level <= 15%
+ * for all the days every hour
+ */
+
 function DrawDiagram1(data) {
 
 	var chartBat;
@@ -978,7 +940,7 @@ function DrawDiagram2(data) {
 	chartOP.dataProvider = chartDataOP;
 	chartOP.categoryField = "operator";
 	// this single line makes the chart a bar chart,
-	// try to set it to false - your bars will turn to columns
+	
 	chartOP.rotate = true;
 	// the following two lines makes chart 3D
 	chartOP.depth3D = 20;
@@ -1024,8 +986,7 @@ function DrawDiagram2(data) {
 		iDiv.style.height = "500px";
 		document.getElementById('bar-diagram1').appendChild(iDiv);
 		chartOP.write("chartdiv");
-		//$("#chartdiv").show();
-		//console.log('hiiiii');
+		
 	}
 
 }

@@ -157,6 +157,7 @@ public class PoICalculations {
 			generateDistanceMatrix(Lsp);
 			return DBSCAN(Lsp);
 		} else {
+			
 			return DBSCAN_apache(Lsp);
 		}
 

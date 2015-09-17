@@ -417,17 +417,18 @@ public class ServicesController {
 	 @RequestMapping(value = "/POI", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String CalculatePOI(@RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
-			   @RequestParam String Tmin,  @RequestParam String Tmax, @RequestParam String eps, @RequestParam String minPts ) {
+			   @RequestParam String Tmin,  @RequestParam String Tmax, @RequestParam String eps, @RequestParam String minPts, @RequestParam int option ) {
 		 
 		// System.out.println(" startDate: " + startDate + " endDate: " + endDate + " Dmax: " + Dmax + " Tmin: " + Tmin
 			//	 + " Tmax: " + Tmax +" eps: " + eps + " minPts: " + minPts  );
 		 
-		 
+		
 		 if(ParseGPS.getInstance().getLoaded() == 0){
 			 return new Gson().toJson("gps-not-loaded");
 		 }
 		 else {
 			 PoICalculations poi = PoICalculations.getInstance();
+			 poi.setOption(option);
 			 double Dmaxd = Double.parseDouble(Dmax);
 			 double epsd = Double.parseDouble(eps);
 			 int minPtsd = Integer.parseInt(minPts);

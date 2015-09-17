@@ -1,4 +1,17 @@
-var analysisPage = 0;
+/**
+ * 
+ * This script is responsible for the communication with the server
+ * It makes use of jQuery ajax calls 
+ * Every function checks if the datasets are imported
+ */
+
+var analysisPage = 0; /* Indicates if we are in data analysis page */
+
+/**
+ * 
+ * Ask's to import all the csv datasets
+ * 
+ */
 
 function importCSV() {
 	var resp = '';
@@ -70,6 +83,11 @@ function importCSV() {
 
 }
 
+/*
+ * Gets a list of users
+ * 
+ */
+
 function getUsers(arg) {
 	if (arg == 1) {
 		analysisPage = 1;
@@ -133,6 +151,13 @@ function getUsers(arg) {
 
 }
 
+/**
+ * Given the userID, it gets the available dates
+ * 
+ * @param userID
+ * @param arg: 0 is for access point and gps, 1 is only for gps
+ */
+
 function getAvUserDates(userID, arg) {
 
 	console.log(userID);
@@ -191,14 +216,19 @@ function getAvUserDates(userID, arg) {
 		}
 	});
 
-	// return "success";
+	
 
 }
 
+/**
+ * 
+ * Gets access point information in order to show theis positions on the map
+ * 
+ */
+
 function getApInfo() {
 
-	$
-			.ajax({
+	$.ajax({
 				type : "GET",
 				dataType : "json",
 				data : {
@@ -259,6 +289,12 @@ function getApInfo() {
 
 }
 
+/**
+ * 
+ * Get Battery information in order to create a diagram
+ * 
+ */
+
 function getBatteryInfo() {
 
 	console.log("getBatteryInfo Ajax");
@@ -303,6 +339,12 @@ function getBatteryInfo() {
 	});
 
 }
+
+/**
+ * 
+ * Get's base stations information in order to show their position on the map
+ * 
+ */
 
 function getCellsInfo() {
 
@@ -359,8 +401,6 @@ function getCellsInfo() {
 					buttons : {
 						YES : function() {
 							$(this).dialog('close');
-
-							// sessionStorage.setItem('bs',JSON.stringify(data));
 							DrawCells(data);
 
 						},
@@ -379,10 +419,15 @@ function getCellsInfo() {
 			alert('Cells error loading response');
 		}
 	});
-	// sessionStorage.setItem('bs',JSON.stringify(data));
-	// DrawCells();
+	
 
 }
+
+/**
+ * 
+ * Get's the stay points for the parameters given
+ * 
+ */
 
 function StayPoints() {
 
@@ -448,8 +493,16 @@ function StayPoints() {
 
 }
 
+
+/**
+ * 
+ * Calculates POI given an array of parameters
+ * @param dataArray
+ */
+
 function CalculatePOI(dataArray) {
 
+	
 	$.ajax({
 		type : "GET",
 		dataType : "json",
@@ -460,7 +513,8 @@ function CalculatePOI(dataArray) {
 			Tmin : dataArray[3],
 			Tmax : dataArray[4],
 			eps : dataArray[5],
-			minPts : dataArray[6]
+			minPts : dataArray[6],
+			option : dataArray[7]
 		},
 		contentType : "application/json",
 		url : "/NetManagementApp/POI",
@@ -532,6 +586,13 @@ function CalculatePOI(dataArray) {
 }
 
 /*----------------------------------------- Bar Diagrams ---------------------------------------*/
+
+/**
+ * 
+ * Ask's for the amount of user's that have battery level <= 15% 
+ * Then calls a function to draw the result in a diagram
+ * 
+ */
 
 function graphBatUsers() {
 	$
@@ -606,6 +667,13 @@ function graphBatUsers() {
 			});
 
 }
+
+/**
+ * 
+ * Ask's for the operators 
+ * Then calls a function to draw the result in a diagram
+ * 
+ */
 
 function graphOpUsers() {
 
@@ -682,6 +750,13 @@ function graphOpUsers() {
 			});
 
 }
+
+/**
+ * 
+ * Ask's for the economic route given the two parameters
+ * Then calls a function to draw the result on the map
+ * 
+ */
 
 function EconomicRoute(time_slack, radius) {
 
