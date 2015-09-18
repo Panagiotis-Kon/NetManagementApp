@@ -135,20 +135,30 @@ public class GPSCalculations {
 		ArrayList<StayPoints> Lsp = new ArrayList<StayPoints>();
 		int i = 0, j = 0;
 		String t = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd:HH:mm:ss");
+		Date datet = null;
+		Date dateTmax = null;
+		Date dateTmin = null;
+		try {
+			
+			dateTmax = sdf.parse(Tmax);
+			dateTmin = sdf.parse(Tmin);
+		
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		
 		while (i < GPSPoints.size() - 1) {
 			j = i + 1;
 			while (j <= GPSPoints.size() - 1) {
 				t = TimeDifference(GPSPoints.get(j).getTimestamp(), GPSPoints
 						.get(j - 1).getTimestamp());
-				SimpleDateFormat sdf = new SimpleDateFormat("dd:HH:mm:ss");
-				Date datet = null;
-				Date dateTmax = null;
-				Date dateTmin = null;
-				try {
-					datet = sdf.parse(t);
-					dateTmax = sdf.parse(Tmax);
-					dateTmin = sdf.parse(Tmin);
+				
 					// System.out.println("GPSCalc line 147: "+datet+" | "+dateTmin+" | "+dateTmax);
+					try {
+						
+					datet = sdf.parse(t);
+					
 					if (datet.after(dateTmax)) {
 						t = TimeDifference(GPSPoints.get(i).getTimestamp(),
 								GPSPoints.get(j - 1).getTimestamp());
@@ -180,10 +190,12 @@ public class GPSCalculations {
 						break;
 					}
 					j++;
+					
+					}catch (ParseException e) {
+						e.printStackTrace();
+					}
 
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
+				
 			}
 		}
 		if (Lsp.isEmpty()) {
