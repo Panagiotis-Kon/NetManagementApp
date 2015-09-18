@@ -16,6 +16,25 @@ var markersEco = [];
 
 /*************************************** FUNCTIONS *********************************/
 
+$( document ).ready(function() {
+	CreateMap();
+});
+
+
+function CreateMap() {
+	var latlng = new google.maps.LatLng('37.96863889357752', '23.76679449388328');
+	var mapOptions = {
+			zoom : 8,
+			center : latlng,
+			mapTypeId : google.maps.MapTypeId.TERRAIN
+		};
+
+		map = new google.maps.Map(document.getElementById('map-canvas'),
+				mapOptions);
+		mapCreated = 1;
+}
+
+
 function Markers(data) {
 
 	
@@ -68,15 +87,7 @@ function Markers(data) {
 				};
 			})(marker, content, infowindow));
 		} else {
-			var mapOptions = {
-				zoom : 8,
-				center : latlng,
-				mapTypeId : google.maps.MapTypeId.TERRAIN
-			};
-
-			map = new google.maps.Map(document.getElementById('map-canvas'),
-					mapOptions);
-			mapCreated = 1;
+			CreateMap();
 		}
 
 	});
@@ -420,15 +431,7 @@ function DrawCells(bsdata) {
 					})(marker, content, infowindow));
 
 				} else {
-					var mapOptions = {
-						zoom : 8,
-						center : latlng,
-						mapTypeId : google.maps.MapTypeId.TERRAIN
-					};
-
-					map = new google.maps.Map(document
-							.getElementById('map-canvas'), mapOptions);
-					mapCreated = 1;
+					CreateMap();
 				}
 
 			});
@@ -449,59 +452,54 @@ function DrawStayPoints(data) {
 		alert('Data in Stay Points is null')
 	} else {
 
+		if(mapCreated == 1) {
+			var pinImage = new google.maps.MarkerImage("resources/images/sp1.png",
+					new google.maps.Size(35, 40), new google.maps.Point(0, 0), null);
+			$.each(data, function(i, item) {
 
-		var pinImage = new google.maps.MarkerImage("resources/images/sp1.png",
-				new google.maps.Size(35, 40), new google.maps.Point(0, 0), null);
-		$.each(data, function(i, item) {
+				var latlng = new google.maps.LatLng(item.lat, item.lon);
+				var marker = new google.maps.Marker({
+					position : latlng,
+					map : map,
+					icon : pinImage,
+					title : 'Stay Point',
+					animation : google.maps.Animation.DROP,
+				});
 
-			var latlng = new google.maps.LatLng(item.lat, item.lon);
-			if (i == 0) {
+				var content = "<p>" + "Lat: " + item.lat + "<br />" + " Lon: "
+						+ item.lon + "<br />" + " Tstart: " + item.Tstart
+						+ "<br />" + " Tend: " + item.Tend + "</p>";
 
-				var mapOptions = {
-					zoom : 8,
-					center : latlng,
-					mapTypeId : google.maps.MapTypeId.TERRAIN
-				};
+				var infowindow = new google.maps.InfoWindow();
 
-				map = new google.maps.Map(
-						document.getElementById('map-canvas'), mapOptions);
+				google.maps.event.addListener(marker, 'click', (function(marker,
+						content, infowindow) {
+					return function() {
+						infowindow.setContent(content);
+						infowindow.open(map, marker);
+					};
+				})(marker, content, infowindow));
 
-			}
-			var marker = new google.maps.Marker({
-				position : latlng,
-				map : map,
-				icon : pinImage,
-				title : 'Stay Point',
-				animation : google.maps.Animation.DROP,
 			});
-
-			var content = "<p>" + "Lat: " + item.lat + "<br />" + " Lon: "
-					+ item.lon + "<br />" + " Tstart: " + item.Tstart
-					+ "<br />" + " Tend: " + item.Tend + "</p>";
-
-			var infowindow = new google.maps.InfoWindow();
-
-			google.maps.event.addListener(marker, 'click', (function(marker,
-					content, infowindow) {
-				return function() {
-					infowindow.setContent(content);
-					infowindow.open(map, marker);
-				};
-			})(marker, content, infowindow));
-
-		});
+			
+		} else {
+			CreateMap();
+		}
+		
 
 	}
 	
 
 }
 
+
+
+
 /**
  * 
  * Creates the POI inside a rectangle
  * 
  */
-
 function DrawPOI(data) {
 
 	
@@ -509,7 +507,10 @@ function DrawPOI(data) {
 	if (data == null) {
 		alert('Null data in POI');
 	} else {
-
+		if(mapCreated == 1) {
+			
+			
+		}
 		var cluster = 0;
 		$.each(data, function(i, item) {
 
@@ -562,6 +563,6 @@ function DrawPOI(data) {
 		});
 	}
 
-	console.log('ending Draw Points')
+	//console.log('ending Draw Points')
 
 }
