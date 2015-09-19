@@ -1,7 +1,5 @@
 package com.netmanagement.dataprocessing;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,8 +24,8 @@ public class BaseStationsCalculations {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<BaseStations> searchUser(String userID, String startDate,
-			String endDate) {
+	public ArrayList<BaseStations> searchUser(String userID, Date startDate,
+			Date endDate) {
 		// Search data for a specific user with the date contained between
 		// startDate and endDate. Then return a list with these data.
 		System.out.println("userID: " + userID + " startDate: " + startDate
@@ -40,34 +38,18 @@ public class BaseStationsCalculations {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<BaseStations> array = (ArrayList<BaseStations>) me
-						.getValue();
+				ArrayList<BaseStations> array = (ArrayList<BaseStations>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					BaseStations tempap = array.get(i);
 					if (tempap.getUser().equals(userID)) {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd");
-							Date date1 = sdf.parse(startDate);
-							Date date2 = sdf.parse(endDate);
-							Date dateu = sdf.parse(tempap.getTimestamp());
-							// System.out.println(date1+" | "+date2+" | "+dateu);
-							if (date1.equals(dateu) || date1.before(dateu)) {
-								if (date2.equals(dateu) || date2.after(dateu)) {
-									System.out.println(date1 + " | " + date2
-											+ " | " + dateu);
-									if (!tempap.getBSlatitude().equals(
-											"No Latitude")
-											|| !tempap.getBSlongtitude()
-													.equals("No longitude")) {
-										alist.add(tempap);
-									}
+						
+						if (startDate.equals(tempap.getTimestamp()) || startDate.before(tempap.getTimestamp())) {
+							if (endDate.equals(tempap.getTimestamp()) || endDate.after(tempap.getTimestamp())) {
+								if (!tempap.getBSlatitude().equals("No Latitude")|| !tempap.getBSlongtitude().equals("No longitude")) {
+									alist.add(tempap);
 								}
+								
 							}
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
 
 					}
@@ -110,9 +92,8 @@ public class BaseStationsCalculations {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<BaseStations> array = (ArrayList<BaseStations>) me
-						.getValue();
+				
+				ArrayList<BaseStations> array = (ArrayList<BaseStations>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					if (operators.size() == 0) {
 						Operator temp = new Operator();

@@ -1,7 +1,12 @@
 package com.netmanagement.nmapp;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,7 +73,6 @@ public class ServicesController {
 			 try {
 					suc = pcsv.LoadAccessPoints();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if(suc == 0) {
@@ -112,7 +116,6 @@ public class ServicesController {
 			 try {
 					suc = pb.LoadBattery();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				 if(suc == 0){
@@ -139,11 +142,9 @@ public class ServicesController {
 			 try {
 					suc = GPS.LoadGPS();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				 if(suc == 0){
-					 //System.out.println("battery: " + suc);
 					 str = "gps-import";
 				 }
 				 else {
@@ -168,11 +169,10 @@ public class ServicesController {
 			 try {
 					suc = pbs.LoadBaseStations();
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				 if(suc == 0){
-					// System.out.println("battery: " + suc);
 					str = "bs-import";
 				 }
 				 else {
@@ -264,11 +264,15 @@ public class ServicesController {
 			 else {
 				 
 				 AccessPointsCalculations apc = AccessPointsCalculations.getInstance();	
-				 ArrayList<String> datesGPS = GPSCalculations.getInstance().allTimestamps(userID);
-				 ArrayList<String> datesAP = apc.allTimestamps(userID);
-				 ArrayList<String> AllDates = new ArrayList<String>();
+				 ArrayList<Date> datesGPS = GPSCalculations.getInstance().allTimestamps(userID);
+				 ArrayList<Date> datesAP = apc.allTimestamps(userID);
+				 
+				 ArrayList<Date> AllDates = new ArrayList<Date>();
 				 AllDates.addAll(datesAP);
 				 AllDates.addAll(datesGPS);
+				 for(int i=0; i<AllDates.size(); i++) {
+					 System.out.println("date: " + AllDates.get(i));
+				 }
 				 String json = new Gson().toJson(AllDates);
 				 //System.out.println("0-1 json Dates: " + json);
 				 return json;
@@ -281,7 +285,7 @@ public class ServicesController {
 			 }
 			 else {
 				 	
-				 ArrayList<String> dates = GPSCalculations.getInstance().allTimestamps(userID);
+				 ArrayList<Date> dates = GPSCalculations.getInstance().allTimestamps(userID);
 				 String json = new Gson().toJson(dates);
 				 //System.out.println("1 json Dates: " + json);
 				 return json;
@@ -297,13 +301,32 @@ public class ServicesController {
 		
 	   public @ResponseBody String getApInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
 		 
+		 
+		  
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+				
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 
 		 ParseAccessPoints pcsv = ParseAccessPoints.getInstance();
 		 if(pcsv.getLoaded() == 0){
 			 return new Gson().toJson("ap-not-loaded");
 		 }
 		 else {
 			 AccessPointsCalculations apc = AccessPointsCalculations.getInstance(); 	
-			 ArrayList<AccessPoints> apInfo = apc.searchUser(userID, startDate, endDate);
+			 ArrayList<AccessPoints> apInfo = apc.searchUser(userID, dateStart, dateEnd);
 			 if(!apInfo.isEmpty()){
 				 
 				 String json = new Gson().toJson(apInfo);
@@ -323,13 +346,32 @@ public class ServicesController {
 		
 	   public @ResponseBody String getBatteryInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
 		 
+		 
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+				
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 
+		 
 		 ParseBattery pb = ParseBattery.getInstance();
 		 if(pb.getLoaded() == 0){
 			 return new Gson().toJson("bat-not-loaded");
 		 }
 		 else {
 			 BatteryCalculations bc = BatteryCalculations.getInstance();
-			 ArrayList<Battery> batlist = bc.searchUser(userID, startDate, endDate);
+			 ArrayList<Battery> batlist = bc.searchUser(userID, dateStart, dateEnd);
 			 if(!batlist.isEmpty()){
 				 String json = new Gson().toJson(batlist);
 				// System.out.println("json string: " + json);
@@ -352,12 +394,30 @@ public class ServicesController {
 		
 	   public @ResponseBody String getCellsInfo(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
 		 
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+				
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 
+		 
 		 if(ParseBaseStations.getInstance().getLoaded() == 0){
 			 return new Gson().toJson("bs-not-loaded");
 		 }
 		 else {
 			 BaseStationsCalculations bsc = BaseStationsCalculations.getInstance();
-			 ArrayList<BaseStations> bslist = bsc.searchUser(userID, startDate, endDate);
+			 ArrayList<BaseStations> bslist = bsc.searchUser(userID, dateStart, dateEnd);
 			 if(!bslist.isEmpty()){
 				 String json = new Gson().toJson(bslist);
 				// System.out.println("json string: " + json);
@@ -379,15 +439,31 @@ public class ServicesController {
 	   public @ResponseBody String StayPoints(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
 			   @RequestParam String Tmin,  @RequestParam String Tmax ) {
 		 
-		// System.out.println("user: " + userID + " startDate: " + startDate + " endDate: " + endDate + " Dmax: " + Dmax + " Tmin: " + Tmin
-				// + " Tmax: " + Tmax);
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+				
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 
+		 
 		 
 		 if(ParseGPS.getInstance().getLoaded() == 0){
 			 return new Gson().toJson("gps-not-loaded");
 		 }
 		 else {
 			 GPSCalculations gps = GPSCalculations.getInstance();
-			 ArrayList<GPS> GPSPoints = gps.searchUser(userID, startDate, endDate);
+			 ArrayList<GPS> GPSPoints = gps.searchUser(userID, dateStart,dateEnd);
 			 if(!GPSPoints.isEmpty()) {
 				 String json = null;
 				 Double Dmaxd = Double.parseDouble(Dmax);
@@ -395,7 +471,7 @@ public class ServicesController {
 				 if(!stayPoints.isEmpty()){
 					// System.out.println("Stay points: " +stayPoints.size());
 					 json = new Gson().toJson(stayPoints);
-					// System.out.println("json string: " + json);
+					//System.out.println("json string: " + json);
 				     return json;
 				 }
 				 else {
@@ -419,10 +495,26 @@ public class ServicesController {
 	   public @ResponseBody String CalculatePOI(@RequestParam String startDate, @RequestParam String endDate,@RequestParam String Dmax, 
 			   @RequestParam String Tmin,  @RequestParam String Tmax, @RequestParam String eps, @RequestParam String minPts, @RequestParam int option ) {
 		 
-		// System.out.println(" startDate: " + startDate + " endDate: " + endDate + " Dmax: " + Dmax + " Tmin: " + Tmin
-			//	 + " Tmax: " + Tmax +" eps: " + eps + " minPts: " + minPts  );
-		 
 		
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 
+		 
+		 
 		 if(ParseGPS.getInstance().getLoaded() == 0){
 			 return new Gson().toJson("gps-not-loaded");
 		 }
@@ -432,7 +524,7 @@ public class ServicesController {
 			 double Dmaxd = Double.parseDouble(Dmax);
 			 double epsd = Double.parseDouble(eps);
 			 int minPtsd = Integer.parseInt(minPts);
-			 poi.setAll(startDate,endDate,Tmin,Tmax,Dmaxd,epsd,minPtsd);
+			 poi.setAll(dateStart,dateEnd,Tmin,Tmax,Dmaxd,epsd,minPtsd);
 			 ArrayList<PointsofInterest> poiArray = poi.CalculatePoI();
 			 if(!poiArray.isEmpty()) {
 				 
@@ -457,6 +549,8 @@ public class ServicesController {
 	 @RequestMapping(value = "/Low-Battery-Graph", method = RequestMethod.GET,consumes="application/json",produces="application/json")
 		
 	   public @ResponseBody String BarDiagram1(){
+		 
+		 
 		if(ParseBattery.getInstance().getLoaded() == 0){
 			 return new Gson().toJson("bat-not-loaded");
 		}
@@ -508,19 +602,34 @@ public class ServicesController {
 	   public @ResponseBody String EcoRoute(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate, 
 			   @RequestParam float time_slack, @RequestParam int radius){
 		 
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		 
-	     ArrayList<GPS> gpsList = BatteryEcoRoute.getInstance().UserRoute(userID, startDate, endDate);
-		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoRoute(userID, startDate, endDate, time_slack, radius);
-		 //ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoMinRoute(userID, startDate, endDate);
-		// System.out.println("time_slack: " + time_slack + " radius: " + radius);
+		 
+	     ArrayList<GPS> gpsList = BatteryEcoRoute.getInstance().UserRoute(userID, dateStart, dateEnd);
+		 ArrayList<AccessPoints> ecoList = BatteryEcoRoute.getInstance().EcoRoute(userID, dateStart, dateEnd, time_slack, radius);
+		
 		 if(!ecoList.isEmpty()){
 			
 			 	String json1 = new Gson().toJson(gpsList);
 			 	
 			 	String json2 = new Gson().toJson(ecoList);
 			 	String bothjson = "["+json1+","+json2+"]";
-				System.out.println("json string: " + bothjson);
-				System.out.println("Eco Route length: " + ecoList.size());
+				//System.out.println("json string: " + bothjson);
+				//System.out.println("Eco Route length: " + ecoList.size());
 			    return bothjson;
 		 }
 		 else

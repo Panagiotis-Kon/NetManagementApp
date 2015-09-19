@@ -1,5 +1,9 @@
 package com.netmanagement.entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  * 
@@ -18,7 +22,7 @@ public class AccessPoints implements Comparable<AccessPoints>{
 	private int frequency;
 	private double APlatitude;
 	private double APlongtitude;
-	private String timestamp;
+	private Date timestamp;
 	
 	public void setAll(String[] Data) {
 		id=Data[0];
@@ -29,7 +33,17 @@ public class AccessPoints implements Comparable<AccessPoints>{
 		frequency=Integer.parseInt(Data[5]);
 		APlatitude=Double.parseDouble(Data[6]);
 		APlongtitude=Double.parseDouble(Data[7]);
-		timestamp=Data[8];
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
+		try {
+
+			Date date = formatter.parse(Data[8]);
+			timestamp=date;
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public double getAPlatitude() {
@@ -83,10 +97,13 @@ public class AccessPoints implements Comparable<AccessPoints>{
 		this.frequency = frequency;
 	}
 	
-	public String getTimestamp() {
+	
+
+	public Date getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(String timestamp) {
+
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -95,6 +112,13 @@ public class AccessPoints implements Comparable<AccessPoints>{
 		if (getTimestamp() == null || o.getTimestamp() == null)
 		      return 0;
 		    return getTimestamp().compareTo(o.getTimestamp());
+	}
+	
+	@Override
+	public String toString() {
+		return id + " " + ssid + " " + bssid + " " + rssi + " "
+				+ frequency + " " + APlatitude + " " + APlongtitude + " "
+				+ timestamp;
 	}
 	
 }

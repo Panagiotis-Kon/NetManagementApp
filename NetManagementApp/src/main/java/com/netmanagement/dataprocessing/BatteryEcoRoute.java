@@ -1,7 +1,6 @@
 package com.netmanagement.dataprocessing;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,8 +55,8 @@ public class BatteryEcoRoute {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<GPS> UserRoute(String userID, String startDate,
-			String endDate) {
+	public ArrayList<GPS> UserRoute(String userID, Date startDate,
+			Date endDate) {
 		// Return an array list with given user gps coordinates between
 		// startDate and endDate
 		HashMap<String, ArrayList<GPS>> hgps = ParseGPS.getInstance().getHap();
@@ -72,24 +71,12 @@ public class BatteryEcoRoute {
 				for (int i = 0; i < array.size(); i++) {
 					GPS tempgps = array.get(i);
 					if (tempgps.getUser().equals(userID)) {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd");
-
-							Date date1 = sdf.parse(startDate);
-							Date date2 = sdf.parse(endDate);
-							Date dateu = sdf.parse(tempgps.getTimestamp());
-
-							// System.out.println(date1+" | "+date2+" | "+dateu);
-							if (date1.equals(dateu) || date1.before(dateu)) {
-								if (date2.equals(dateu) || date2.after(dateu)) {
-									gpsList.add(tempgps);
-								}
+						if (startDate.equals(tempgps.getTimestamp()) || startDate.before(tempgps.getTimestamp())) {
+							if (endDate.equals(tempgps.getTimestamp()) || endDate.after(tempgps.getTimestamp())) {
+								gpsList.add(tempgps);
 							}
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
+						
 
 					}
 				}
@@ -99,8 +86,8 @@ public class BatteryEcoRoute {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<AccessPoints> EcoRoute(String userID, String startDate,
-			String endDate, float time_slack, int radius) {
+	public ArrayList<AccessPoints> EcoRoute(String userID, Date startDate,
+			Date endDate, float time_slack, int radius) {
 
 		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints.getInstance().getHap();
 		ArrayList<AccessPoints> ecoList = new ArrayList<AccessPoints>();
@@ -114,27 +101,17 @@ public class BatteryEcoRoute {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					AccessPoints tempap = array.get(i);
 					if (tempap.getUser().equals(userID)) {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd");
-							Date date1 = sdf.parse(startDate);
-							Date date2 = sdf.parse(endDate);
-							Date dateu = sdf.parse(tempap.getTimestamp());
-							// System.out.println(date1+" | "+date2+" | "+dateu);
-							if (date1.equals(dateu) || date1.before(dateu)) {
-								if (date2.equals(dateu) || date2.after(dateu)) {
-									APList.add(tempap);
-								}
+						
+						if (startDate.equals(tempap.getTimestamp()) || startDate.before(tempap.getTimestamp())) {
+							if (endDate.equals(tempap.getTimestamp()) || endDate.after(tempap.getTimestamp())) {
+								APList.add(tempap);
 							}
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
+						
 
 					}
 				}
@@ -146,19 +123,15 @@ public class BatteryEcoRoute {
 		if (radius == -1) {
 			radius = RADIUS;
 		}
-
+		
 		AccessPoints tempap = null;
 		for (int i = 0; i < gpsList.size(); i++) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			try {
-				Date gpsdate = sdf.parse(gpsList.get(i).getTimestamp());
+			
+			
+				Date gpsdate = gpsList.get(i).getTimestamp();
 				tempap = null;
 				for (int j = 0; j < APList.size(); j++) {
-					Date apdate = sdf.parse(APList.get(j).getTimestamp());
-					//System.out.println("Time Diff: "
-							//+ Math.abs(apdate.getTime() - gpsdate.getTime()));
-					//System.out.println("Space Dist: "
-							//+ SpaceDistance(gpsList.get(i), APList.get(j)));
+					Date apdate = APList.get(j).getTimestamp();
 					if (Math.abs(apdate.getTime() - gpsdate.getTime()) <= time_slack * 1000) {
 
 						if (SpaceDistance(gpsList.get(i), APList.get(j)) <= radius) {
@@ -202,36 +175,15 @@ public class BatteryEcoRoute {
 						}
 					}
 				}
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 			if (tempap != null)
 				ecoList.add(tempap);
 		}
-		//System.out.println(ecoList.size());
+		
 		return ecoList;
 	}
 
-	/*
-	 * class BSSIDDist implements Comparable<BSSIDDist>{ double dist; String
-	 * bssid;
-	 * 
-	 * public double getDist() { return dist; }
-	 * 
-	 * public void setDist(double dist) { this.dist = dist; }
-	 * 
-	 * public String getBssid() { return bssid; }
-	 * 
-	 * public void setBssid(String bssid) { this.bssid = bssid; }
-	 * 
-	 * @Override public int compareTo(BSSIDDist o) { return
-	 * Double.compare(getDist(), o.getDist());
-	 * 
-	 * }
-	 * 
-	 * }
-	 */
+
 
 	double SpaceDistance(GPS gps, AccessPoints ap) {
 		// Find distance calculation between given variables from

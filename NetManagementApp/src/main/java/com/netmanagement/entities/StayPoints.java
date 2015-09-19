@@ -1,5 +1,7 @@
 package com.netmanagement.entities;
 
+import java.util.Date;
+
 import org.apache.commons.math3.ml.clustering.Clusterable;
 
 /**
@@ -13,11 +15,11 @@ public class StayPoints implements Clusterable{
 	
 	private double lat;
 	private double lon;
-	private String Tstart;
-	private String Tend;
+	private Date Tstart;
+	private Date Tend;
 	private int visited=0; //0 : not visited , 1 : visited
 	
-	public void setAll(double lat, double lon, String Tstart, String Tend){
+	public void setAll(double lat, double lon, Date Tstart, Date Tend){
 		this.lat = lat;
 		this.lon = lon;
 		this.Tstart = Tstart;
@@ -40,19 +42,20 @@ public class StayPoints implements Clusterable{
 		this.lon = lon;
 	}
 
-	public String getTstart() {
+	
+	public Date getTstart() {
 		return Tstart;
 	}
 
-	public void setTstart(String tstart) {
+	public void setTstart(Date tstart) {
 		Tstart = tstart;
 	}
 
-	public String getTend() {
+	public Date getTend() {
 		return Tend;
 	}
 
-	public void setTend(String tend) {
+	public void setTend(Date tend) {
 		Tend = tend;
 	}
 

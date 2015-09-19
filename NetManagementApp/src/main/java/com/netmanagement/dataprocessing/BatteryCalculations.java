@@ -30,43 +30,31 @@ public class BatteryCalculations {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<Battery> searchUser(String userID, String startDate,
-			String endDate) {
+	public ArrayList<Battery> searchUser(String userID, Date startDate,
+			Date endDate) {
 		// Search data for a specific user with the date contained between
 		// startDate and endDate. Then return a list with these data.
-		//System.out.println(" Battery!! userID: " + userID + " startDate: "
-			//	+ startDate + " endDate: " + endDate);
-		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance()
-				.getHap();
+		
+		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance().getHap();
 		ArrayList<Battery> alist = new ArrayList<Battery>();
 		if (!hap.isEmpty()) {
 			Set<?> set = hap.entrySet();
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				
 				ArrayList<Battery> array = (ArrayList<Battery>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					Battery tempap = array.get(i);
 					if (tempap.getUser().equals(userID)) {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd");
-							Date date1 = sdf.parse(startDate);
-							Date date2 = sdf.parse(endDate);
-							Date dateu = sdf.parse(tempap.getTimestamp());
-							// System.out.println(date1+" | "+date2+" | "+dateu);
-							if (date1.equals(dateu) || date1.before(dateu)) {
-								if (date2.equals(dateu) || date2.after(dateu)) {
-									//System.out.println(date1 + " | " + date2
-									//		+ " | " + dateu);
-									alist.add(tempap);
-								}
+						
+						if (startDate.equals(tempap.getTimestamp()) || startDate.before(tempap.getTimestamp())) {
+							if (endDate.equals(tempap.getTimestamp()) || endDate.after(tempap.getTimestamp())) {
+								alist.add(tempap);
 							}
-						} catch (ParseException e) {
-							e.printStackTrace();
 						}
-
+						
+						
 					}
 				}
 			}
@@ -83,26 +71,27 @@ public class BatteryCalculations {
 		// time. Return an array list with
 		// hour_of_the_day#number_of_unique_users_with_low battery
 		String DATE[] = minmaxTimestamp().split("#");
-		String min = DATE[0], max = DATE[1];
+		
+		Date min = StringtoDate(DATE[0]);
+		Date max = StringtoDate(DATE[1]);
 		ArrayList<BatteryInfo> blist = generateDateRange(min, max);
 
-		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance()
-				.getHap();
+		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance().getHap();
 		ArrayList<String> alist = new ArrayList<String>();
 		if (!hap.isEmpty()) {
 			Set<?> set = hap.entrySet();
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
+				
 				ArrayList<Battery> array = (ArrayList<Battery>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 
 					Date pdate = zeroMin_Sec(array.get(i).getTimestamp());
-					long diff = pdate.getTime() - StringtoDate(min).getTime();
+					long diff = pdate.getTime() - min.getTime();
 					long totalSecs = diff / 1000;
 					int diffHours = (int) (totalSecs / 3600);
-					//System.out.println(diffHours);
+					
 					if (!blist.get(diffHours).users.contains(array.get(i)
 							.getUser()) && array.get(i).getLevel() <= percent) {
 						blist.get(diffHours).numofUsers++;
@@ -120,7 +109,7 @@ public class BatteryCalculations {
 		return alist;
 	}
 
-	Date StringtoDate(String sdate) { // Change String to Date format :
+public Date StringtoDate(String sdate) { // Change String to Date format :
 										// yyyy-MM-dd HH:mm:ss
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date ddate = null;
@@ -138,44 +127,36 @@ public class BatteryCalculations {
 		ArrayList<String> users = new ArrayList<String>();
 	}
 
-	public Date zeroMin_Sec(String sdate) {
+	public Date zeroMin_Sec(Date sdate) {
 		// Make zero the minutes and seconds of date
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date ddate = null;
-		try {
-			ddate = sdf.parse(sdate);
+
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(ddate);
+			calendar.setTime(sdate);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
-			ddate = calendar.getTime();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return ddate;
+			sdate = calendar.getTime();
+		
+		return sdate;
 	}
 
-	public ArrayList<BatteryInfo> generateDateRange(String start, String end) {
+	public ArrayList<BatteryInfo> generateDateRange(Date d1, Date d2) {
 		// GenerateDateRange every hour
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		ArrayList<BatteryInfo> list = new ArrayList<BatteryInfo>();
-		Date d1 = null;
-		Date d2 = null;
-		try {
+		
 			Calendar calendar = Calendar.getInstance();
 
-			d1 = format.parse(start);
+		
 			calendar.setTime(d1);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			d1 = calendar.getTime();
 
-			d2 = format.parse(end);
 			calendar.setTime(d2);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			d2 = calendar.getTime();
-			//System.out.println(d1 + " | " + d2);
+			
 
 			// in milliseconds
 			long diff = 0;
@@ -184,23 +165,13 @@ public class BatteryCalculations {
 			else
 				diff = d1.getTime() - d2.getTime();
 
-			//long diffSeconds = diff / 1000 % 60;
-			//long diffMinutes = diff / (60 * 1000) % 60;
 			long diffHours = diff / (60 * 60 * 1000) % 24;
 			long diffDays = diff / (24 * 60 * 60 * 1000);
-			// TimeDiff=System.out.format("%02d",
-			// diffDays)+":"+System.out.format("%02d",
-			// diffHours)+":"+System.out.format("%02d",
-			// diffMinutes)+":"+System.out.format("%02d", diffSeconds);
-			// TimeDiff=diffDays+":"+diffHours+":"+diffMinutes+":"+diffSeconds;
-			/*System.out.print(diffDays + " days, ");
-			System.out.print(diffHours + " hours, ");
-			System.out.print(diffMinutes + " minutes, ");
-			System.out.print(diffSeconds + " seconds.");*/
+		
 			@SuppressWarnings("unused")
 			int counter = 0;
 			diff = diffHours + 24 * diffDays;
-			//System.out.println("Hours :" + diff);
+		
 			for (long i = 0; i < diff; i++) {
 				BatteryInfo temp = new BatteryInfo();
 				calendar.setTime(d1);
@@ -212,11 +183,8 @@ public class BatteryCalculations {
 				counter++;
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		//System.out.println("Size :" + list.size());
 		
+			
 		return list;
 	}
 
@@ -242,28 +210,25 @@ public class BatteryCalculations {
 			long diffMinutes = diff / (60 * 1000) % 60;
 			long diffHours = diff / (60 * 60 * 1000) % 24;
 			long diffDays = diff / (24 * 60 * 60 * 1000);
-			// TimeDiff=System.out.format("%02d",
-			// diffDays)+":"+System.out.format("%02d",
-			// diffHours)+":"+System.out.format("%02d",
-			// diffMinutes)+":"+System.out.format("%02d", diffSeconds);
-			TimeDiff = diffDays + ":" + diffHours + ":" + diffMinutes + ":"
-					+ diffSeconds;
-			System.out.print(diffDays + " days, ");
+			
+			TimeDiff = diffDays + ":" + diffHours + ":" + diffMinutes + ":" + diffSeconds;
+			/*System.out.print(diffDays + " days, ");
 			System.out.print(diffHours + " hours, ");
 			System.out.print(diffMinutes + " minutes, ");
-			System.out.print(diffSeconds + " seconds.");
+			System.out.print(diffSeconds + " seconds.");*/
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//System.out.println("Time Difference :" + TimeDiff);
+		
 		return TimeDiff;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public String minmaxTimestamp() {
 		// Find minimum and maximum Date of the user return MIN#MAX
-		String DATE = null, MIN = null, MAX = null;
+		String DATE = null; 
+		Date MIN = null, MAX = null;
 		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance()
 				.getHap();
 		int first = 1;
@@ -272,7 +237,6 @@ public class BatteryCalculations {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<Battery> array = (ArrayList<Battery>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					if (first == 1) {
@@ -280,28 +244,20 @@ public class BatteryCalculations {
 						MAX = array.get(i).getTimestamp();
 						first = 0;
 					} else {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd HH:mm:ss");
-							Date datemin = sdf.parse(MIN);
-							Date datemax = sdf.parse(MAX);
-							Date datenow = sdf.parse(array.get(i)
-									.getTimestamp());
-							// System.out.println(datemin+" | "+datemax+" | "+datenow);
-							if (datemin.after(datenow)) {
-								MIN = array.get(i).getTimestamp();
-							}
-							if (datemax.before(datenow)) {
-								MAX = array.get(i).getTimestamp();
-							}
-						} catch (ParseException e) {
-							e.printStackTrace();
+						
+						if (MIN.after(array.get(i).getTimestamp())) {
+							MIN = array.get(i).getTimestamp();
 						}
+						if (MAX.before(array.get(i).getTimestamp())) {
+							MAX = array.get(i).getTimestamp();
+						}
+						
+						
 					}
 				}
 			}
 		}
-		DATE = MIN + "#" + MAX;
+		DATE = MIN.toString() + "#" + MAX.toString();
 		System.out.println("Date of all: " + DATE);
 		return DATE;
 	}

@@ -1,5 +1,9 @@
 package com.netmanagement.entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 
  * Entity for the GPS
@@ -12,14 +16,22 @@ public class GPS implements Comparable<GPS>{
 	private String user;
 	private double Ulatitude;
 	private double Ulongtitude;
-	private String timestamp;
+	private Date timestamp;
 	
 	public void setAll(String[] Data) {
 		id=Data[0];
 		user=Data[1];
 		Ulatitude=Double.parseDouble(Data[2]);
 		Ulongtitude=Double.parseDouble(Data[3]);
-		timestamp=Data[4];
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
+		try {
+
+			Date date = formatter.parse(Data[4]);
+			timestamp=date;
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getId() {
@@ -46,10 +58,13 @@ public class GPS implements Comparable<GPS>{
 	public void setUlongtitude(double ulongtitude) {
 		Ulongtitude = ulongtitude;
 	}
-	public String getTimestamp() {
+	
+
+	public Date getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(String timestamp) {
+
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -58,5 +73,10 @@ public class GPS implements Comparable<GPS>{
 		if (getTimestamp() == null || arg0.getTimestamp() == null)
 		      return 0;
 		    return getTimestamp().compareTo(arg0.getTimestamp());
+	}
+	
+	@Override
+	public String toString() {
+		return id + " " + Ulatitude + " " + Ulongtitude+ " " + timestamp;
 	}
 }

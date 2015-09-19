@@ -177,16 +177,17 @@ function SelectUser(data) {
 					$("#parameters").hide();
 
 				}
-
-				var closeBtn = document.getElementById("btnId");
-				var submitBtn = document.getElementById("btnIdSub");
-				closeBtn.parentNode.removeChild(closeBtn);
-				submitBtn.parentNode.removeChild(submitBtn);
-				var elem = document.getElementById("from");
-				elem.value = '';
-				elem = document.getElementById("to");
-				elem.value = '';
-				$("#timeline").hide();
+				if ( $( "#btnId" ).length ) {
+					var closeBtn = document.getElementById("btnId");
+					var submitBtn = document.getElementById("btnIdSub");
+					closeBtn.parentNode.removeChild(closeBtn);
+					submitBtn.parentNode.removeChild(submitBtn);
+					var elem = document.getElementById("from");
+					elem.value = '';
+					elem = document.getElementById("to");
+					elem.value = '';
+					$("#timeline").hide();
+				}
 			}
 			userID = data.item.value;
 			//console.log('userID: ' + userID);

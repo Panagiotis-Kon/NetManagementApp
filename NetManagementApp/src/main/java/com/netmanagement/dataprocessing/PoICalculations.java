@@ -1,7 +1,6 @@
 package com.netmanagement.dataprocessing;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,9 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import org.apache.commons.math3.ml.clustering.Cluster;
 import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
-import com.netmanagement.csvdatasets.ParseAccessPoints;
 import com.netmanagement.csvdatasets.ParseGPS;
-import com.netmanagement.entities.AccessPoints;
 import com.netmanagement.entities.GPS;
 import com.netmanagement.entities.PointsofInterest;
 import com.netmanagement.entities.StayPoints;
@@ -23,8 +20,8 @@ public class PoICalculations {
 	private double esp;
 	private int minPts;
 	private double[][] matrix = null;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
 	private String Tmin;
 	private String Tmax;
 	private Double Dmax;
@@ -42,7 +39,7 @@ public class PoICalculations {
 		return PoICalculationsinstance;
 	}
 
-	public void setAll(String startDate, String endDate, String Tmin,
+	public void setAll(Date startDate, Date endDate, String Tmin,
 			String Tmax, Double Dmax, Double esp, int minPts) {
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -77,19 +74,20 @@ public class PoICalculations {
 		this.matrix = matrix;
 	}
 
-	public String getStartDate() {
+	
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
@@ -143,9 +141,8 @@ public class PoICalculations {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<GPS> array = GPSCalculations.getInstance()
-						.searchUser(me.getKey().toString(), startDate, endDate);
+				
+				ArrayList<GPS> array = GPSCalculations.getInstance().searchUser(me.getKey().toString(), startDate, endDate);
 				ArrayList<StayPoints> temp = GPSCalculations.getInstance()
 						.findStayPoints(array, Tmin, Tmax, Dmax);
 				if (!temp.isEmpty()) {
@@ -173,6 +170,11 @@ public class PoICalculations {
 		setMatrix(matrix);
 	}
 
+	/**
+	 * Apache DBSCAN Implementation
+	 * 
+	 * 
+	 */
 	public ArrayList<PointsofInterest> DBSCAN_apache(ArrayList<StayPoints> Lsp) {
 		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>(); // cluster
 		DBSCANClusterer<StayPoints> clusterer = new DBSCANClusterer<StayPoints>(
@@ -202,6 +204,12 @@ public class PoICalculations {
 		return poilist;
 	}
 
+	/**
+	 * 
+	 * Our DBSCAN Algorithm ( wikipedia's pseudocode )
+	 * 
+	 */
+	
 	public ArrayList<PointsofInterest> DBSCAN(ArrayList<StayPoints> Lsp) {
 		// DBSCAN Algorithm
 		ArrayList<PointsofInterest> poilist = new ArrayList<PointsofInterest>(); // cluster
@@ -307,54 +315,6 @@ public class PoICalculations {
 			}
 		}
 		return point;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String minmaxTimestamp() {
-		// Find minimum and maximum Date of the user return MIN#MAX
-		String DATE = null, MIN = null, MAX = null;
-		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints
-				.getInstance().getHap();
-		int first = 1;
-		if (!hap.isEmpty()) {
-			Set<?> set = hap.entrySet();
-			Iterator<?> it = set.iterator();
-			while (it.hasNext()) {
-				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
-						.getValue();
-				for (int i = 0; i < array.size(); i++) {
-
-					if (first == 1) {
-						MIN = array.get(i).getTimestamp();
-						MAX = array.get(i).getTimestamp();
-						first = 0;
-					} else {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd HH:mm:ss");
-							Date datemin = sdf.parse(MIN);
-							Date datemax = sdf.parse(MAX);
-							Date datenow = sdf.parse(array.get(i)
-									.getTimestamp());
-							// System.out.println(datemin+" | "+datemax+" | "+datenow);
-							if (datemin.after(datenow)) {
-								MIN = array.get(i).getTimestamp();
-							}
-							if (datemax.before(datenow)) {
-								MAX = array.get(i).getTimestamp();
-							}
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}
-		DATE = MIN + "#" + MAX;
-		// System.out.println("MIN-MAX DATES: " + DATE);
-		return DATE;
 	}
 
 }

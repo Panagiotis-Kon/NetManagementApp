@@ -1,7 +1,6 @@
 package com.netmanagement.dataprocessing;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -55,8 +54,7 @@ public class AccessPointsCalculations {
 				double lat = 0;
 				double lon = 0;
 				int level = 0;
-				System.out.println("Key : " + me.getKey() + " Value : "
-						+ me.getValue());
+				
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
 						.getValue();
 				if (array.size() == 1) {
@@ -74,8 +72,6 @@ public class AccessPointsCalculations {
 				}
 				lat = lat / totalweight;
 				lon = lon / totalweight;
-				// lat=lat*pi;
-				// lon=lon*pi;
 				level = level / array.size();
 				for (int i = 0; i < array.size(); i++) {
 					array.get(i).setAPlatitude(lat);
@@ -89,13 +85,12 @@ public class AccessPointsCalculations {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<AccessPoints> searchUser(String userID, String startDate,
-			String endDate) {
+	public ArrayList<AccessPoints> searchUser(String userID, Date startDate,
+			Date endDate) {
 		// Search data for a specific user with the date contained between
 		// startDate and endDate. Then return a list with these data.
 
-		System.out.println("userID: " + userID + " startDate: " + startDate
-				+ " endDate: " + endDate);
+		
 		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints
 				.getInstance().getHap();
 		ArrayList<AccessPoints> alist = new ArrayList<AccessPoints>();
@@ -104,30 +99,17 @@ public class AccessPointsCalculations {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
-						.getValue();
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					AccessPoints tempap = array.get(i);
 					if (tempap.getUser().equals(userID)) {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd");
-
-							Date date1 = sdf.parse(startDate);
-							Date date2 = sdf.parse(endDate);
-							Date dateu = sdf.parse(tempap.getTimestamp());
-							// System.out.println(date1+" | "+date2+" | "+dateu);
-							if (date1.equals(dateu) || date1.before(dateu)) {
-								if (date2.equals(dateu) || date2.after(dateu)) {
-									alist.add(tempap);
-								}
+						if (startDate.equals(tempap.getTimestamp()) || startDate.before(tempap.getTimestamp())) {
+							if (endDate.equals(tempap.getTimestamp()) || endDate.after(tempap.getTimestamp())) {
+								alist.add(tempap);
 							}
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
-
+						
+						
 					}
 				}
 			}
@@ -136,10 +118,6 @@ public class AccessPointsCalculations {
 			System.out.println("AccessPointsCalculations: alist is empty!!!");
 		} else {
 			Collections.sort(alist);
-			System.out.println(alist.get(0).getUser() + " | "
-					+ alist.get(0).getTimestamp() + " ||| "
-					+ alist.get(alist.size() - 1).getUser() + " | "
-					+ alist.get(alist.size() - 1).getTimestamp());
 		}
 		return alist;
 	}
@@ -156,7 +134,6 @@ public class AccessPointsCalculations {
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
 				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
 						.getValue();
 				for (int i = 0; i < array.size(); i++) {
@@ -173,70 +150,19 @@ public class AccessPointsCalculations {
 		return alist;
 	}
 
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String minmaxTimestamp(String user) {
-		// Find minimum and maximum Date of the user. Return MIN#MAX
-		String DATE = null, MIN = null, MAX = null;
-		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints
-				.getInstance().getHap();
-		int first = 1;
-		if (!hap.isEmpty()) {
-			Set<?> set = hap.entrySet();
-			Iterator<?> it = set.iterator();
-			while (it.hasNext()) {
-				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
-						.getValue();
-				for (int i = 0; i < array.size(); i++) {
-					if (!array.get(i).getUser().equals(user)) {
-						continue;
-					}
-					if (first == 1) {
-						MIN = array.get(i).getTimestamp();
-						MAX = array.get(i).getTimestamp();
-						first = 0;
-					} else {
-						try {
-							SimpleDateFormat sdf = new SimpleDateFormat(
-									"yyyy-MM-dd HH:mm:ss");
-							Date datemin = sdf.parse(MIN);
-							Date datemax = sdf.parse(MAX);
-							Date datenow = sdf.parse(array.get(i)
-									.getTimestamp());
-							// System.out.println(datemin+" | "+datemax+" | "+datenow);
-							if (datemin.after(datenow)) {
-								MIN = array.get(i).getTimestamp();
-							}
-							if (datemax.before(datenow)) {
-								MAX = array.get(i).getTimestamp();
-							}
-						} catch (ParseException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}
-		DATE = MIN + "#" + MAX;
-		System.out.println("Date of user: " + DATE);
-		return DATE;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ArrayList<String> allTimestamps(String user) {
+	public ArrayList<Date> allTimestamps(String user) {
 		// Find all dates of the user and return an array list with them.
 		HashMap<String, ArrayList<AccessPoints>> hap = ParseAccessPoints
 				.getInstance().getHap();
-		ArrayList<String> alist = new ArrayList<String>();
+		ArrayList<Date> alist = new ArrayList<Date>();
 		if (!hap.isEmpty()) {
 			Set<?> set = hap.entrySet();
 			Iterator<?> it = set.iterator();
 			while (it.hasNext()) {
 				Map.Entry me = (Map.Entry) it.next();
-				// System.out.println("Key : "+me.getKey()+" Value : "+me.getValue());
-				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me
-						.getValue();
+				ArrayList<AccessPoints> array = (ArrayList<AccessPoints>) me.getValue();
 				for (int i = 0; i < array.size(); i++) {
 					if (!array.get(i).getUser().equals(user)) {
 						continue;

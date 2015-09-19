@@ -1,5 +1,9 @@
 package com.netmanagement.entities;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 
  * Entity for Base Stations
@@ -17,7 +21,7 @@ public class BaseStations {
 	private int lac;
 	private String BSlatitude;
 	private String BSlongtitude;
-	private String timestamp;
+	private Date timestamp;
 	
 	public void setAll(String[] Data) {
 		id=Data[0];
@@ -29,7 +33,16 @@ public class BaseStations {
 		lac=Integer.parseInt(Data[6]);
 		BSlatitude=Data[7];
 		BSlongtitude=Data[8];
-		timestamp=Data[9];
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
+		try {
+
+			Date date = formatter.parse(Data[9]);
+			timestamp=date;
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getId() {
@@ -86,12 +99,20 @@ public class BaseStations {
 	public void setBSlongtitude(String bSlongtitude) {
 		BSlongtitude = bSlongtitude;
 	}
-	public String getTimestamp() {
+
+	public Date getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(String timestamp) {
+
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 	
+	@Override
+	public String toString() {
+		return id + " " + Operator + " " + mcc + " " + mnc + " "
+				+ cid + " " + lac + " " + BSlatitude + " " + BSlongtitude +" " + 
+				 timestamp;
+	}
 	
 }
