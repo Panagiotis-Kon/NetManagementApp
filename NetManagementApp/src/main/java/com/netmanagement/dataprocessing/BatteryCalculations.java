@@ -93,7 +93,7 @@ public class BatteryCalculations {
 					int diffHours = (int) (totalSecs / 3600);
 					
 					if (!blist.get(diffHours).users.contains(array.get(i)
-							.getUser()) && array.get(i).getLevel() <= percent) {
+							.getUser()) && array.get(i).getLevel() < percent) {
 						blist.get(diffHours).numofUsers++;
 						blist.get(diffHours).users.add(array.get(i).getUser());
 					}

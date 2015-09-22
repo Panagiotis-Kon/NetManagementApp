@@ -270,9 +270,7 @@ public class ServicesController {
 				 ArrayList<Date> AllDates = new ArrayList<Date>();
 				 AllDates.addAll(datesAP);
 				 AllDates.addAll(datesGPS);
-				 for(int i=0; i<AllDates.size(); i++) {
-					 System.out.println("date: " + AllDates.get(i));
-				 }
+				
 				 String json = new Gson().toJson(AllDates);
 				 //System.out.println("0-1 json Dates: " + json);
 				 return json;
@@ -339,6 +337,55 @@ public class ServicesController {
 			 }
 		 }	
 	 }
+	 
+	 
+	 /********************************************** RETRIEVE'S THE WIFI POSITIONS **************************************/
+	 
+	 @RequestMapping(value = "/Polyline", method = RequestMethod.GET,consumes="application/json",produces="application/json")
+		
+	   public @ResponseBody String Polyline(@RequestParam String userID, @RequestParam String startDate, @RequestParam String endDate) {
+		 
+		 
+		  
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		 Date dateStart = null;	
+		 Date dateEnd = null;		
+			try {
+
+				dateStart = formatter.parse(startDate);
+				dateEnd = formatter.parse(endDate);
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(dateEnd); 
+				c.add(Calendar.DATE, 1);
+				dateEnd = c.getTime();
+				
+
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		 
+		 ParseGPS pgps = ParseGPS.getInstance();
+		 if(pgps.getLoaded() == 0){
+			 return new Gson().toJson("gps-not-loaded");
+		 }
+		 else {
+			 GPSCalculations gps = GPSCalculations.getInstance();
+			 ArrayList<GPS> gpsList = gps.searchUser(userID, dateStart, dateEnd);
+			 
+			
+			 if(!gpsList.isEmpty()){
+				 
+				 String json = new Gson().toJson(gpsList);
+				// System.out.println("json string: " + json);
+			     return json;	
+			 }
+			 else {
+				 System.out.println("Gps list is empty");
+				 return "Uncreated List";
+			 }
+		 }	
+	 }
+	 
 	 
 	 /***************************************** RETRIEVE'S BATTERY INFO FOR THE USER ************************************/
 	 

@@ -222,10 +222,59 @@ function getAvUserDates(userID, arg) {
 
 /**
  * 
- * Gets access point information in order to show theis positions on the map
+ * Gets info for the polyline
  * 
  */
 
+function getPolyline() {
+
+	$.ajax({
+				type : "GET",
+				dataType : "json",
+				data : {
+					userID : userID,
+					startDate : startDate,
+					endDate : endDate
+				},
+				contentType : "application/json",
+				url : "/NetManagementApp/Polyline",
+				success : function(data) {
+					// console.log('success',data);
+					if (data == "gps-not-loaded") {
+						$("#popupText")
+								.text(
+										"Sorry. First you must import GPS Dataset");
+						$("#divpopup").dialog({
+							title : "IMPORT PORBLEM",
+							width : 430,
+							height : 200,
+							modal : true,
+							buttons : {
+								OK : function() {
+									$(this).dialog('close');
+									clickableMenuAnalysis(1, 1);
+								}
+							}
+						});
+					} else {
+						Polyline(data)
+					}
+
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log('error', textStatus + " " + errorThrown);
+					alert('Get Polyline error loading response');
+				}
+			});
+
+}
+
+
+/**
+ * 
+ * Gets access point information in order to show theis positions on the map
+ * 
+ */
 function getApInfo() {
 
 	$.ajax({
@@ -288,6 +337,7 @@ function getApInfo() {
 			});
 
 }
+
 
 /**
  * 

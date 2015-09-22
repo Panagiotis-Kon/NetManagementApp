@@ -28,8 +28,7 @@ public class BaseStationsCalculations {
 			Date endDate) {
 		// Search data for a specific user with the date contained between
 		// startDate and endDate. Then return a list with these data.
-		System.out.println("userID: " + userID + " startDate: " + startDate
-				+ " endDate: " + endDate);
+		
 		HashMap<String, ArrayList<BaseStations>> hap = ParseBaseStations
 				.getInstance().getHap();
 		ArrayList<BaseStations> alist = new ArrayList<BaseStations>();

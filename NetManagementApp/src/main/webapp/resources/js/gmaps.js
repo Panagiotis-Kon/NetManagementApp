@@ -13,6 +13,7 @@ var mapCreated = 0; // shows if map is already created
 var markersAP = [];
 var markersCells = [];
 var markersEco = [];
+var markersPoly = [];
 
 /*************************************** FUNCTIONS *********************************/
 
@@ -39,7 +40,7 @@ function Markers(data) {
 
 	
 	var latlng = null;
-	sessionStorage.setItem('apdata', JSON.stringify(data));
+	//sessionStorage.setItem('apdata', JSON.stringify(data));
 	if (mapCreated == 1) {
 		if (flightPath != null) {
 
@@ -56,6 +57,9 @@ function Markers(data) {
 		//if(MarkersCells.length !=0 ) {
 		//deleteMarkers(1);
 		//}
+		if($('#EcoRoute').length){
+			$("#EcoRoute").remove();
+		}
 	}
 
 	$.each(data, function(i, item) {
@@ -66,7 +70,7 @@ function Markers(data) {
 				position : latlng,
 				map : map,
 				title : item.ssid,
-				animation : google.maps.Animation.DROP,
+				
 			});
 			markersAP.push(marker);
 
@@ -240,15 +244,18 @@ function CenterControl(controlDiv, map) {
 
 /* 
  * Polyline creates the a line between the markers
- * if there are no wifi markers in the map an alert is showed
+ * if there are no markers in the map an alert is showed
  * 
  * */
 
-function Polyline() {
+function Polyline(data) {
 
-	var sentdata = JSON.parse(sessionStorage.getItem('apdata'));
 	
-	if (mapCreated == 1) {
+	if(mapCreated != 1) {
+		CreateMap();
+		
+	}
+	else {
 		if (flightPath != null) {
 
 			flightPath.setMap(null);
@@ -258,17 +265,56 @@ function Polyline() {
 				}
 			}
 		}
-	}
-
-	if (markersAP.length != 0) {
-
+		
 		var flightPlanCoordinates = [];
-		$.each(sentdata, function(i, item) {
+		
+		$.each(data, function(i, item) {
+			
+			if(i==0 || i==data.length-1) {
+				if(i == 0) {
+					var pinImage = new google.maps.MarkerImage(
+							"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="
+									+ "S" + "|0066FF|0066FF", new google.maps.Size(80,
+									130), new google.maps.Point(0, 0),
+							new google.maps.Point(10, 34));
+					
+				}
+				if( i == data.length-1) {
+					var pinImage = new google.maps.MarkerImage(
+							"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="
+									+ "E" + "|33CC33|33CC33", new google.maps.Size(80,
+									130), new google.maps.Point(0, 0),
+							new google.maps.Point(10, 34));
+				}
+				
+				var marker = new google.maps.Marker({
+					position : new google.maps.LatLng(item.Ulatitude, item.Ulongtitude),
+					map : map,
+					icon : pinImage,
+					
+				});
+				markersPoly.push(marker);
+				var content = "<p>" + 'Number: ' + (i + 1) + "<br />" + "latitude:  " + item.Ulatitude
+				+ "<br />" + "longtitude:  " + item.Ulongtitude + "<br />"
+				+ 'Timestamp: ' + item.timestamp + "</p>";
 
-			flightPlanCoordinates.push(new google.maps.LatLng(item.APlatitude,
-					item.APlongtitude));
+				var infowindow = new google.maps.InfoWindow();
+
+				google.maps.event.addListener(marker, 'click', (function(marker,
+						content, infowindow) {
+					return function() {
+						infowindow.setContent(content);
+						infowindow.open(map, marker);
+					};
+				})(marker, content, infowindow));
+				
+			}
+			
+			flightPlanCoordinates.push(new google.maps.LatLng(item.Ulatitude,
+					item.Ulongtitude));
 
 		});
+		
 		var centerControlDiv = document.createElement('div');
 		centerControlDiv.setAttribute("id", "EcoRoute");
 		if (!$('#EcoRoute').length) {
@@ -282,15 +328,16 @@ function Polyline() {
 		flightPath = new google.maps.Polyline({
 			path : flightPlanCoordinates,
 			geodesic : true,
-			strokeColor : '#FF0000',
+			strokeColor : '#FF3300',
 			strokeOpacity : 1.0,
 			strokeWeight : 2
 		});
 		flightPath.setMap(map);
-
-	} else {
-		alert("There are no markers to create a path!!!");
+		
+		
 	}
+	
+	
 
 }
 
@@ -309,6 +356,11 @@ function BatEcoRoute(data) {
 			if (markersEco.length != 0) {
 				for (var i = 0; i < markersEco.length; i++) {
 					markersEco[i].setMap(null);
+				}
+			}
+			if(markersPoly.length != 0) {
+				for (var i = 0; i < markersPoly.length; i++) {
+					markersPoly[i].setMap(null);
 				}
 			}
 		}
@@ -330,7 +382,7 @@ function BatEcoRoute(data) {
 	flightPath = new google.maps.Polyline({
 		path : flightPlanCoordinates,
 		geodesic : true,
-		strokeColor : '#0000FF',
+		strokeColor : '#33CC33',
 		strokeOpacity : 1.0,
 		strokeWeight : 2
 	});
@@ -385,14 +437,14 @@ function BatEcoRoute(data) {
 function DrawCells(bsdata) {
 	
 	if (mapCreated == 1) {
-		if (flightPath != null) {
-			flightPath.setMap(null);
+		
+		
 			if (markersEco.length != 0) {
 				for (var i = 0; i < markersEco.length; i++) {
 					markersEco[i].setMap(null);
 				}
 			}
-		}
+	
 	}
 
 	var pinImage = new google.maps.MarkerImage("resources/images/bs.png",

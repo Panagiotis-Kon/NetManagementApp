@@ -518,7 +518,7 @@ function clickableMenuVisual(option, menuitem) {
 			link.style.color = "grey";
 		} else {
 			var link = document.getElementById('polyLink');
-			link.href = "javascript:Polyline();"
+			link.href = "javascript:getPolyline();"
 			link.style.color = "#000";
 			link.onmouseover = function() {
 				this.style.color = "red";
