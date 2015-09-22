@@ -69,8 +69,8 @@ public class BaseStationsCalculations {
 		ArrayList<String> users = new ArrayList<String>();
 
 		void setAll(String operator, int i, int mcc, int mnc, String user) {
-			System.out.println(Name + " | " + numofUsers + " | " + mcc + " | "
-					+ mnc + " | " + users);
+			/*System.out.println(Name + " | " + numofUsers + " | " + mcc + " | "
+					+ mnc + " | " + users);*/
 			this.Name = operator;
 			this.numofUsers = i;
 			this.mcc = mcc;

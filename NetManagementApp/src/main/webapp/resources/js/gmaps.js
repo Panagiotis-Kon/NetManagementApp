@@ -17,9 +17,7 @@ var markersPoly = [];
 
 /*************************************** FUNCTIONS *********************************/
 
-$( document ).ready(function() {
-	CreateMap();
-});
+
 
 
 function CreateMap() {

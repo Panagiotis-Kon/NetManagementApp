@@ -70,11 +70,9 @@ public class BatteryCalculations {
 		// Search for users with battery level below a percentage in a given
 		// time. Return an array list with
 		// hour_of_the_day#number_of_unique_users_with_low battery
-		String DATE[] = minmaxTimestamp().split("#");
-		
-		Date min = StringtoDate(DATE[0]);
-		Date max = StringtoDate(DATE[1]);
-		ArrayList<BatteryInfo> blist = generateDateRange(min, max);
+	
+		ArrayList<Date> dates = minmaxTimestamp();
+		ArrayList<BatteryInfo> blist = generateDateRange(dates.get(0), dates.get(1));
 
 		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance().getHap();
 		ArrayList<String> alist = new ArrayList<String>();
@@ -88,7 +86,7 @@ public class BatteryCalculations {
 				for (int i = 0; i < array.size(); i++) {
 
 					Date pdate = zeroMin_Sec(array.get(i).getTimestamp());
-					long diff = pdate.getTime() - min.getTime();
+					long diff = pdate.getTime() - dates.get(0).getTime();
 					long totalSecs = diff / 1000;
 					int diffHours = (int) (totalSecs / 3600);
 					
@@ -110,8 +108,8 @@ public class BatteryCalculations {
 	}
 
 public Date StringtoDate(String sdate) { // Change String to Date format :
-										// yyyy-MM-dd HH:mm:ss
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+										// EEE MMM dd HH:mm:ss z yyyy
+	SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 		Date ddate = null;
 		try {
 			ddate = sdf.parse(sdate);
@@ -225,12 +223,11 @@ public Date StringtoDate(String sdate) { // Change String to Date format :
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public String minmaxTimestamp() {
-		// Find minimum and maximum Date of the user return MIN#MAX
-		String DATE = null; 
+	public ArrayList<Date> minmaxTimestamp() {
+		// Find minimum and maximum Date of the user return an arraylist of dates
+		 
 		Date MIN = null, MAX = null;
-		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance()
-				.getHap();
+		HashMap<String, ArrayList<Battery>> hap = ParseBattery.getInstance().getHap();
 		int first = 1;
 		if (!hap.isEmpty()) {
 			Set<?> set = hap.entrySet();
@@ -257,9 +254,10 @@ public Date StringtoDate(String sdate) { // Change String to Date format :
 				}
 			}
 		}
-		DATE = MIN.toString() + "#" + MAX.toString();
-		System.out.println("Date of all: " + DATE);
-		return DATE;
+		ArrayList<Date> dates = new ArrayList<Date>();
+		dates.add(MIN);
+		dates.add(MAX);
+		return dates;
 	}
 
 }
