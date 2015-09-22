@@ -243,8 +243,8 @@ function CenterControl(controlDiv, map) {
 }
 
 /* 
- * Polyline creates the a line between the markers
- * if there are no markers in the map an alert is showed
+ * Polyline creates path of the user
+ * 
  * 
  * */
 
@@ -272,19 +272,15 @@ function Polyline(data) {
 			
 			if(i==0 || i==data.length-1) {
 				if(i == 0) {
-					var pinImage = new google.maps.MarkerImage(
-							"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="
-									+ "S" + "|0066FF|0066FF", new google.maps.Size(80,
-									130), new google.maps.Point(0, 0),
-							new google.maps.Point(10, 34));
+				
+					var pinImage = new google.maps.MarkerImage("resources/images/markerUser1.png",
+							new google.maps.Size(45, 45), new google.maps.Point(0, 0), null);
 					
 				}
 				if( i == data.length-1) {
-					var pinImage = new google.maps.MarkerImage(
-							"http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld="
-									+ "E" + "|33CC33|33CC33", new google.maps.Size(80,
-									130), new google.maps.Point(0, 0),
-							new google.maps.Point(10, 34));
+					
+					var pinImage = new google.maps.MarkerImage("resources/images/markerUser2.png",
+							new google.maps.Size(40, 40), new google.maps.Point(0, 0), null);
 				}
 				
 				var marker = new google.maps.Marker({
