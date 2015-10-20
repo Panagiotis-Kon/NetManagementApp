@@ -48,13 +48,17 @@ function Markers(data) {
 					markersEco[i].setMap(null);
 				}
 			}
+			if(markersPoly.length != 0)
+			{
+				for (var i = 0; i < markersPoly.length; i++) {
+					markersPoly[i].setMap(null);
+				}
+			}
 		}
 		if (markersAP.length != 0) {
 			deleteMarkers(0);
 		}
-		//if(MarkersCells.length !=0 ) {
-		//deleteMarkers(1);
-		//}
+		
 		if($('#EcoRoute').length){
 			$("#EcoRoute").remove();
 		}
@@ -432,12 +436,27 @@ function DrawCells(bsdata) {
 	
 	if (mapCreated == 1) {
 		
-		
+		if (flightPath != null) {
+
+			flightPath.setMap(null);
 			if (markersEco.length != 0) {
 				for (var i = 0; i < markersEco.length; i++) {
 					markersEco[i].setMap(null);
 				}
 			}
+			if(markersPoly.length != 0)
+			{
+				for (var i = 0; i < markersPoly.length; i++) {
+					markersPoly[i].setMap(null);
+				}
+			}
+		}
+	
+		
+		if($('#EcoRoute').length){
+			$("#EcoRoute").remove();
+		}
+	
 	
 	}
 
